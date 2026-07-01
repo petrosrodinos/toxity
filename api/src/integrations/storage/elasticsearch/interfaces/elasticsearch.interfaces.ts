@@ -1,16 +1,14 @@
-import { LeadStatus } from '@/generated/prisma';
-
 export interface SearchQuery {
     q?: string;
-    status?: LeadStatus;
-    min_score?: number;
-    source_type?: string;
-    tags?: string[];
     page?: number;
     limit?: number;
 }
 
-export interface SearchResult<T = any> {
-    hits: T[];
+export interface SearchResult<T = Record<string, unknown>> {
+    hits: (T & { _id: string; _score?: number })[];
     total: number;
+}
+
+export interface IndexMappings {
+    properties: Record<string, unknown>;
 }
