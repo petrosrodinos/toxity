@@ -1,5 +1,7 @@
 # System Architecture — Toxity
 
+> **Related:** [PRODUCT.md](../../PRODUCT.md) · [DESIGN.md](../../DESIGN.md) — **mobile-first app** with **bottom navigation** (`components/layout/bottom-nav.tsx`, `app-shell.tsx`)
+
 ## Frontend stack
 
 | Layer | Choice | Notes |

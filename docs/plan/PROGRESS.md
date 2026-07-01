@@ -11,11 +11,21 @@
 
 **Source spec:** [`docs/specifications.md`](../../specifications.md)
 
+### Canonical documentation
+
+| Doc | Path | Use when |
+|-----|------|----------|
+| Product requirements (full PRD) | [`../PRODUCT.md`](../PRODUCT.md) | Scope, metrics, user stories, MVP acceptance |
+| Design system (UI/UX) | [`../DESIGN.md`](../DESIGN.md) | **Mobile-first bottom nav**, tokens, components, layouts, accessibility |
+
+Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` take precedence** on product scope and visual design.
+
 ---
 
 ## Session start checklist
 
 - [ ] Read this file (`PROGRESS.md`)
+- [ ] Skim [`../PRODUCT.md`](../PRODUCT.md) and [`../DESIGN.md`](../DESIGN.md) when scope or UI is in scope
 - [ ] Read direction docs listed under **Current focus** feature
 - [ ] Open the next incomplete task file in that feature group
 - [ ] Implement until acceptance criteria pass
@@ -118,6 +128,7 @@
 | Doc | Path |
 |-----|------|
 | Product spec | `directions/01-product-spec.md` |
+| Design system (bottom nav) | [`../DESIGN.md`](../DESIGN.md) |
 | System architecture | `directions/02-system-architecture.md` |
 
 ### Task files
@@ -513,6 +524,7 @@ flowchart TD
 ## Notes
 
 - Direction docs (`directions/`) are reference only — they do not count toward implementation %.
+- Full product and design specs: [`../PRODUCT.md`](../PRODUCT.md), [`../DESIGN.md`](../DESIGN.md).
 - Prefer vertical slices: finish Feature 05 + 06 before heavy investment in Feature 08.
 - Feature 07 is the largest slice — allocate 3 task files as scoped.
 - Community features (reviews, reports) are post-MVP per spec.

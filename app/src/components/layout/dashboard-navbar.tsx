@@ -10,12 +10,12 @@ interface DashboardNavbarProps {
 }
 
 const pageTitles: Record<string, string> = {
-  [Routes.dashboard.root]: 'Dashboard',
+  [Routes.dashboard.root]: 'Discover',
 };
 
 export default function DashboardNavbar({ onMenuClick }: DashboardNavbarProps) {
   const location = useLocation();
-  const currentTitle = pageTitles[location.pathname] ?? 'Dashboard';
+  const currentTitle = pageTitles[location.pathname] ?? 'Toxity';
   const { theme, toggleTheme } = useThemeContext();
 
   return (
@@ -27,13 +27,13 @@ export default function DashboardNavbar({ onMenuClick }: DashboardNavbarProps) {
       )}
       style={{
         boxShadow: `
-          0 0 0 1px color-mix(in oklch, var(--accent) 6%, transparent),
-          0 8px 20px -8px color-mix(in oklch, black 16%, transparent),
-          0 2px 6px -2px color-mix(in oklch, black 8%, transparent)
+          0 0 0 1px color-mix(in oklch, var(--accent) 8%, transparent),
+          0 8px 20px -8px color-mix(in oklch, black 14%, transparent),
+          0 2px 6px -2px color-mix(in oklch, black 6%, transparent)
         `,
       }}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-w-0">
         <button
           onClick={onMenuClick}
           className="lg:hidden p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-secondary transition-colors duration-200"
@@ -41,7 +41,12 @@ export default function DashboardNavbar({ onMenuClick }: DashboardNavbarProps) {
         >
           <Menu className="h-4 w-4" />
         </button>
-        <span className="font-semibold text-foreground text-sm tracking-tight">{currentTitle}</span>
+        <div className="min-w-0">
+          <p className="font-semibold text-foreground text-sm tracking-tight leading-none" style={{ fontFamily: 'var(--heading)' }}>
+            {currentTitle}
+          </p>
+          <p className="text-[11px] text-muted truncate leading-snug mt-0.5">Ingredient intelligence</p>
+        </div>
       </div>
 
       <div className="flex items-center gap-1">

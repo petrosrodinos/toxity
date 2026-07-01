@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { PanelLeftClose, PanelLeftOpen, Command } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { environments } from '@/config/environments';
+import { BrandMark } from '@/components/brand/brand-mark';
 import SidebarContent from '@/components/layout/sidebar-content';
 import UserMenuPopover from '@/components/layout/user-menu-popover';
+import { Routes } from '@/routes/routes';
 
 const STORAGE_KEY = 'sidebar_collapsed';
 
@@ -34,23 +35,22 @@ export default function Sidebar() {
       )}
       style={{
         boxShadow: `
-          0 0 0 1px color-mix(in oklch, var(--accent) 8%, transparent),
-          0 20px 40px -12px color-mix(in oklch, black 22%, transparent),
-          0 6px 16px -6px color-mix(in oklch, black 12%, transparent)
+          0 0 0 1px color-mix(in oklch, var(--accent) 10%, transparent),
+          0 20px 40px -12px color-mix(in oklch, black 20%, transparent),
+          0 6px 16px -6px color-mix(in oklch, black 10%, transparent)
         `,
       }}
     >
-      {/* Header */}
       <div className="h-[54px] flex items-center shrink-0 px-3 border-b border-border">
         {collapsed ? (
           <div className="flex flex-col items-center justify-center w-full gap-1.5 py-0.5">
             <NavLink
-              to="/"
-              aria-label={environments.APP_NAME}
-              title={environments.APP_NAME}
+              to={Routes.dashboard.root}
+              aria-label="Toxity home"
+              title="Toxity"
               className="rounded-xl p-1 transition-colors duration-200 hover:bg-surface-secondary"
             >
-              <Command className="h-7 w-7 text-foreground" />
+              <BrandMark size="sm" showWordmark={false} />
             </NavLink>
             <button
               onClick={() => setCollapsed(false)}
@@ -63,13 +63,10 @@ export default function Sidebar() {
         ) : (
           <>
             <NavLink
-              to="/"
-              className="flex items-center gap-2.5 flex-1 min-w-0 rounded-xl px-2 py-1.5 hover:bg-surface-secondary transition-colors duration-200"
+              to={Routes.dashboard.root}
+              className="flex-1 min-w-0 rounded-xl px-1 py-1 hover:bg-surface-secondary transition-colors duration-200"
             >
-              <Command className="h-7 w-7 shrink-0 text-foreground" />
-              <span className="text-[13px] font-semibold text-foreground truncate tracking-tight">
-                {environments.APP_NAME}
-              </span>
+              <BrandMark size="sm" />
             </NavLink>
             <button
               onClick={() => setCollapsed(true)}
@@ -82,12 +79,10 @@ export default function Sidebar() {
         )}
       </div>
 
-      {/* Nav items */}
       <nav className="flex-1 py-2.5 px-2 overflow-y-auto">
         <SidebarContent collapsed={collapsed} />
       </nav>
 
-      {/* User menu */}
       <div className="shrink-0 p-2 border-t border-border">
         <UserMenuPopover collapsed={collapsed} placement="top" />
       </div>

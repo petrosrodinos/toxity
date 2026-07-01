@@ -6,12 +6,15 @@ Feature 02 — App Shell & Navigation → [PROGRESS.md](../../PROGRESS.md#featur
 
 ## Objective
 
-Replace CRM dashboard shell with consumer app layout: bottom nav (Home, Scan, Search, History, Profile) and mobile-first responsive shell.
+Replace CRM dashboard shell with **mobile-first** consumer app layout: **fixed bottom navigation** on mobile (Home, Scan, Search, History, Profile) and responsive shell on desktop.
+
+> Canonical spec: [DESIGN.md](../../../DESIGN.md) §5.4 · [PRODUCT.md](../../../PRODUCT.md) §10
 
 ## Requirements
 
 - Protected app routes use new shell, not sidebar CRM layout
-- Bottom navigation on mobile; optional side nav on desktop
+- **Mobile-first:** fixed bottom navigation on `< lg` (required, not optional)
+- Desktop `≥ lg`: bottom nav hidden; same five destinations via side or top nav
 - Redirect `/` and post-login to Home, not dashboard
 - Remove placeholder lead metrics from dashboard (delete or repurpose page)
 

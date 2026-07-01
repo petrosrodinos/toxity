@@ -1,16 +1,16 @@
-import { Sun, Moon, Command } from 'lucide-react';
-import { environments } from '@/config/environments';
+import { Sun, Moon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { BrandMark } from '@/components/brand/brand-mark';
 import { useThemeContext } from '@/components/providers/theme-provider';
+import { Routes } from '@/routes/routes';
 
 export default function Navbar() {
   const { theme, toggleTheme } = useThemeContext();
 
   return (
-    <header className="bg-surface border-b border-border px-6 py-3 flex items-center justify-between">
-      <Link to="/" className="flex items-center gap-2 text-sm font-medium text-foreground">
-        <Command className="h-5 w-5" />
-        {environments.APP_NAME}
+    <header className="bg-surface border-b border-border px-4 sm:px-6 py-3 flex items-center justify-between">
+      <Link to={Routes.dashboard.root} className="min-w-0 rounded-xl transition-opacity hover:opacity-90">
+        <BrandMark size="md" />
       </Link>
 
       <button

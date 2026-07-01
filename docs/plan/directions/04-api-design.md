@@ -1,5 +1,7 @@
 # API Design — Toxity
 
+> **Related:** [PRODUCT.md](../../PRODUCT.md) · [DESIGN.md](../../DESIGN.md)
+
 Base path: `/api` (or root per existing config). All authenticated routes use `Authorization: Bearer <token>`.
 
 ## Auth (`/auth`)

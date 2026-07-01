@@ -1,5 +1,7 @@
 # Domain Model — Toxity
 
+> **Related:** [PRODUCT.md](../../PRODUCT.md) · [DESIGN.md](../../DESIGN.md) (safety `ColorIndicator` UI mapping)
+
 ## Entity relationship overview
 
 ```

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard } from 'lucide-react';
+import { Compass, LayoutGrid } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Routes } from '@/routes/routes';
 
@@ -9,7 +9,14 @@ interface SidebarContentProps {
 }
 
 const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, href: Routes.dashboard.root, end: true },
+  { label: 'Discover', icon: Compass, href: Routes.dashboard.root, end: true },
+];
+
+const upcomingItems = [
+  { label: 'Scan', icon: LayoutGrid },
+  { label: 'Search' },
+  { label: 'History' },
+  { label: 'Favorites' },
 ];
 
 function NavItem({
@@ -47,8 +54,8 @@ function NavItem({
         style={({ isActive }) =>
           isActive
             ? {
-                background: 'color-mix(in oklch, var(--accent) 12%, transparent)',
-                boxShadow: 'inset 0 0 0 1px color-mix(in oklch, var(--accent) 22%, transparent)',
+                background: 'color-mix(in oklch, var(--accent) 14%, transparent)',
+                boxShadow: 'inset 0 0 0 1px color-mix(in oklch, var(--accent) 24%, transparent)',
               }
             : {}
         }
@@ -76,18 +83,37 @@ function NavItem({
 
 export default function SidebarContent({ collapsed, onNavigate }: SidebarContentProps) {
   return (
-    <ul className="space-y-0.5">
-      {navItems.map(({ label, icon, href, end }) => (
-        <NavItem
-          key={href}
-          label={label}
-          icon={icon}
-          href={href}
-          end={end}
-          collapsed={collapsed}
-          onNavigate={onNavigate}
-        />
-      ))}
-    </ul>
+    <div className="space-y-4">
+      <ul className="space-y-0.5">
+        {navItems.map(({ label, icon, href, end }) => (
+          <NavItem
+            key={href}
+            label={label}
+            icon={icon}
+            href={href}
+            end={end}
+            collapsed={collapsed}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </ul>
+
+      {!collapsed && (
+        <div className="px-2.5 pt-1">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Coming soon</p>
+          <ul className="space-y-1">
+            {upcomingItems.map(({ label }) => (
+              <li
+                key={label}
+                className="flex items-center gap-2.5 px-2.5 py-1.5 text-[13px] text-muted/70 cursor-not-allowed select-none"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-border shrink-0" aria-hidden />
+                {label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }

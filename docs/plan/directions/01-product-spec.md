@@ -1,5 +1,9 @@
 # Product Specification — Toxity
 
+> **Planning summary** — expanded canonical docs:
+> - [PRODUCT.md](../../PRODUCT.md) — full product requirements document (PRD)
+> - [DESIGN.md](../../DESIGN.md) — UI/UX and design system
+
 ## Product name
 
 **Toxity** — AI-Powered Product Ingredient Intelligence Platform
@@ -37,9 +41,21 @@ Unlike simple safety-score apps, Toxity provides **comprehensive AI insights** p
 
 ## Platforms
 
-- Mobile Web (primary)
-- Desktop Web (responsive)
+- **Mobile Web (primary)** — mobile-first UI with **fixed bottom navigation** (Home, Scan, Search, History, Profile)
+- Desktop Web (responsive) — same five destinations; bottom nav hidden at `lg+`, adaptive side/top nav
 - Android (future — same API + responsive/PWA shell first)
+
+## Mobile app shell
+
+| Bottom nav tab | Purpose |
+|----------------|---------|
+| Home | Discovery feed |
+| Scan | Barcode scan + OCR product creation |
+| Search | Products, ingredients, brands |
+| History | Scan history |
+| Profile | Account, settings, favorites |
+
+Canonical detail: [DESIGN.md](../../DESIGN.md) §5.4 · Implementation: `tasks/feature-02-app-shell/01-app-shell-navigation.md`
 
 ## Out of scope for initial slices (future)
 
