@@ -6,42 +6,37 @@ Feature 01 — Authentication & User Profile → [PROGRESS.md](../../PROGRESS.md
 
 ## Objective
 
-Complete backend auth: refresh token, forgot/reset password, email verification, and extended user profile fields.
+Complete backend auth: JWT access token (no refresh), forgot/reset password, and minimal user profile (`name` only).
+
+**Out of scope:** refresh tokens, email verification, avatar, country, language, theme, notifications.
 
 ## Requirements
 
-- Extend Prisma `User` model per `directions/03-domain-model.md`
-- Add `EmailVerificationToken`, `PasswordResetToken`, `RefreshToken` tables
-- Implement missing endpoints per `directions/04-api-design.md` auth section
-- Send verification and reset emails via existing mail integration
+- Extend Prisma `User` with optional `name`
+- Add `PasswordResetToken` table only
+- Auth endpoints per `directions/04-api-design.md`
+- Send password reset emails via existing mail integration
 - Delete password from all API responses
 
 ## Subtasks
 
-- [ ] Update `api/prisma/schema.prisma` with new User fields and token tables
-- [ ] Run `prisma migrate dev` for migration
-- [ ] Create `users` module: `users.controller.ts`, `users.service.ts`, `users.module.ts`
-- [ ] `GET /users/me`, `PATCH /users/me` with DTOs
-- [ ] `POST /users/me/avatar` — upload to GCS, save `avatar_url`
-- [ ] Extend `auth` email controller: refresh, forgot-password, reset-password, verify, resend-verification
-- [ ] Hash and store refresh tokens; validate on refresh endpoint
-- [ ] On register: create verification token, send email, do not block login (or require verify per product decision — default: allow login, gate scan behind verify optional)
-- [ ] Register `UsersModule` in `AppModule`
-- [ ] Swagger decorators on all new endpoints
+- [x] Update `api/prisma/schema.prisma` — `name` + `PasswordResetToken` only
+- [x] Migration SQL in `prisma/migrations/20260701120000_auth_extend_user_tokens/`
+- [x] Create `users` module: `GET/PATCH /users/me` (name only)
+- [x] Extend `auth` email controller: forgot-password, reset-password
+- [x] Register/login return `access_token` + `expires_in` + `user` (no `refresh_token`)
+- [x] Register `UsersModule` in `AppModule`
+- [x] Swagger decorators on all new endpoints
 
 ## Technical Notes
 
-- Reuse existing `JwtGuard`, `CurrentUser` decorator from `shared/`
-- Token expiry: verification 24h, reset 1h, refresh 7d
+- JWT lifetime: `JWT_EXPIRATION_TIME` env var
+- Password reset token expiry: 1h
 - Use `setImmediate` + try/catch for email sends
-- Follow snake_case for method parameters per project rules
-- Remove stale Appointly references in Swagger title when touching `main.ts`
 
 ## Acceptance Criteria
 
-- [ ] New user registers → receives verification email (check logs or SendGrid)
-- [ ] `POST /auth/email/verify` with valid token sets `email_verified_at`
 - [ ] Forgot/reset password flow works end-to-end
-- [ ] `POST /auth/email/refresh` returns new access token
+- [ ] Register/login return JWT without refresh token
 - [ ] `GET /users/me` returns profile without password
-- [ ] `PATCH /users/me` updates theme, language, country, name
+- [ ] `PATCH /users/me` updates `name`

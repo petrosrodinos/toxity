@@ -1,4 +1,4 @@
-import { adminLoginToAccount, refreshAccountToken, signIn, signUp } from "../services/auth";
+import { adminLoginToAccount, signIn, signUp } from "../services/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
@@ -67,16 +67,6 @@ export function useSignup() {
     });
 }
 
-
-export function useRefreshAccountToken() {
-    const { login } = useAuthStore((state) => state);
-    return useMutation({
-        mutationFn: () => refreshAccountToken(),
-        onSuccess: (data: LoggedInUser) => {
-            login({ ...data, isLoggedIn: true });
-        },
-    });
-}
 
 export function useAdminLoginToAccount() {
     const { login } = useAuthStore((state) => state);

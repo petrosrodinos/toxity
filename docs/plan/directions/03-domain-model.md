@@ -178,16 +178,10 @@ Add to existing `User` model:
 | Field | Type |
 |-------|------|
 | name | string? |
-| avatar_url | string? |
-| country | string? |
-| preferred_language | string | default `en` |
-| theme | enum | LIGHT / DARK / SYSTEM |
-| notification_settings | json |
-| email_verified_at | datetime? |
 
-### EmailVerificationToken / PasswordResetToken
+### PasswordResetToken
 
-Standard token tables (hashed token, expires_at, user_uuid).
+Short-lived reset flow only (hashed token, `expires_at`, `user_uuid`). No refresh tokens — sessions use JWT access token only.
 
 ### UserProductScan
 
@@ -219,9 +213,10 @@ VerificationStatus: PENDING | APPROVED | REJECTED
 ScanMethod: BARCODE | OCR
 FavoriteEntityType: PRODUCT | INGREDIENT | BRAND
 SafetyLevel: SAFE | CAUTION | AVOID | UNKNOWN
-Theme: LIGHT | DARK | SYSTEM
 ProductImageType: HERO | PACKAGE | INGREDIENT_LABEL | FRONT_LABEL
 ```
+
+`Theme` (LIGHT / DARK / SYSTEM) is a frontend-only preference — not stored on `User`.
 
 ## Product creation job (transient)
 

@@ -6,8 +6,8 @@
 > before writing code. Update this file when deliverables are verified.
 
 **Last updated:** 2026-07-01  
-**Overall progress:** ~5% (0 / 12 features complete; Feature 01 partially started)  
-**Current focus:** Feature 01 — Authentication & User Profile → `tasks/feature-01-auth/01-auth-backend-extend.md`
+**Overall progress:** ~8% (0 / 12 features complete; Feature 01 backend slice done)  
+**Current focus:** Feature 01 — Authentication & User Profile → `tasks/feature-01-auth/02-auth-frontend-profile.md`
 
 **Source spec:** [`docs/specifications.md`](../../specifications.md)
 
@@ -44,8 +44,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 | Auth UI (sign-in, sign-up) | ✅ Partial |
 | UI primitives (`components/ui/`) | ✅ `Button`, `Input`, `PasswordInput`, `Card`, `SafetyBadge`, `Toast`, `Drawer`, `Popover` — **reuse on all new screens** ([05-frontend-ui-primitives.md](directions/05-frontend-ui-primitives.md)) |
 | JWT guards, Prisma User model | ✅ Exists |
-| Refresh / forgot / verify | ❌ Not implemented |
-| User profile API | ❌ Not implemented |
+| Refresh / forgot password | ✅ JWT only; forgot/reset backend done (frontend pending) |
+| User profile API | ✅ `GET/PATCH /users/me` (name only) |
 | Product / Ingredient / Scan | ❌ Not implemented |
 | Consumer app shell (bottom nav) | ❌ CRM dashboard placeholder remains |
 | Planning docs | ✅ `docs/plan/` created |
@@ -58,7 +58,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 | # | Feature | Status | Progress | Task files |
 |---|---------|--------|----------|------------|
-| 01 | Authentication & User Profile | in progress | ~25% | 2 |
+| 01 | Authentication & User Profile | in progress | ~55% | 2 |
 | 02 | App Shell & Navigation | not started | 0% | 1 |
 | 03 | Taxonomy Foundation | not started | 0% | 1 |
 | 04 | Ingredient Library | not started | 0% | 2 |
@@ -77,10 +77,10 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 ## Feature 01: Authentication & User Profile
 
-**Description:** Users can register, sign in, verify email, reset password, and manage profile settings.
+**Description:** Users can register, sign in, reset password, and update display name.
 
 **Status:** in progress  
-**Progress:** ~25%
+**Progress:** ~55%
 
 ### References
 
@@ -95,27 +95,26 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 | File | Status |
 |------|--------|
-| `tasks/feature-01-auth/01-auth-backend-extend.md` | not started |
+| `tasks/feature-01-auth/01-auth-backend-extend.md` | done |
 | `tasks/feature-01-auth/02-auth-frontend-profile.md` | not started |
 
 ### Implementation checklist
 
 - [x] Database schema / User model (basic — exists)
 - [x] Backend: register endpoint
-- [x] Backend: login endpoint + JWT
-- [ ] Extended User fields (name, avatar, country, language, theme, notifications)
-- [ ] Backend: refresh token endpoint
-- [ ] Backend: forgot / reset password
-- [ ] Backend: email verification
-- [ ] Backend: `GET/PATCH /users/me`, avatar upload
+- [x] Backend: login endpoint + JWT (access token only; no refresh)
+- [x] Extended User field: `name`
+- [x] Backend: forgot / reset password
+- [ ] Backend: email verification — **removed from scope**
+- [ ] Backend: refresh token — **removed from scope**
+- [x] Backend: `GET/PATCH /users/me` (name only)
 - [x] Frontend: sign-up page wired to API
 - [x] Frontend: sign-in page wired to API
-- [ ] Frontend: forgot / reset / verify pages
-- [ ] Frontend: token refresh in axios interceptor
-- [ ] Frontend: profile settings page
+- [ ] Frontend: forgot / reset pages
+- [ ] Frontend: profile settings page (name only)
 - [ ] Smoke test: full auth + profile flow
 
-**Definition of done:** User can register, verify email, reset password, update profile (theme, language, avatar), and stay logged in via refresh.
+**Definition of done:** User can register, reset password, update name; session uses JWT until expiry (then sign in again).
 
 ---
 

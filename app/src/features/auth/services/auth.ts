@@ -39,15 +39,6 @@ export const signUp = async ({ email, password }: SignUpUser): Promise<LoggedInU
     }
 };
 
-export const refreshAccountToken = async (): Promise<LoggedInUser> => {
-    try {
-        const response = await axiosInstance.post(ApiRoutes.auth.email.refresh_token);
-        return formatAuthUser(response.data);
-    } catch (error: any) {
-        throw new Error(error.response.data.message || "Failed to refresh account token. Please try again.");
-    }
-};
-
 export const adminLoginToAccount = async (account_uuid: string): Promise<LoggedInUser> => {
     try {
         const response = await axiosInstance.post(ApiRoutes.auth.email.admin_login_to_account(account_uuid));

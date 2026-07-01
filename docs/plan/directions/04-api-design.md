@@ -8,21 +8,29 @@ Base path: `/api` (or root per existing config). All authenticated routes use `A
 
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
-| POST | `/auth/email/register` | Public | Register (existing) |
-| POST | `/auth/email/login` | Public | Login (existing) |
-| POST | `/auth/email/refresh` | Public | Refresh access token |
+| POST | `/auth/email/register` | Public | Register |
+| POST | `/auth/email/login` | Public | Login — returns JWT `access_token` + `expires_in` |
 | POST | `/auth/email/forgot-password` | Public | Send reset email |
 | POST | `/auth/email/reset-password` | Public | Reset with token |
-| POST | `/auth/email/verify` | Public | Verify email with token |
-| POST | `/auth/email/resend-verification` | JWT | Resend verification email |
+
+**Auth response (register/login):**
+
+```json
+{
+  "access_token": "...",
+  "expires_in": 1719859200,
+  "user": { "uuid", "email", "name", "role", "created_at", "updated_at" }
+}
+```
+
+No refresh token — client re-authenticates when JWT expires.
 
 ## Users (`/users`)
 
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
 | GET | `/users/me` | JWT | Current user profile |
-| PATCH | `/users/me` | JWT | Update name, country, language, theme, notifications |
-| POST | `/users/me/avatar` | JWT | Upload profile picture → GCS URL |
+| PATCH | `/users/me` | JWT | Update `name` |
 
 ## Products (`/products`)
 
