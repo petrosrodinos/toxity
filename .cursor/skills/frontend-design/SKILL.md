@@ -43,3 +43,12 @@ Interpret creatively and make unexpected choices that feel genuinely designed fo
 **IMPORTANT**: Match implementation complexity to the aesthetic vision. Maximalist designs need elaborate code with extensive animations and effects. Minimalist or refined designs need restraint, precision, and careful attention to spacing, typography, and subtle details. Elegance comes from executing the vision well.
 
 Remember: Claude is capable of extraordinary creative work. Don't hold back, show what can truly be created when thinking outside the box and committing fully to a distinctive vision.
+
+## Toxity project (this repo)
+
+When working in the **Toxity** `app/` frontend:
+
+- Read [`docs/plan/directions/05-frontend-ui-primitives.md`](../../../docs/plan/directions/05-frontend-ui-primitives.md) and [`docs/DESIGN.md`](../../../docs/DESIGN.md) §5.5 before building UI.
+- **Reuse** `@/components/ui/*` — `Button`, `Input`, `Card`, `SafetyBadge`, etc.
+- **Do not** recreate button/input/card/badge Tailwind styles on each page; compose domain components from existing primitives.
+- Theme tokens live in `app/src/index.css` — use semantic classes (`bg-accent`, `text-danger`, `border-border`), not ad-hoc hex.

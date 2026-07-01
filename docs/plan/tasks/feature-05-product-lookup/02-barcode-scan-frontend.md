@@ -26,6 +26,10 @@ Implement Scan tab: camera barcode scanning → lookup → navigate to product d
 - [ ] Error states: camera denied, invalid barcode, network error
 - [ ] Loading overlay during lookup
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — `Button variant="scan"` for primary actions; `Input` for manual barcode entry; loading overlay via `Button loading` or existing patterns. No duplicate CTA/input styles.
+
 ## Technical Notes
 
 - HTTPS required for camera on mobile web

@@ -4,4 +4,6 @@ alwaysApply: true
 
 Always read and follow /app/.cursor/rules/main.mdc before coding for the app.
 
+When building **frontend UI**, also read `docs/plan/directions/05-frontend-ui-primitives.md` — reuse `@/components/ui/*` (`Button`, `Input`, `Card`, `SafetyBadge`, etc.); do not recreate button/input/card/badge styles on every page.
+
 Always read and follow ./api/cursor/rules/main.mdc before coding for the api.

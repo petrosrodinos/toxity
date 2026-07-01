@@ -27,6 +27,10 @@ Multi-step UI: capture ingredient list → capture front label → progress → 
 - [ ] Routes: `Routes.scan.create`
 - [ ] Wire scan tab 404 flow to this route
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — step CTAs use `Button` / `Button variant="scan"`; file inputs styled via shared patterns. Progress step uses `Button loading` — no one-off spinner buttons.
+
 ## Technical Notes
 
 - Show educational tips during analysis ("Analyzing 12 ingredients...")

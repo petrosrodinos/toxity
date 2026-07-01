@@ -17,6 +17,7 @@
 |-----|------|----------|
 | Product requirements (full PRD) | [`../PRODUCT.md`](../PRODUCT.md) | Scope, metrics, user stories, MVP acceptance |
 | Design system (UI/UX) | [`../DESIGN.md`](../DESIGN.md) | **Mobile-first bottom nav**, tokens, components, layouts, accessibility |
+| UI primitives (reuse, don't duplicate) | [`directions/05-frontend-ui-primitives.md`](directions/05-frontend-ui-primitives.md) | **Required** before any frontend task — `Button`, `Input`, `Card`, etc. |
 
 Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` take precedence** on product scope and visual design.
 
@@ -26,6 +27,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 - [ ] Read this file (`PROGRESS.md`)
 - [ ] Skim [`../PRODUCT.md`](../PRODUCT.md) and [`../DESIGN.md`](../DESIGN.md) when scope or UI is in scope
+- [ ] For **any frontend work**, read [`directions/05-frontend-ui-primitives.md`](directions/05-frontend-ui-primitives.md) — reuse `app/src/components/ui/*`, do not recreate button/input/card styles per page
 - [ ] Read direction docs listed under **Current focus** feature
 - [ ] Open the next incomplete task file in that feature group
 - [ ] Implement until acceptance criteria pass
@@ -40,6 +42,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 |------|--------|
 | Email register/login API | ✅ Partial (`POST /auth/email/register`, `login`) |
 | Auth UI (sign-in, sign-up) | ✅ Partial |
+| UI primitives (`components/ui/`) | ✅ `Button`, `Input`, `PasswordInput`, `Card`, `SafetyBadge`, `Toast`, `Drawer`, `Popover` — **reuse on all new screens** ([05-frontend-ui-primitives.md](directions/05-frontend-ui-primitives.md)) |
 | JWT guards, Prisma User model | ✅ Exists |
 | Refresh / forgot / verify | ❌ Not implemented |
 | User profile API | ❌ Not implemented |
@@ -525,6 +528,7 @@ flowchart TD
 
 - Direction docs (`directions/`) are reference only — they do not count toward implementation %.
 - Full product and design specs: [`../PRODUCT.md`](../PRODUCT.md), [`../DESIGN.md`](../DESIGN.md).
+- **Frontend UI:** always reuse [`directions/05-frontend-ui-primitives.md`](directions/05-frontend-ui-primitives.md) — import from `app/src/components/ui/`, never recreate button/input/card styles per page.
 - Prefer vertical slices: finish Feature 05 + 06 before heavy investment in Feature 08.
 - Feature 07 is the largest slice — allocate 3 task files as scoped.
 - Community features (reviews, reports) are post-MVP per spec.

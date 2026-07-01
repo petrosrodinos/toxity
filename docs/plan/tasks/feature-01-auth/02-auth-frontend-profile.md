@@ -29,10 +29,14 @@ Wire frontend auth flows to new API endpoints and build profile/settings page.
 - [ ] Theme toggle writes to user profile + local Zustand/theme provider
 - [ ] Toast on all mutation success/error
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — reuse `Button`, `Input`, `PasswordInput`, `Card` from `app/src/components/ui/`. Do not duplicate control styles on profile/settings pages.
+
 ## Technical Notes
 
 - Remove or stub unused admin_login_to_account until admin slice
-- Use shadcn Form + zodResolver for profile form
+- Use React Hook Form + zodResolver with plain Tailwind-styled fields (see auth sign-in/sign-up)
 - Avatar upload: multipart via axios
 
 ## Acceptance Criteria

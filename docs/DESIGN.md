@@ -87,14 +87,14 @@ flowchart LR
 | G3 | **Token-driven consistency** — All colors, type, and radius from CSS variables; no hardcoded hex in components |
 | G4 | **Trustworthy aesthetic** — Calm, clinical, science-forward; not alarmist or gamified |
 | G5 | **Theme parity** — Light and dark modes with equivalent readability and safety distinguishability |
-| G6 | **Composable components** — shadcn-style primitives extended via wrappers, not forked |
+| G6 | **Composable components** — Tailwind primitives in `components/ui/`; compose via props and `cn()`, not third-party UI kits |
 | G7 | **Bottom nav shell** — Five-tab bar fixed on mobile; Scan always one tap away |
 
 ### Non-goals
 
 | ID | Non-goal | Rationale |
 |----|----------|-----------|
-| NG1 | Pixel-perfect parity with Material Design 3 components | Web stack uses custom Tailwind + shadcn; we adopt M3 *token semantics*, not M3 widgets |
+| NG1 | Pixel-perfect parity with Material Design 3 components | Web stack uses custom Tailwind primitives; we adopt M3 *token semantics*, not M3 widgets |
 | NG2 | Highly illustrative or playful consumer branding | Product context is health/safety; tone stays restrained |
 | NG3 | Custom icon set in MVP | Lucide icons suffice; brand mark is the primary custom visual |
 | NG4 | Motion-heavy marketing animations | Performance and clarity over delight-first motion |
@@ -357,13 +357,15 @@ The consumer app is **mobile-first**. Logged-in users on phone and tablet get a 
 
 #### UI primitives
 
+> Implementation checklist for agents: [`docs/plan/directions/05-frontend-ui-primitives.md`](plan/directions/05-frontend-ui-primitives.md) — **reuse** these files; do not recreate styles per page.
+
 | Component | Path | Variants / notes |
 |-----------|------|------------------|
 | `Button` | `components/ui/button.tsx` | `default`, `outline`, `ghost`, **`scan`** (primary + glow) |
 | `Card` | `components/ui/card.tsx` | `rounded-xl`, border, subtle shadow |
 | `Input` | `components/ui/input.tsx` | `rounded-xl`, focus ring accent |
 | `SafetyBadge` | `components/ui/safety-badge.tsx` | `compact` option for inline lists |
-| `Form`, `Toast`, `Drawer`, `Popover` | `components/ui/*` | shadcn wrappers — extend, don’t modify base |
+| `Toast`, `Drawer`, `Popover` | `components/ui/*` | Plain Tailwind + minimal React state |
 
 #### Button variant guide
 
@@ -449,7 +451,7 @@ The consumer app is **mobile-first**. Logged-in users on phone and tablet get a 
 |-------------|-----------|----------|
 | **Red/amber primary brand** | Strong “danger” association; conflicts with safety spectrum | Rejected — sage green accent |
 | **Score-only UI (single number)** | Faster scan but opaque; fails depth value prop | Rejected — badge + score + accordions |
-| **Material UI component library** | Faster bootstrapping; heavier bundle; less brand control | Rejected — Tailwind + shadcn |
+| **Material UI component library** | Faster bootstrapping; heavier bundle; less brand control | Rejected — plain Tailwind CSS primitives |
 | **Inter / Roboto typography** | Familiar but generic | Rejected — Outfit + Source Sans 3 |
 | **CSS `class="dark"` on html** | Tailwind convention | Using `data-theme` for explicit light/dark tokens |
 | **Bottom tab bar on desktop** | Good on mobile; wasteful on wide screens | **Accepted** — bottom nav on `< lg` only; desktop uses side/top nav |

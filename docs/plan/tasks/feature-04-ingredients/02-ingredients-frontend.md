@@ -19,10 +19,14 @@ Build ingredient detail screen with safety color, scores, and educational sectio
 - [ ] `features/ingredients/` — interfaces, services, `useGetIngredient`
 - [ ] `ApiRoutes.ingredients` in config
 - [ ] `pages/ingredients/detail/index.tsx` — IngredientDetailPage
-- [ ] Color indicator badge component (reuse for product detail later)
+- [ ] `SafetyBadge` from `components/ui/safety-badge.tsx` (do not build a one-off badge)
 - [ ] Sections as collapsible cards or stacked layout
 - [ ] Link from product ingredient accordion (stub link until Feature 06)
 - [ ] Add route to `routes.ts`
+
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — use `SafetyBadge` for color indicator; `Card` for section blocks. Do not recreate badge or card styles inline.
 
 ## Technical Notes
 

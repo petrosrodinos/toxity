@@ -26,6 +26,10 @@ Users can favorite products, ingredients, and brands; view and toggle from detai
 - [ ] Profile page tabs: Favorite Products | Ingredients | Brands
 - [ ] List views with navigation to detail
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — heart toggle = `Button variant="ghost"` + icon; favorite lists reuse `Card` / `ProductCard`. Profile tabs use existing layout primitives.
+
 ## Acceptance Criteria
 
 - [ ] Favorite product from detail → appears in profile favorites

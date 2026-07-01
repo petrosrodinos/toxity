@@ -27,6 +27,10 @@ Admin routes for product review, taxonomy CRUD, merge duplicates, feature produc
 - [ ] Guard: redirect non-admin users
 - [ ] Add `Routes.admin` paths
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — admin tables and forms use `Input`, `Button`, `Card`; no separate admin-only button styles.
+
 ## Technical Notes
 
 - Merge must be transactional (`$transaction`)

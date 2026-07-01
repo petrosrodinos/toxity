@@ -13,7 +13,7 @@
 | Client state | Zustand (persist) | Auth, theme, preferences |
 | Forms | React Hook Form + Zod | |
 | Styling | Tailwind CSS v4 | Mobile-first, CSS variables |
-| UI | shadcn/ui primitives | Extend via wrappers |
+| UI | Tailwind CSS primitives | `app/src/components/ui/` — reuse `Button`, `Input`, `Card`, etc. ([05-frontend-ui-primitives.md](./05-frontend-ui-primitives.md)) |
 | Barcode | `@zxing/browser` or `html5-qrcode` | Camera barcode on web |
 | OCR | Client capture → API upload | Server-side OCR (Google Vision / Tesseract via integration) |
 

@@ -22,11 +22,16 @@ Build the full Product Details page per spec: hero, score badge, summary, expand
 - [ ] `useGetProduct(product_uuid)` hook
 - [ ] `pages/products/detail/index.tsx` — ProductDetailPage
 - [ ] `Route`: `Routes.products.detail` → `/products/:product_id`
-- [ ] Components: `ProductHero`, `ProductScoreBadge`, `ProductSummary`, `IngredientAccordionList`
+- [ ] Components: `ProductHero`, `ProductSummary`, `IngredientAccordionList` (compose `Card` / `SafetyBadge`)
+- [ ] `ProductScoreBadge` — thin wrapper around `SafetyBadge`, not new badge markup
 - [ ] `IngredientAccordion` — collapsed/expanded states, color from `color_indicator`
 - [ ] Segmented control placeholder: "Analysis" | "AI Chat" (chat disabled/coming soon)
 - [ ] Favorite button placeholder (wired in Feature 10)
 - [ ] Share button (copy link) optional
+
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — `Card` for summary blocks; `SafetyBadge` for score; `Button` for favorite/share. Accordion chrome composes `Card` + tokens — do not redefine rounded borders per accordion.
 
 ## Technical Notes
 

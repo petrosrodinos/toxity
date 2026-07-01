@@ -25,6 +25,10 @@ Search products, ingredients, brands by query with filters and sort options.
 - [ ] Result rows by type with navigation
 - [ ] Empty and loading states
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — search field = `Input`; filter chips compose `Button variant="outline"` or add one `FilterChip` primitive in `components/ui/` if reused. Result rows use `Card` + `SafetyBadge`.
+
 ## Technical Notes
 
 - Elasticsearch deferred — document in technical notes when adding at scale

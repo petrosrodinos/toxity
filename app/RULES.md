@@ -4,6 +4,8 @@
 
 This file defines architectural rules, naming conventions, and coding patterns for AI coding agents working in a React + TypeScript project. Follow these rules precisely when reading, writing, or refactoring code.
 
+**Before any UI work:** read [`docs/plan/directions/05-frontend-ui-primitives.md`](../docs/plan/directions/05-frontend-ui-primitives.md) — reuse `@/components/ui/*`; never recreate button/input/card/badge styles per page.
+
 ---
 
 ## 2. Project Structure Guidelines
@@ -26,7 +28,7 @@ src/
 ├── pages/                         # Route-level page components
 ├── components/
 │   ├── layout/                    # Layout shells (sidebar, header, etc.)
-│   ├── ui/                        # shadcn/ui base components + custom primitives
+│   ├── ui/                        # Reusable UI primitives (plain Tailwind CSS)
 │   └── providers/                 # React context providers
 ├── stores/                        # Zustand stores
 ├── hooks/                         # Global reusable hooks (not feature-specific)
@@ -74,7 +76,7 @@ pages/<section>/
 
 ### Files
 - All files: `kebab-case` (e.g., `use-feature-name.ts`, `feature-name.services.ts`)
-- Exception: shadcn/ui components may use `PascalCase.tsx`
+- Exception: exported UI components may use `PascalCase` function names (files stay `kebab-case`)
 
 ### Components
 - Function names: `PascalCase`
@@ -113,12 +115,28 @@ pages/<section>/
 - Delegate API calls to feature hooks; delegate UI state to page-local hooks
 - Use `FC` type annotation with explicit props interface
 - Default export for pages and layouts; named exports for reusable components
-- shadcn/ui components live in `components/ui/` and must not be modified directly — extend via wrappers
-- Use `variant` prop pattern from `class-variance-authority` (cva) in base UI components
+- UI primitives in `components/ui/` use **plain Tailwind CSS** utility classes and theme tokens from `index.css`
+- Use optional `variant` prop pattern on shared components (e.g. `Button`)
+- **Reuse UI primitives (required):** Import `Button`, `Input`, `PasswordInput`, `Card`, `SafetyBadge`, etc. from `@/components/ui/*`. Do **not** copy-paste the same Tailwind classes for buttons, inputs, cards, or badges into pages or feature modules. Compose page-local components from primitives (e.g. `ProductCard` = `Card` + `SafetyBadge`). Add a new `components/ui/` file only when a pattern is needed in **two or more** features. Canonical list: [`docs/plan/directions/05-frontend-ui-primitives.md`](../docs/plan/directions/05-frontend-ui-primitives.md) · [`docs/DESIGN.md`](../docs/DESIGN.md) §5.5
 
 ---
 
-## 5. Hooks Guidelines
+## 5. UI Primitives (reuse)
+
+| Import from `@/components/ui/` | Use for |
+|--------------------------------|---------|
+| `Button` | All actions (`default`, `outline`, `ghost`, **`scan`**) |
+| `Input`, `PasswordInput` | Text fields, search, forms |
+| `Card` | Sections, list rows, feed items |
+| `SafetyBadge` | Product/ingredient score bands |
+| `toast` / `useToast` | Mutation feedback |
+| `Drawer`, `Popover` | Sheets, menus |
+
+**Do not** use raw `<button className="rounded-xl bg-accent...">` or styled `<input>` when `Button` / `Input` exist. **Do not** build one-off score pills — use `SafetyBadge`.
+
+---
+
+## 6. Hooks Guidelines
 
 - Feature query hooks live in `features/<feature-name>/hooks/`
 - Page-local hooks live in `pages/<section>/hooks/` and manage UI state only (no API calls)
@@ -129,7 +147,7 @@ pages/<section>/
 
 ---
 
-## 6. State Management Guidelines
+## 7. State Management Guidelines
 
 Use Zustand for global client state.
 
@@ -140,16 +158,16 @@ Use Zustand for global client state.
 
 ---
 
-## 7. Forms and Validation
+## 8. Forms and Validation
 
 - Always use `zodResolver` — never manual validation
-- Always use shadcn `Form`, `FormField`, `FormItem`, `FormControl`, `FormLabel`, `FormMessage` components
+- Build forms with **plain Tailwind**: `react-hook-form` + `register()`, native `label`, shared `Input` / `PasswordInput`, and `text-danger` for errors (see auth sign-in/sign-up forms)
 - Schema files export both the Zod schema and its inferred type
 - Zod schemas live in `features/<feature-name>/validation-schemas/` or `pages/<section>/validation-schemas/`
 
 ---
 
-## 8. API and Services
+## 9. API and Services
 
 - All API endpoints are defined in a single `ApiRoutes` object — never hardcode API path strings
 - All frontend paths are defined in a single `Routes` object — never hardcode URL strings
@@ -161,7 +179,7 @@ Use Zustand for global client state.
 
 ---
 
-## 9. Styling Guidelines
+## 10. Styling Guidelines
 
 - Use Tailwind CSS utility classes — no CSS modules, no inline `style` objects
 - Theme tokens (colors, radius, etc.) defined as CSS variables in `index.css`
@@ -171,7 +189,7 @@ Use Zustand for global client state.
 
 ---
 
-## 10. TypeScript Guidelines
+## 11. TypeScript Guidelines
 
 - Use `const` objects as enums with an extracted union type — do not use the TypeScript `enum` keyword
 - No `I` prefix on interface names
@@ -180,7 +198,7 @@ Use Zustand for global client state.
 
 ---
 
-## 11. Do / Don't Rules
+## 12. Do / Don't Rules
 
 | Do | Don't |
 |---|---|
@@ -197,11 +215,14 @@ Use Zustand for global client state.
 | Use const-object enum pattern with extracted union type | Use the TypeScript `enum` keyword |
 | `invalidateQueries` with the base key after mutations | Target parameterized query keys in mutations |
 | Access env vars through a typed `environments` object | Access `import.meta.env.VITE_*` directly |
-| Extend shadcn/ui components via wrappers | Modify files inside `components/ui/` directly |
+| Import `Button`, `Input`, `Card`, `SafetyBadge` from `@/components/ui/` | Duplicate button/input/card/badge styles per page |
+| Compose domain UI from primitives (e.g. `ProductCard` = `Card` + `SafetyBadge`) | Raw `<button>` / `<input>` with copied Tailwind classes |
+| Read `docs/plan/directions/05-frontend-ui-primitives.md` before frontend UI | Hand-roll one-off CTAs, cards, or score pills per screen |
+| Style UI with Tailwind utilities + `cn()` in `components/ui/` | Use third-party UI kits (MUI, Chakra, etc.) |
 
 ---
 
-## 12. Examples
+## 13. Examples
 
 ### Const-Object Enum Pattern
 ```ts
@@ -279,12 +300,25 @@ export type CreateEntityFormData = z.infer<typeof createEntitySchema>;
 ```tsx
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-const form = useForm<CreateEntityFormData>({
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm<CreateEntityFormData>({
   resolver: zodResolver(createEntitySchema),
   defaultValues: { name: "", description: "" },
 });
+
+// In JSX:
+<form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+  <div className="flex flex-col gap-1">
+    <label htmlFor="name" className="text-sm font-medium text-foreground">Name</label>
+    <Input id="name" {...register("name")} />
+    {errors.name && <p className="text-sm text-danger">{errors.name.message}</p>}
+  </div>
+</form>
 ```
 
 ### Zustand Store

@@ -3,6 +3,7 @@
 > **Planning summary** — expanded canonical docs:
 > - [PRODUCT.md](../../PRODUCT.md) — full product requirements document (PRD)
 > - [DESIGN.md](../../DESIGN.md) — UI/UX and design system
+> - [05-frontend-ui-primitives.md](./05-frontend-ui-primitives.md) — **reuse** shared `components/ui/` primitives (do not recreate per page)
 
 ## Product name
 

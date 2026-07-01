@@ -1,6 +1,6 @@
 # API Design — Toxity
 
-> **Related:** [PRODUCT.md](../../PRODUCT.md) · [DESIGN.md](../../DESIGN.md)
+> **Related:** [PRODUCT.md](../../PRODUCT.md) · [DESIGN.md](../../DESIGN.md) · [05-frontend-ui-primitives.md](./05-frontend-ui-primitives.md) (frontend: reuse `components/ui/`)
 
 Base path: `/api` (or root per existing config). All authenticated routes use `Authorization: Bearer <token>`.
 

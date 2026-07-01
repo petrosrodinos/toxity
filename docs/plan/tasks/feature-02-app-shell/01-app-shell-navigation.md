@@ -31,6 +31,10 @@ Replace CRM dashboard shell with **mobile-first** consumer app layout: **fixed b
 - [ ] Update sidebar component — remove from consumer flow or delete
 - [ ] Responsive: bottom nav hidden on `lg:` with top nav tabs alternative (optional)
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — bottom nav tab buttons use `Button` `ghost` / active state via `cn()`; shell pages use `Card` for placeholders. Do not hand-roll nav pill styles.
+
 ## Technical Notes
 
 - Follow frontend-design skill for clean, rounded, mobile-first UI

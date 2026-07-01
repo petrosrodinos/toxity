@@ -22,6 +22,10 @@ History tab listing user's scanned products with spec layout.
 - [ ] Empty state: CTA to Scan tab
 - [ ] Pull to refresh
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — reuse shared `ProductCard` (`Card` + `SafetyBadge`); empty-state CTA = `Button variant="scan"`.
+
 ## Acceptance Criteria
 
 - [ ] History shows all user scans newest first

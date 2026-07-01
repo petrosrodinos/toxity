@@ -25,6 +25,10 @@ Build Home tab with product cards, category chips, ingredient spotlight, daily t
 - [ ] Empty states per section
 - [ ] Loading skeletons
 
+## UI components
+
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — `ProductCard` must use `Card` + `SafetyBadge` internally; home sections use `Button` for CTAs. One shared `components/product-card.tsx` for Home, History, and Search.
+
 ## Technical Notes
 
 - Match spec: large rounded cards, score color badge, mobile-first
