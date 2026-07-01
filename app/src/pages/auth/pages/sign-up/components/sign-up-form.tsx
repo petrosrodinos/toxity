@@ -1,16 +1,13 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
-import { Form, Label, Input, FieldError } from "@heroui/react";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { ActionButtonWithPending } from "@/components/ui/action-button-with-pending";
 import { SignUpSchema, type SignUpFormValues } from "../../../validation-schemas/auth";
 import { useSignup } from "@/features/auth/hooks/use-auth";
 
 export function SignUpForm() {
   const { mutate, isPending } = useSignup();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
 
   const {
     register,
@@ -26,63 +23,48 @@ export function SignUpForm() {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 text-left">
+    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 text-left">
       <div className="flex flex-col gap-1">
-        <Label htmlFor="signup-email">Email</Label>
+        <label htmlFor="signup-email" className="text-sm font-medium text-foreground">
+          Email
+        </label>
         <Input
           id="signup-email"
           {...register("email")}
           placeholder="name@example.com"
           type="email"
-          fullWidth
         />
-        {errors.email && <FieldError>{errors.email.message}</FieldError>}
+        {errors.email && (
+          <p className="text-sm text-danger">{errors.email.message}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label htmlFor="signup-password">Password</Label>
-        <div className="relative">
-          <Input
-            id="signup-password"
-            {...register("password")}
-            type={showPassword ? "text" : "password"}
-            placeholder="********"
-            fullWidth
-            className="pr-10"
-          />
-          <button
-            type="button"
-            tabIndex={-1}
-            onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-default"
-          >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-          </button>
-        </div>
-        {errors.password && <FieldError>{errors.password.message}</FieldError>}
+        <label htmlFor="signup-password" className="text-sm font-medium text-foreground">
+          Password
+        </label>
+        <PasswordInput
+          id="signup-password"
+          {...register("password")}
+          placeholder="********"
+        />
+        {errors.password && (
+          <p className="text-sm text-danger">{errors.password.message}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label htmlFor="signup-confirm">Confirm Password</Label>
-        <div className="relative">
-          <Input
-            id="signup-confirm"
-            {...register("confirm_password")}
-            type={showConfirm ? "text" : "password"}
-            placeholder="********"
-            fullWidth
-            className="pr-10"
-          />
-          <button
-            type="button"
-            tabIndex={-1}
-            onClick={() => setShowConfirm((v) => !v)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-default"
-          >
-            {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
-          </button>
-        </div>
-        {errors.confirm_password && <FieldError>{errors.confirm_password.message}</FieldError>}
+        <label htmlFor="signup-confirm" className="text-sm font-medium text-foreground">
+          Confirm Password
+        </label>
+        <PasswordInput
+          id="signup-confirm"
+          {...register("confirm_password")}
+          placeholder="********"
+        />
+        {errors.confirm_password && (
+          <p className="text-sm text-danger">{errors.confirm_password.message}</p>
+        )}
       </div>
 
       <ActionButtonWithPending
@@ -94,6 +76,6 @@ export function SignUpForm() {
       >
         Create Account
       </ActionButtonWithPending>
-    </Form>
+    </form>
   );
 }

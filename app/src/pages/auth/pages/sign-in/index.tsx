@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Card } from "@heroui/react";
+import { Card } from "@/components/ui/card";
 import { SignInForm } from "./components/sign-in-form";
 import { Link } from "react-router-dom";
 import { Routes } from "@/routes/routes";

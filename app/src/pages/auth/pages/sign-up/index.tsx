@@ -1,4 +1,4 @@
-import { Card } from "@heroui/react";
+import { Card } from "@/components/ui/card";
 import { SignUpForm } from "./components/sign-up-form";
 import { Suspense } from "react";
 import { Link } from "react-router-dom";

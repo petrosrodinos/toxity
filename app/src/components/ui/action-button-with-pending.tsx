@@ -1,27 +1,34 @@
-import type { ComponentProps, ReactNode } from "react";
-import { Button, Spinner } from "@heroui/react";
+import type { ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-type ButtonProps = ComponentProps<typeof Button>;
-
-export type ActionButtonWithPendingProps = Omit<ButtonProps, "children"> & {
+export type ActionButtonWithPendingProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
   idleLeading?: ReactNode;
+  isPending?: boolean;
+  isDisabled?: boolean;
+  fullWidth?: boolean;
 };
 
 export function ActionButtonWithPending({
   children,
   idleLeading,
   isPending,
+  isDisabled,
+  fullWidth,
+  className,
+  disabled,
   ...rest
 }: ActionButtonWithPendingProps) {
   return (
-    <Button isPending={isPending} {...rest}>
-      {({ isPending: p }) => (
-        <>
-          {p ? <Spinner color="current" size="sm" className="shrink-0" /> : idleLeading}
-          {children}
-        </>
-      )}
+    <Button
+      loading={isPending}
+      disabled={isDisabled || disabled}
+      className={cn(fullWidth && 'w-full', className)}
+      {...rest}
+    >
+      {!isPending && idleLeading}
+      {children}
     </Button>
   );
 }

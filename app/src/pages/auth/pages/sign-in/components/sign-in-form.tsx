@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
-import { Form, Label, Input, FieldError } from "@heroui/react";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { ActionButtonWithPending } from "@/components/ui/action-button-with-pending";
 import { SignInSchema, type SignInFormValues } from "../../../validation-schemas/auth";
 import { useSignin } from "@/features/auth/hooks/use-auth";
@@ -27,29 +28,34 @@ export function SignInForm({ className }: SignInFormProps) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className={cn("grid gap-4 text-left", className)}>
+    <form onSubmit={handleSubmit(onSubmit)} className={cn("grid gap-4 text-left", className)}>
       <div className="flex flex-col gap-1">
-        <Label htmlFor="signin-email">Email</Label>
+        <label htmlFor="signin-email" className="text-sm font-medium text-foreground">
+          Email
+        </label>
         <Input
           id="signin-email"
           {...register("email")}
           placeholder="username"
           type="email"
-          fullWidth
         />
-        {errors.email && <FieldError>{errors.email.message}</FieldError>}
+        {errors.email && (
+          <p className="text-sm text-danger">{errors.email.message}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label htmlFor="signin-password">Password</Label>
-        <Input
+        <label htmlFor="signin-password" className="text-sm font-medium text-foreground">
+          Password
+        </label>
+        <PasswordInput
           id="signin-password"
           {...register("password")}
           placeholder="********"
-          type="password"
-          fullWidth
         />
-        {errors.password && <FieldError>{errors.password.message}</FieldError>}
+        {errors.password && (
+          <p className="text-sm text-danger">{errors.password.message}</p>
+        )}
       </div>
 
       <ActionButtonWithPending
@@ -61,6 +67,6 @@ export function SignInForm({ className }: SignInFormProps) {
       >
         Login
       </ActionButtonWithPending>
-    </Form>
+    </form>
   );
 }

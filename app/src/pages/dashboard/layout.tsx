@@ -1,64 +1,46 @@
 import { Outlet, NavLink } from 'react-router-dom';
-import { Drawer, useOverlayState } from '@heroui/react';
 import { Command } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import DashboardNavbar from '@/components/layout/dashboard-navbar';
 import SidebarContent from '@/components/layout/sidebar-content';
 import UserMenuPopover from '@/components/layout/user-menu-popover';
+import { Drawer, DrawerBody, DrawerHeader, useDrawerState } from '@/components/ui/drawer';
 import { environments } from '@/config/environments';
 
 export default function DashboardLayout() {
-  const drawerState = useOverlayState();
+  const drawer = useDrawerState();
 
   return (
     <div className="flex h-full min-h-0 overflow-hidden bg-background">
       <Sidebar />
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden mr-3">
-        <DashboardNavbar onMenuClick={drawerState.open} />
+        <DashboardNavbar onMenuClick={drawer.open} />
         <main className="min-h-0 flex-1 overflow-y-auto p-6">
           <Outlet />
         </main>
       </div>
 
-      <Drawer state={drawerState}>
-        <Drawer.Backdrop
-          isDismissable
-          className="backdrop-blur-sm"
-          style={{ background: 'color-mix(in oklch, black 30%, transparent)' }}
-        />
-        <Drawer.Content placement="left">
-          <Drawer.Dialog
-            className="bg-surface"
-            style={{
-              boxShadow: `
-                0 0 0 1px color-mix(in oklch, var(--accent) 8%, transparent),
-                4px 0 32px -4px color-mix(in oklch, black 20%, transparent)
-              `,
-            }}
+      <Drawer isOpen={drawer.isOpen} onClose={drawer.close}>
+        <DrawerHeader onClose={drawer.close} className="h-[54px]">
+          <NavLink
+            to="/"
+            onClick={drawer.close}
+            className="flex min-w-0 flex-1 items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors duration-200 hover:bg-surface-secondary"
           >
-            <Drawer.Header className="border-b border-border h-[54px] px-3 shrink-0 flex items-center gap-2">
-              <NavLink
-                to="/"
-                onClick={drawerState.close}
-                className="flex items-center gap-2.5 flex-1 min-w-0 rounded-xl px-2 py-1.5 hover:bg-surface-secondary transition-colors duration-200"
-              >
-                <Command className="h-7 w-7 shrink-0 text-foreground" />
-                <span className="text-[13px] font-semibold text-foreground truncate tracking-tight">
-                  {environments.APP_NAME}
-                </span>
-              </NavLink>
-              <Drawer.CloseTrigger className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-secondary transition-colors shrink-0" />
-            </Drawer.Header>
+            <Command className="h-7 w-7 shrink-0 text-foreground" />
+            <span className="truncate text-[13px] font-semibold tracking-tight text-foreground">
+              {environments.APP_NAME}
+            </span>
+          </NavLink>
+        </DrawerHeader>
 
-            <Drawer.Body className="px-2 pt-2.5 pb-2 flex flex-col gap-0">
-              <SidebarContent collapsed={false} onNavigate={drawerState.close} />
-              <div className="mt-4 pt-2 border-t border-border">
-                <UserMenuPopover collapsed={false} placement="top" />
-              </div>
-            </Drawer.Body>
-          </Drawer.Dialog>
-        </Drawer.Content>
+        <DrawerBody className="gap-0 px-2 pb-2 pt-2.5">
+          <SidebarContent collapsed={false} onNavigate={drawer.close} />
+          <div className="mt-4 border-t border-border pt-2">
+            <UserMenuPopover collapsed={false} placement="top" />
+          </div>
+        </DrawerBody>
       </Drawer>
     </div>
   );
