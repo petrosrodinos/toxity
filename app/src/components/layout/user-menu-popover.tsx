@@ -1,7 +1,9 @@
 import { User, Settings, LogOut, ChevronsUpDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/auth';
 import { Popover } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { Routes } from '@/routes/routes';
 
 function getInitials(name: string): string {
   return name
@@ -19,12 +21,13 @@ interface UserMenuPopoverProps {
 
 export default function UserMenuPopover({ collapsed = false, placement = 'top' }: UserMenuPopoverProps) {
   const { full_name, email, logout } = useAuthStore();
+  const navigate = useNavigate();
 
   const displayName = full_name || email || 'User';
   const initials = getInitials(displayName);
 
   const menuItems = [
-    { label: 'Profile', icon: User, onClick: () => {} },
+    { label: 'Profile', icon: User, onClick: () => navigate(Routes.dashboard.profile) },
     { label: 'Preferences', icon: Settings, onClick: () => {} },
   ];
 

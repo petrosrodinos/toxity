@@ -1,4 +1,4 @@
-import { adminLoginToAccount, signIn, signUp } from "../services/auth";
+import { adminLoginToAccount, forgotPassword, resetPassword, signIn, signUp } from "../services/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
@@ -67,6 +67,52 @@ export function useSignup() {
     });
 }
 
+
+export function useForgotPassword() {
+    return useMutation({
+        mutationFn: (email: string) => forgotPassword(email),
+        onSuccess: () => {
+            toast({
+                title: "Check your email",
+                description: "If an account exists, we sent a password reset link.",
+                duration: 4000,
+            });
+        },
+        onError: (error: Error) => {
+            toast({
+                title: "Could not send reset email",
+                description: error.message,
+                variant: "error",
+                duration: 3000,
+            });
+        },
+    });
+}
+
+export function useResetPassword() {
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationFn: ({ token, password }: { token: string; password: string }) =>
+            resetPassword(token, password),
+        onSuccess: () => {
+            toast({
+                title: "Password reset",
+                description: "You can now sign in with your new password.",
+                duration: 3000,
+            });
+            navigate(Routes.auth.sign_in);
+        },
+        onError: (error: Error) => {
+            toast({
+                title: "Could not reset password",
+                description: error.message,
+                variant: "error",
+                duration: 3000,
+            });
+        },
+    });
+}
 
 export function useAdminLoginToAccount() {
     const { login } = useAuthStore((state) => state);

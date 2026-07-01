@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { ActionButtonWithPending } from "@/components/ui/action-button-with-pending";
 import { SignInSchema, type SignInFormValues } from "../../../validation-schemas/auth";
 import { useSignin } from "@/features/auth/hooks/use-auth";
+import { Routes } from "@/routes/routes";
 
 interface SignInFormProps {
   className?: string;
@@ -45,9 +47,17 @@ export function SignInForm({ className }: SignInFormProps) {
       </div>
 
       <div className="flex flex-col gap-1">
-        <label htmlFor="signin-password" className="text-sm font-medium text-foreground">
-          Password
-        </label>
+        <div className="flex items-center justify-between gap-2">
+          <label htmlFor="signin-password" className="text-sm font-medium text-foreground">
+            Password
+          </label>
+          <Link
+            to={Routes.auth.forgot_password}
+            className="text-xs text-muted underline underline-offset-4 hover:opacity-80"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <PasswordInput
           id="signin-password"
           {...register("password")}

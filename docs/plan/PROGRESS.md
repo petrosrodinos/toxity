@@ -6,8 +6,8 @@
 > before writing code. Update this file when deliverables are verified.
 
 **Last updated:** 2026-07-01  
-**Overall progress:** ~8% (0 / 12 features complete; Feature 01 backend slice done)  
-**Current focus:** Feature 01 — Authentication & User Profile → `tasks/feature-01-auth/02-auth-frontend-profile.md`
+**Overall progress:** ~8% (0 / 12 features complete; Feature 01 implementation done, smoke test pending)  
+**Current focus:** Feature 01 — smoke test auth + profile flow, then Feature 02 — App Shell & Navigation → `tasks/feature-02-app-shell/01-app-shell-navigation.md`
 
 **Source spec:** [`docs/specifications.md`](../../specifications.md)
 
@@ -44,8 +44,9 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 | Auth UI (sign-in, sign-up) | ✅ Partial |
 | UI primitives (`components/ui/`) | ✅ `Button`, `Input`, `PasswordInput`, `Card`, `SafetyBadge`, `Toast`, `Drawer`, `Popover` — **reuse on all new screens** ([05-frontend-ui-primitives.md](directions/05-frontend-ui-primitives.md)) |
 | JWT guards, Prisma User model | ✅ Exists |
-| Refresh / forgot password | ✅ JWT only; forgot/reset backend done (frontend pending) |
+| Refresh / forgot password | ✅ Backend + frontend (forgot/reset pages) |
 | User profile API | ✅ `GET/PATCH /users/me` (name only) |
+| User profile UI | ✅ `/dashboard/profile` settings page |
 | Product / Ingredient / Scan | ❌ Not implemented |
 | Consumer app shell (bottom nav) | ❌ CRM dashboard placeholder remains |
 | Planning docs | ✅ `docs/plan/` created |
@@ -58,7 +59,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 | # | Feature | Status | Progress | Task files |
 |---|---------|--------|----------|------------|
-| 01 | Authentication & User Profile | in progress | ~55% | 2 |
+| 01 | Authentication & User Profile | in progress | ~91% | 2 |
 | 02 | App Shell & Navigation | not started | 0% | 1 |
 | 03 | Taxonomy Foundation | not started | 0% | 1 |
 | 04 | Ingredient Library | not started | 0% | 2 |
@@ -80,7 +81,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 **Description:** Users can register, sign in, reset password, and update display name.
 
 **Status:** in progress  
-**Progress:** ~55%
+**Progress:** ~91%
 
 ### References
 
@@ -96,7 +97,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 | File | Status |
 |------|--------|
 | `tasks/feature-01-auth/01-auth-backend-extend.md` | done |
-| `tasks/feature-01-auth/02-auth-frontend-profile.md` | not started |
+| `tasks/feature-01-auth/02-auth-frontend-profile.md` | done |
 
 ### Implementation checklist
 
@@ -110,8 +111,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 - [x] Backend: `GET/PATCH /users/me` (name only)
 - [x] Frontend: sign-up page wired to API
 - [x] Frontend: sign-in page wired to API
-- [ ] Frontend: forgot / reset pages
-- [ ] Frontend: profile settings page (name only)
+- [x] Frontend: forgot / reset pages
+- [x] Frontend: profile settings page (name only)
 - [ ] Smoke test: full auth + profile flow
 
 **Definition of done:** User can register, reset password, update name; session uses JWT until expiry (then sign in again).

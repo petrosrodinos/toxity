@@ -8,6 +8,20 @@ export interface User {
     updated_at: string;
 }
 
+export interface UserProfile {
+    uuid: string;
+    email: string;
+    phone?: string | null;
+    role: RoleType;
+    name?: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface UpdateProfileDto {
+    name?: string;
+}
+
 
 
 export interface LoggedInUser {

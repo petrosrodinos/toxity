@@ -18,16 +18,16 @@ Wire frontend auth flows to API endpoints and build minimal profile settings.
 
 ## Subtasks
 
-- [ ] Update `app/src/config/api/routes.ts` with auth/user endpoints (align with `04-api-design.md`)
-- [ ] Implement `features/auth/services/` for forgot, reset
-- [ ] Implement `features/user/services/user.services.ts` for `GET/PATCH /users/me`
-- [ ] Hooks: `useGetMe`, `useUpdateProfile`
-- [ ] Pages: forgot-password, reset-password (`?token=`)
-- [ ] Axios interceptor: on expired JWT or 401 → logout + redirect to sign-in (no refresh retry)
+- [x] Update `app/src/config/api/routes.ts` with auth/user endpoints (align with `04-api-design.md`)
+- [x] Implement `features/auth/services/` for forgot, reset
+- [x] Implement `features/user/services/user.services.ts` for `GET/PATCH /users/me`
+- [x] Hooks: `useGetMe`, `useUpdateProfile`
+- [x] Pages: forgot-password, reset-password (`?token=`)
+- [x] Axios interceptor: on expired JWT or 401 → logout + redirect to sign-in (no refresh retry)
 - [x] Remove dead refresh-token code (`refreshAccountToken`, `AuthTokenRefresher`)
-- [ ] Add routes to `app/src/routes/routes.ts` and `routes/index.tsx`
-- [ ] Profile settings page (name field)
-- [ ] Toast on all mutation success/error
+- [x] Add routes to `app/src/routes/routes.ts` and `routes/index.tsx`
+- [x] Profile settings page (name field)
+- [x] Toast on all mutation success/error
 
 ## UI components
 
@@ -35,7 +35,7 @@ Wire frontend auth flows to API endpoints and build minimal profile settings.
 
 ## Acceptance Criteria
 
-- [ ] User can register, log in, log out
-- [ ] User can request password reset and set new password via email link
-- [ ] User can update name; changes persist after reload
-- [ ] Expired JWT redirects to sign-in (user signs in again)
+- [x] User can register, log in, log out
+- [x] User can request password reset and set new password via email link
+- [x] User can update name; changes persist after reload
+- [x] Expired JWT redirects to sign-in (user signs in again)
