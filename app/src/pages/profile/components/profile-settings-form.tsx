@@ -53,12 +53,7 @@ export function ProfileSettingsForm() {
                 <label htmlFor="profile-email" className="text-sm font-medium text-foreground">
                     Email
                 </label>
-                <Input
-                    id="profile-email"
-                    value={profile?.email ?? ""}
-                    disabled
-                    readOnly
-                />
+                <Input id="profile-email" value={profile?.email ?? ""} disabled readOnly />
             </div>
 
             <div className="flex flex-col gap-1">
@@ -71,17 +66,10 @@ export function ProfileSettingsForm() {
                     placeholder="Your name"
                     autoComplete="name"
                 />
-                {errors.name && (
-                    <p className="text-sm text-danger">{errors.name.message}</p>
-                )}
+                {errors.name && <p className="text-sm text-danger">{errors.name.message}</p>}
             </div>
 
-            <ActionButtonWithPending
-                type="submit"
-                isDisabled={isPending}
-                isPending={isPending}
-                className="w-fit"
-            >
+            <ActionButtonWithPending type="submit" isDisabled={isPending} isPending={isPending} className="w-fit">
                 Save changes
             </ActionButtonWithPending>
         </form>

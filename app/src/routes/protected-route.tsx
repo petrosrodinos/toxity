@@ -24,7 +24,7 @@ export default function ProtectedRoute({
   }
 
   if (isLoggedIn && loggedIn === false) {
-    return <Navigate to={Routes.dashboard.root} replace />;
+    return <Navigate to={Routes.home.root} replace />;
   }
 
   if (requiredRoles && role !== RoleTypes.SUPER_ADMIN && !requiredRoles.includes(role || RoleTypes.USER)) {

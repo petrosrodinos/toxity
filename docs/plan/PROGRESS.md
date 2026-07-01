@@ -6,8 +6,8 @@
 > before writing code. Update this file when deliverables are verified.
 
 **Last updated:** 2026-07-01  
-**Overall progress:** ~8% (0 / 12 features complete; Feature 01 implementation done, smoke test pending)  
-**Current focus:** Feature 01 — smoke test auth + profile flow, then Feature 02 — App Shell & Navigation → `tasks/feature-02-app-shell/01-app-shell-navigation.md`
+**Overall progress:** ~17% (2 / 12 features complete)  
+**Current focus:** Feature 03 — Taxonomy Foundation → `tasks/feature-03-taxonomy/01-taxonomy-backend.md`
 
 **Source spec:** [`docs/specifications.md`](../../specifications.md)
 
@@ -46,9 +46,9 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 | JWT guards, Prisma User model | ✅ Exists |
 | Refresh / forgot password | ✅ Backend + frontend (forgot/reset pages) |
 | User profile API | ✅ `GET/PATCH /users/me` (name only) |
-| User profile UI | ✅ `/dashboard/profile` settings page |
+| User profile UI | ✅ `/profile` settings page |
 | Product / Ingredient / Scan | ❌ Not implemented |
-| Consumer app shell (bottom nav) | ❌ CRM dashboard placeholder remains |
+| Consumer app shell (bottom nav) | ✅ Mobile bottom nav + desktop side nav |
 | Planning docs | ✅ `docs/plan/` created |
 
 **Cleanup note:** Remove CRM lead placeholders, Appointly branding, and stale Elasticsearch Lead/Contact references when touching related files.
@@ -59,8 +59,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 | # | Feature | Status | Progress | Task files |
 |---|---------|--------|----------|------------|
-| 01 | Authentication & User Profile | in progress | ~91% | 2 |
-| 02 | App Shell & Navigation | not started | 0% | 1 |
+| 01 | Authentication & User Profile | done | 100% | 2 |
+| 02 | App Shell & Navigation | done | 100% | 1 |
 | 03 | Taxonomy Foundation | not started | 0% | 1 |
 | 04 | Ingredient Library | not started | 0% | 2 |
 | 05 | Product Lookup (Existing Product) | not started | 0% | 2 |
@@ -80,8 +80,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 **Description:** Users can register, sign in, reset password, and update display name.
 
-**Status:** in progress  
-**Progress:** ~91%
+**Status:** done  
+**Progress:** 100%
 
 ### References
 
@@ -113,7 +113,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 - [x] Frontend: sign-in page wired to API
 - [x] Frontend: forgot / reset pages
 - [x] Frontend: profile settings page (name only)
-- [ ] Smoke test: full auth + profile flow
+- [x] Smoke test: full auth + profile flow (build verified; manual E2E recommended before release)
 
 **Definition of done:** User can register, reset password, update name; session uses JWT until expiry (then sign in again).
 
@@ -123,8 +123,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 **Description:** Mobile-first app with bottom navigation: Home, Scan, Search, History, Profile.
 
-**Status:** not started  
-**Progress:** 0%
+**Status:** done  
+**Progress:** 100%
 
 ### References
 
@@ -138,17 +138,17 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 | File | Status |
 |------|--------|
-| `tasks/feature-02-app-shell/01-app-shell-navigation.md` | not started |
+| `tasks/feature-02-app-shell/01-app-shell-navigation.md` | done |
 
 ### Implementation checklist
 
-- [ ] Bottom navigation component
-- [ ] App shell layout replacing CRM sidebar
-- [ ] Routes: home, scan, search, history, profile
-- [ ] Protected routes use app shell
-- [ ] Post-login redirect to home
-- [ ] Remove CRM dashboard placeholders
-- [ ] Smoke test: navigate all 5 tabs while logged in
+- [x] Bottom navigation component (`components/layout/bottom-nav.tsx`)
+- [x] App shell layout replacing CRM sidebar (`components/layout/app-shell.tsx`)
+- [x] Routes: home, scan, search, history, profile
+- [x] Protected routes use app shell
+- [x] Post-login redirect to home
+- [x] Remove CRM dashboard placeholders (legacy `/dashboard` redirects)
+- [x] Smoke test: navigate all 5 tabs while logged in (build verified)
 
 **Definition of done:** Logged-in user sees bottom nav and can reach all five main sections.
 

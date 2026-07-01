@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-surface border-b border-border px-4 sm:px-6 py-3 flex items-center justify-between">
-      <Link to={Routes.dashboard.root} className="min-w-0 rounded-xl transition-opacity hover:opacity-90">
+      <Link to={Routes.home.root} className="min-w-0 rounded-xl transition-opacity hover:opacity-90">
         <BrandMark size="md" />
       </Link>
 

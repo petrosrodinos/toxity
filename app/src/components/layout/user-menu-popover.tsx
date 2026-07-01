@@ -27,7 +27,7 @@ export default function UserMenuPopover({ collapsed = false, placement = 'top' }
   const initials = getInitials(displayName);
 
   const menuItems = [
-    { label: 'Profile', icon: User, onClick: () => navigate(Routes.dashboard.profile) },
+    { label: 'Profile', icon: User, onClick: () => navigate(Routes.profile.root) },
     { label: 'Preferences', icon: Settings, onClick: () => {} },
   ];
 

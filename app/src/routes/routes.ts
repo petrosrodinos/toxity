@@ -5,8 +5,19 @@ export const Routes = {
         forgot_password: "/auth/forgot-password",
         reset_password: "/auth/reset-password",
     },
-    dashboard: {
-        root: "/dashboard",
-        profile: "/dashboard/profile",
+    home: {
+        root: "/home",
+    },
+    scan: {
+        root: "/scan",
+    },
+    search: {
+        root: "/search",
+    },
+    history: {
+        root: "/history",
+    },
+    profile: {
+        root: "/profile",
     },
 };

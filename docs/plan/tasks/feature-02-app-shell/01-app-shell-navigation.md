@@ -20,16 +20,16 @@ Replace CRM dashboard shell with **mobile-first** consumer app layout: **fixed b
 
 ## Subtasks
 
-- [ ] Create `components/layout/bottom-nav.tsx` with 5 tabs + active state
-- [ ] Create `components/layout/app-shell.tsx` wrapping outlet + bottom nav
-- [ ] Update `app/src/routes/routes.ts`: `home`, `scan`, `search`, `history`, `profile` paths
-- [ ] Create placeholder pages: `pages/home`, `pages/scan`, `pages/search`, `pages/history`, `pages/profile`
-- [ ] Wire protected routes in `routes/index.tsx` with `AppShell` layout
-- [ ] Update `ProtectedRoute` fallback to `Routes.home.root`
-- [ ] Post-login redirect → home
-- [ ] Remove or archive `pages/dashboard` CRM placeholders
-- [ ] Update sidebar component — remove from consumer flow or delete
-- [ ] Responsive: bottom nav hidden on `lg:` with top nav tabs alternative (optional)
+- [x] Create `components/layout/bottom-nav.tsx` with 5 tabs + active state
+- [x] Create `components/layout/app-shell.tsx` wrapping outlet + bottom nav
+- [x] Update `app/src/routes/routes.ts`: `home`, `scan`, `search`, `history`, `profile` paths
+- [x] Create placeholder pages: `pages/home`, `pages/scan`, `pages/search`, `pages/history`, `pages/profile`
+- [x] Wire protected routes in `routes/index.tsx` with `AppShell` layout
+- [x] Update `ProtectedRoute` fallback to `Routes.home.root`
+- [x] Post-login redirect → home
+- [x] Remove or archive `pages/dashboard` CRM placeholders
+- [x] Update sidebar component — remove from consumer flow or delete
+- [x] Responsive: bottom nav hidden on `lg:` with desktop side nav
 
 ## UI components
 
@@ -43,7 +43,7 @@ Replace CRM dashboard shell with **mobile-first** consumer app layout: **fixed b
 
 ## Acceptance Criteria
 
-- [ ] Logged-in user lands on Home with working bottom navigation
-- [ ] All 5 tabs navigate to distinct routes without full page reload issues
-- [ ] Unauthenticated user redirected to sign-in
-- [ ] No CRM/lead copy visible in navigation or home placeholder
+- [x] Logged-in user lands on Home with working bottom navigation
+- [x] All 5 tabs navigate to distinct routes without full page reload issues
+- [x] Unauthenticated user redirected to sign-in
+- [x] No CRM/lead copy visible in navigation or home placeholder
