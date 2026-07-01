@@ -1,10 +1,10 @@
 ---
-description: This file defines architectural rules, naming conventions, and coding patterns for AI coding agents working in a React + TypeScript + HeroUI project. Follow these rules precisely when reading, writing, or refactoring code.
+description: This file defines architectural rules, naming conventions, and coding patterns for AI coding agents working in a React + TypeScript project. Follow these rules precisely when reading, writing, or refactoring code.
 globs:
 alwaysApply: true
 ---
 
-# AI Agent Rules — React + TypeScript + HeroUI Project
+# AI Agent Rules — React + TypeScript Project
 
 ## 1. Purpose
 
