@@ -25,8 +25,6 @@ const EnvSchema = z.object({
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_WEBHOOK_SECRET: z.string().optional(),
     OPENAI_API_KEY: z.string().optional(),
-    BULL_BOARD_USER: z.string().optional(),
-    BULL_BOARD_PASSWORD: z.string().optional(),
 });
 
 export function validateEnv(config: Record<string, unknown>) {

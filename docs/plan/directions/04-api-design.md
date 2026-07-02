@@ -75,7 +75,8 @@ No refresh token — client re-authenticates when JWT expires.
 | GET | `/product-creation/jobs/:uuid` | JWT | Job status + product_uuid when done |
 | POST | `/product-creation/jobs/:uuid/ingredient-label` | JWT | Upload ingredient list image (step 1) |
 | POST | `/product-creation/jobs/:uuid/front-label` | JWT | Upload front label image (step 2) |
-| POST | `/product-creation/jobs/:uuid/analyze` | JWT | Trigger OCR + AI pipeline |
+| POST | `/product-creation/jobs/:uuid/analyze` | JWT | Run OCR on uploaded images; store `ocr_result` |
+| POST | `/product-creation/jobs/:uuid/start-analysis` | JWT | Start in-process AI pipeline (202); poll job status |
 
 ## Scans (`/scans`)
 

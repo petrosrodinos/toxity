@@ -11,22 +11,23 @@ Admins trigger reanalysis; system stores version snapshots before updating.
 ## Requirements
 
 - ProductAnalysisVersion, IngredientAnalysisVersion models
-- Reanalysis endpoints queue BullMQ jobs
+- Reanalysis endpoints start in-process async work (no BullMQ — `setImmediate` + entity status or job row)
 - Version list endpoint for audit
 
 ## Subtasks
 
 - [ ] Add version tables to Prisma + migration
 - [ ] Before reanalysis: snapshot current state to version table
-- [ ] `POST /admin/products/:uuid/reanalyze` — enqueue job
-- [ ] `POST /admin/ingredients/:uuid/reanalyze` — enqueue job
-- [ ] Processors: re-run AI prompts, update entity, increment ai_version
+- [ ] `POST /admin/products/:uuid/reanalyze` — return 202, run AI via `setImmediate`
+- [ ] `POST /admin/ingredients/:uuid/reanalyze` — return 202, run AI via `setImmediate`
+- [ ] Runner: re-run AI prompts, update entity, increment ai_version
 - [ ] `GET /admin/products/:uuid/versions` — list snapshots with timestamps
 - [ ] Admin UI: "Reanalyze" button on product detail (admin only)
 - [ ] Admin UI: version history modal (read-only JSON or formatted diff)
 
 ## Technical Notes
 
+- **No BullMQ.** Same pattern as product creation: fire-and-forget in API process, poll or refresh entity for completion.
 - Reanalysis does not change uuid or break user scans/favorites
 - Rate limit reanalysis per product (e.g. 1/hour) to control AI cost
 

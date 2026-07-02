@@ -320,7 +320,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 - [x] OCR integration module (`integrations/ocr/` — Google Cloud Vision)
 - [x] ProductCreationJob model + upload endpoints (`POST/GET /product-creation/jobs`)
-- [ ] BullMQ AI analysis processor
+- [ ] In-process AI analysis runner (`setImmediate`, no BullMQ)
 - [ ] Ingredient/category/brand reuse logic
 - [ ] Product + ingredient creation from AI output
 - [ ] Multi-step creation UI with progress polling
@@ -482,7 +482,7 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 ### Implementation checklist
 
 - [ ] Analysis version tables
-- [ ] Reanalysis job processors
+- [ ] In-process reanalysis runner (setImmediate)
 - [ ] Admin reanalyze endpoints
 - [ ] Version history API + admin UI
 - [ ] Smoke test: reanalysis preserves history
@@ -533,6 +533,6 @@ flowchart TD
 - Full product and design specs: [`../PRODUCT.md`](../PRODUCT.md), [`../DESIGN.md`](../DESIGN.md).
 - **Frontend UI:** always reuse [`directions/05-frontend-ui-primitives.md`](directions/05-frontend-ui-primitives.md) — import from `app/src/components/ui/`, never recreate button/input/card styles per page.
 - Prefer vertical slices: finish Feature 05 + 06 before heavy investment in Feature 08.
-- Feature 07 is the largest slice — allocate 3 task files as scoped.
+- Feature 07 is the largest slice — allocate 3 task files as scoped. **No BullMQ** — AI runs in-process (`setImmediate`) with `ProductCreationJob` polling.
 - Community features (reviews, reports) are post-MVP per spec.
 - Android native app shares API; ship responsive web + PWA first.

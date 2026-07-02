@@ -402,7 +402,7 @@ See [Domain model](plan/directions/03-domain-model.md) for full field definition
 | Dependency | Purpose |
 |------------|---------|
 | PostgreSQL + Prisma | Primary datastore |
-| Redis + BullMQ | Cache, AI job queue |
+| Redis | Cache (home feeds, lookups) |
 | OpenAI | Product & ingredient analysis |
 | Google Cloud Vision (or equivalent) | Label OCR |
 | Google Cloud Storage | Product/label images |

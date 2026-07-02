@@ -17,11 +17,11 @@ Multi-step UI: capture ingredient list → capture front label → progress → 
 
 ## Subtasks
 
-- [ ] `features/product-creation/` — services, hooks (`useCreateJob`, `useUploadLabel`, `useAnalyzeJob`, `useJobStatus`)
+- [ ] `features/product-creation/` — services, hooks (`useCreateJob`, `useUploadLabel`, `useRunOcr`, `useStartAnalysis`, `useJobStatus`)
 - [ ] `pages/scan/create/index.tsx` — stepper wizard
 - [ ] Step 1: camera capture ingredient list (or file upload)
 - [ ] Step 2: camera capture front label
-- [ ] Step 3: progress UI polling `GET /product-creation/jobs/:uuid` every 2s
+- [ ] Step 3: progress UI polling `GET /product-creation/jobs/:uuid` every 2s (after `POST .../start-analysis` returns 202)
 - [ ] On COMPLETED: navigate to product detail
 - [ ] On FAILED: show error + retry option
 - [ ] Routes: `Routes.scan.create`
@@ -35,6 +35,7 @@ Multi-step UI: capture ingredient list → capture front label → progress → 
 
 - Show educational tips during analysis ("Analyzing 12 ingredients...")
 - Compress images client-side before upload if large
+- Flow: upload labels → `POST .../analyze` (OCR) → `POST .../start-analysis` (202) → poll until `COMPLETED`
 
 ## Acceptance Criteria
 

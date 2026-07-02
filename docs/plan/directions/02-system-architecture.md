@@ -25,7 +25,7 @@
 | ORM | Prisma 7 + PostgreSQL | |
 | Auth | JWT (Passport) | Extend existing `auth` module |
 | Validation | class-validator (body), Zod (query) | Per project rules |
-| Queue | BullMQ + Redis | AI analysis jobs (async) |
+| Async jobs | In-process (`setImmediate`) + DB job status | AI analysis; client polls `ProductCreationJob` |
 | Cache | Redis | Product lookup, home feeds |
 | AI | OpenAI via `integrations/ai` | Structured JSON outputs |
 | OCR | Google Cloud Vision or similar | `integrations/` wrapper |
@@ -38,7 +38,7 @@
 | Service | Use |
 |---------|-----|
 | PostgreSQL | Primary data store |
-| Redis | Cache, job queues |
+| Redis | Cache (optional) |
 | OpenAI | Product & ingredient AI analysis |
 | Google Cloud Vision (or equivalent) | OCR on label images |
 | Google Cloud Storage | Image storage |
@@ -64,7 +64,7 @@
 - API: containerized NestJS (existing patterns)
 - App: static build served via CDN or same origin reverse proxy
 - DB migrations via Prisma migrate
-- Background workers: same image, separate process for BullMQ consumers
+- Long-running AI/OCR work: same API process, `setImmediate` + `ProductCreationJob` status (no separate worker)
 
 ## Folder / module structure
 
@@ -93,13 +93,9 @@ integrations/
 ├── ai/                      # OpenAI structured prompts
 ├── ocr/                     # NEW: vision OCR wrapper
 └── storage/                 # GCS image upload (existing)
-
-background/
-├── processors/
-│   ├── product-analysis.processor.ts
-│   └── ingredient-analysis.processor.ts
-└── cron/                    # Optional: stale product reanalysis
 ```
+
+(No `background/` queue workers — async work lives in feature services via `setImmediate`.)
 
 ### App (`app/src/`)
 
@@ -136,7 +132,7 @@ components/layout/
 
 1. **Global vs user data** — Products, ingredients, brands, categories are global. `UserProductScan`, `UserFavorite` are per-user references only.
 2. **No duplicate products** — Barcode is unique (when present). AI creation checks name+brand fuzzy match before insert.
-3. **AI jobs are async** — New product flow returns job ID; client polls or uses WebSocket for completion; show progress UI.
+3. **AI jobs are async** — New product flow returns job ID; client polls `GET /product-creation/jobs/:uuid`; AI runs in-process via `setImmediate` (no BullMQ).
 4. **Ingredient reuse** — AI pipeline receives existing ingredient names/IDs; matches before creating new `Ingredient` rows.
 5. **Version history** — `ProductAnalysisVersion`, `IngredientAnalysisVersion` tables for admin reanalysis audit trail.
 6. **Scoring** — Store numeric scores (0–20 product, per-ingredient subscores) + derived `color_indicator` enum for UI.
