@@ -129,7 +129,7 @@ Toxity’s design system has three layers, aligned with [Material Design 3 themi
 2. **System tokens** — Semantic roles (`--accent`, `--surface`, `--foreground`, `--safety-*`)
 3. **Component tokens** — Tailwind theme aliases (`bg-surface`, `text-muted`, `SafetyBadge` styles)
 
-**Visual identity:** Sage green accent on neutral surfaces, Outfit headings, Source Sans 3 body, rounded-xl surfaces, shield-based `BrandMark`.
+**Visual identity ("Reagent Label"):** Toxity's whole job is turning a dense, jargon-heavy ingredient label into something legible — like a reagent strip changing color, or a highlighter marking up a document. The system is built from that idea: a cool "lab notebook" ink neutral, decoupled from a warm "reagent amber" accent; IBM Plex Sans + IBM Plex Mono for a technical-but-humane type voice; tightened, tag-like radii; and a `SafetyBadge` "reagent chip" (square swatch, not a traffic-light dot) as the one recurring signature. `BrandMark` uses a barcode-scan glyph, not a generic shield.
 
 **Navigation model:** **Mobile-first app shell** with fixed **bottom navigation** on `< lg`: **Home · Scan · Search · History · Profile**. Content scrolls in a main pane above the nav; Scan is visually primary. On desktop (`≥ lg`), the same five destinations appear in an adaptive layout (sidebar or top bar) — bottom nav remains the reference IA. Current codebase still uses a CRM sidebar placeholder until Feature 02 ships.
 
@@ -143,40 +143,45 @@ See [Feature 02 app shell](plan/tasks/feature-02-app-shell/01-app-shell-navigati
 
 #### 5.1.1 Brand palette
 
-Source hue: `--brand-hue: 158` (sage green). OKLCH used for perceptual uniformity across light/dark themes.
+Two decoupled hue families, not one monotone hue as before. OKLCH used for perceptual uniformity across light/dark themes.
 
-| Role | CSS variable | Usage |
-|------|--------------|-------|
-| Background | `--background` | Page canvas |
-| Foreground | `--foreground` | Primary text |
-| Muted | `--muted` | Secondary text, placeholders |
-| Accent | `--accent` | Primary CTA, links, active nav, brand mark |
-| Accent foreground | `--accent-foreground` | Text/icons on accent |
-| Danger | `--danger` | Destructive actions (logout, delete) |
-| Border | `--border` | Dividers, card outlines |
-| Surface | `--surface` | Cards, header, sidebar |
-| Surface secondary | `--surface-secondary` | Hover states, skeletons |
-| Surface tertiary | `--surface-tertiary` | Nested panels |
-| Field | `--field-background`, `--field-border` | Inputs |
+| Family | Source hue | Character |
+|--------|-----------|-----------|
+| `--ink-hue: 250` | Cool ink-blue | Neutrals — background, surfaces, borders, text. Reads like a lab notebook at night (dark theme) or a clean specimen card (light theme). |
+| `--accent-hue: 72` | Warm reagent amber | Accent only — the color of a test strip reacting. Never used for neutral chrome. |
+
+| Role | CSS variable | ~Hex (dark theme) | Usage |
+|------|--------------|--------------------|-------|
+| Background | `--background` | `#15181f` | Page canvas |
+| Foreground | `--foreground` | `#e9ebf1` | Primary text |
+| Muted | `--muted` | `#8a8f9e` | Secondary text, placeholders |
+| Accent | `--accent` | `#e0ac4c` | Primary CTA, links, active nav, brand mark |
+| Accent foreground | `--accent-foreground` | `#231a08` | Text/icons on accent (dark text — accent is a light amber) |
+| Danger | `--danger` | `#e2604f` | Destructive actions (logout, delete) |
+| Border | `--border` | `#31384a` | Dividers, card outlines |
+| Surface | `--surface` | `#1d212b` | Cards, header, sidebar |
+| Surface secondary | `--surface-secondary` | `#242a37` | Hover states, skeletons |
+| Surface tertiary | `--surface-tertiary` | `#2c3242` | Nested panels |
+| Field | `--field-background`, `--field-border` | `#1f2430` / `#333b4e` | Inputs |
 
 Themes: `[data-theme="dark"]` (default) and `[data-theme="light"]` on `<html>`.
 
 #### 5.1.2 Safety spectrum (domain semantic colors)
 
-Maps to `ColorIndicator` enum in domain model. **Not** used for general UI chrome.
+Maps to `ColorIndicator` enum in domain model. Reads as one continuous **indicator strip** — cool violet-teal at the safe end, through the shared reagent amber at the midpoint, to red at the risky end — rather than an arbitrary green/yellow/red traffic light. `MODERATE` intentionally reuses `--accent-hue`: the brand color and the semantic system are one language, not two unrelated palettes.
 
-| Indicator | Token | Label | Meaning |
-|-----------|-------|-------|---------|
-| `VERY_SAFE` | `--safety-very-safe` | Very safe | Minimal concern for typical use |
-| `SAFE` | `--safety-safe` | Safe | Generally acceptable |
-| `MODERATE` | `--safety-moderate` | Moderate | Some concerns; context matters |
-| `CAUTION` | `--safety-caution` | Caution | Notable risks for some users |
-| `HIGH_RISK` | `--safety-high-risk` | High risk | Strong concerns |
-| `UNKNOWN` | `--safety-unknown` | Unknown | Insufficient data |
+| Indicator | Token | Hue | Label | Meaning |
+|-----------|-------|-----|-------|---------|
+| `VERY_SAFE` | `--safety-very-safe` | 205 (violet-teal) | Very safe | Minimal concern for typical use |
+| `SAFE` | `--safety-safe` | 165 (teal-green) | Safe | Generally acceptable |
+| `MODERATE` | `--safety-moderate` | 72 (reagent amber — matches `--accent`) | Moderate | Some concerns; context matters |
+| `CAUTION` | `--safety-caution` | 48 (orange) | Caution | Notable risks for some users |
+| `HIGH_RISK` | `--safety-high-risk` | 25 (red) | High risk | Strong concerns |
+| `UNKNOWN` | `--safety-unknown` | ink-hue, low chroma | Unknown | Insufficient data |
 
-**Implementation:** `app/src/components/ui/safety-badge.tsx` — pill with colored dot + text, tinted background, inset border.
+**Implementation:** `app/src/components/ui/safety-badge.tsx` — the "reagent chip": a square color swatch (not a dot — read as a test-strip reference chip) + label, on a subtle diagonal highlighter-tint background, inset border.
 
-**Rule:** Never convey safety level by color alone (WCAG + product trust).
+**Rule:** Never convey safety level by color alone (WCAG + product trust). `MODERATE` sharing the accent hue does not weaken this — text label and swatch always render together, and `HIGH_RISK` stays a clearly distinct red so "flagged by AI" (amber) and "actually dangerous" (red) never collide.
 
 #### 5.1.3 Color role diagram (M3-inspired)
 
@@ -219,9 +224,11 @@ flowchart TB
 
 | Role | Family | Variable |
 |------|--------|----------|
-| Body | Source Sans 3 | `--sans` |
-| Headings | Outfit | `--heading` |
-| Monospace | ui-monospace | `--mono` (barcodes, IDs) |
+| Body | IBM Plex Sans | `--sans` |
+| Headings | IBM Plex Sans (600–700) | `--heading` |
+| Monospace | IBM Plex Mono | `--mono` (scores, barcodes, ingredient counts, IDs) |
+
+One considered technical typeface carries both body and heading roles — deliberately, not a display-serif-plus-body-sans template. IBM Plex was designed for legibility in data-dense, technical contexts, which is the whole point of an ingredient-intelligence product: it should read as precise and engineered without feeling cold. Its mono companion is reserved for anything that reads as *data* (scores, barcodes, CAS-style identifiers), so the UI visually distinguishes "the AI's explanation" (Plex Sans) from "the raw data" (Plex Mono).
 
 Loaded via Google Fonts in `index.css`.
 
@@ -253,18 +260,20 @@ Toxity uses a simplified M3 scale. Map as follows when adding styles:
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--radius-sm` | 0.5rem | Small chips |
-| `--radius-md` | 0.75rem | Inputs |
-| `--radius-lg` | 1rem | Default cards |
-| `--radius-xl` | 1.25rem | Buttons, sidebar, modals |
+| `--radius-sm` | 0.375rem | Small chips, `SafetyBadge` |
+| `--radius-md` | 0.5rem | Inputs, brand mark icon tile |
+| `--radius-lg` | 0.625rem | Default cards |
+| `--radius-xl` | 0.875rem | Buttons, sidebar, modals |
+
+Tightened from the previous scale (was 0.5–1.25rem): a more precise, tag-like geometry rather than the rounded-everywhere "friendly SaaS" default — closer to a printed specimen label than a soft app bubble.
 
 #### Elevation
 
 Prefer **border + subtle shadow** over heavy drop shadows.
 
-- Cards: light border + `shadow-sm` equivalent
+- Cards: light border + `shadow-sm` equivalent; `variant="tag"` adds a `.tag-perforation` dashed line near the top edge, evoking a tear-off specimen tag — reserved for product/ingredient cards, not generic surfaces
 - Sidebar / dashboard header: layered `color-mix` shadow with accent-tinted ring
-- Scan CTA: accent glow via `shadow` on `scan` button variant
+- Scan CTA: accent glow via `shadow` on `scan` button variant, set in mono uppercase like a device control label
 
 ---
 
@@ -341,7 +350,7 @@ The consumer app is **mobile-first**. Logged-in users on phone and tablet get a 
 
 | Component | Path | Spec |
 |-----------|------|------|
-| `BrandMark` | `components/brand/brand-mark.tsx` | Shield icon in gradient rounded square + “Toxity” wordmark; sizes `sm` / `md` / `lg` |
+| `BrandMark` | `components/brand/brand-mark.tsx` | Barcode-scan icon (`lucide-react` `ScanBarcode`) in gradient tile + “Toxity” wordmark; sizes `sm` / `md` / `lg`. Ties the mark to the core action (scan a barcode) instead of a generic trust-shield used by every security app. |
 
 #### Layout
 
@@ -361,11 +370,11 @@ The consumer app is **mobile-first**. Logged-in users on phone and tablet get a 
 
 | Component | Path | Variants / notes |
 |-----------|------|------------------|
-| `Button` | `components/ui/button.tsx` | `default`, `outline`, `ghost`, **`scan`** (primary + glow) |
-| `Card` | `components/ui/card.tsx` | `rounded-xl`, border, subtle shadow |
-| `Input` | `components/ui/input.tsx` | `rounded-xl`, focus ring accent |
-| `SafetyBadge` | `components/ui/safety-badge.tsx` | `compact` option for inline lists |
-| `Toast`, `Drawer`, `Popover` | `components/ui/*` | Plain Tailwind + minimal React state |
+| `Button` | `components/ui/button.tsx` | `default`, `outline`, `ghost`, **`scan`** (primary + glow, set in mono uppercase like a device control) |
+| `Card` | `components/ui/card.tsx` | `default` \| **`tag`** (adds perforated specimen-tag edge), `rounded-lg`, border, subtle shadow |
+| `Input` | `components/ui/input.tsx` | `rounded-md`, focus ring accent |
+| `SafetyBadge` | `components/ui/safety-badge.tsx` | "Reagent chip" — square swatch, highlighter-tint background; `compact` option for inline lists |
+| `Toast`, `Drawer`, `Popover` | `components/ui/*` | Plain Tailwind + minimal React state; toast `success`/`warning` route through `--safety-safe` / `--safety-caution` tokens, not hardcoded Tailwind palette colors |
 
 #### Button variant guide
 
@@ -375,6 +384,13 @@ The consumer app is **mobile-first**. Logged-in users on phone and tablet get a 
 | `default` | Standard submit / confirm |
 | `outline` | Secondary actions |
 | `ghost` | Tertiary / toolbar icons |
+
+#### Card variant guide
+
+| Variant | When to use |
+|---------|-------------|
+| `default` | Forms, generic surfaces, settings panels |
+| `tag` | Product cards, ingredient rows — anywhere the "specimen" identity should show. Do not apply globally; the perforation is a signature accent, not a default surface style. |
 
 ---
 
@@ -449,10 +465,12 @@ The consumer app is **mobile-first**. Logged-in users on phone and tablet get a 
 
 | Alternative | Trade-off | Decision |
 |-------------|-----------|----------|
-| **Red/amber primary brand** | Strong “danger” association; conflicts with safety spectrum | Rejected — sage green accent |
+| **Sage green accent (v1.0/1.1)** | Calm, safe, but monotone (neutrals and accent shared one hue) and reads as the generic "wellness app" default | Rejected — replaced with decoupled ink-neutral / reagent-amber system |
+| **Amber as primary brand color** | Risk of reading as a constant low-grade warning | Accepted, deliberately — amber only appears as accent + `MODERATE`, `HIGH_RISK` stays a clearly distinct red, and color never stands alone (UX-1); the shared hue at `MODERATE` reads as "the AI is flagging this," which is the correct connotation |
+| **Circular dot on `SafetyBadge`** | Familiar traffic-light convention | Rejected — square swatch ("reagent chip") reads as a test-strip reference chip, distinct from every generic status-dot UI |
 | **Score-only UI (single number)** | Faster scan but opaque; fails depth value prop | Rejected — badge + score + accordions |
 | **Material UI component library** | Faster bootstrapping; heavier bundle; less brand control | Rejected — plain Tailwind CSS primitives |
-| **Inter / Roboto typography** | Familiar but generic | Rejected — Outfit + Source Sans 3 |
+| **Outfit + Source Sans 3 typography** | Legible, but the default geometric-sans pairing seen across most modern SaaS products | Rejected — IBM Plex Sans + IBM Plex Mono; one considered technical family instead of a generic pairing, mono reserved for data |
 | **CSS `class="dark"` on html** | Tailwind convention | Using `data-theme` for explicit light/dark tokens |
 | **Bottom tab bar on desktop** | Good on mobile; wasteful on wide screens | **Accepted** — bottom nav on `< lg` only; desktop uses side/top nav |
 | **FAB-only Scan (no bottom nav tab)** | Saves bar space | Rejected — Scan must stay in bottom nav per product IA |
@@ -574,3 +592,4 @@ The consumer app is **mobile-first**. Logged-in users on phone and tablet get a 
 |---------|------|---------|
 | 1.0 | 2026-07-01 | Initial design doc: tokens, components, IA, M3 mapping, accessibility |
 | 1.1 | 2026-07-01 | Mobile-first shell; bottom navigation (Home, Scan, Search, History, Profile) |
+| 1.2 | 2026-07-02 | "Reagent Label" redesign: decoupled ink-neutral / reagent-amber palette, indicator-strip safety spectrum, IBM Plex Sans/Mono typography, tightened radius scale, `SafetyBadge` reagent-chip motif, `Card` `tag` variant, barcode-scan `BrandMark`. See `app/src/index.css` for token values. |

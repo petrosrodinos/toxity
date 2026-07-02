@@ -35,7 +35,7 @@ export default function UserMenuPopover({ collapsed = false, placement = 'top' }
     <div
       className={cn('rounded-full flex items-center justify-center font-semibold shrink-0 select-none', size === 'md' ? 'h-7 w-7 text-xs' : 'h-6 w-6 text-xs')}
       style={{
-        background: 'color-mix(in oklch, var(--accent) 88%, oklch(0.35 0.06 158))',
+        background: 'color-mix(in oklch, var(--accent) 88%, oklch(0.30 0.02 250))',
         color: 'oklch(0.98 0 0)',
         boxShadow: '0 1px 4px color-mix(in oklch, var(--accent) 35%, transparent)',
       }}

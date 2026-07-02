@@ -40,8 +40,8 @@ export function addToast(record: Omit<ToastRecord, 'id'>): string {
 
 const variant_styles = {
   default: 'border-border bg-surface text-foreground',
-  success: 'border-emerald-500/30 bg-emerald-500/10 text-foreground',
-  warning: 'border-amber-500/30 bg-amber-500/10 text-foreground',
+  success: 'border-safety-safe/30 bg-safety-safe/10 text-foreground',
+  warning: 'border-safety-caution/30 bg-safety-caution/10 text-foreground',
   error: 'border-danger/30 bg-danger/10 text-foreground',
 } as const;
 

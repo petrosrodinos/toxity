@@ -338,10 +338,10 @@ On viewports `≥ lg`, the same five destinations remain available via an adapti
 
 | Token | Usage |
 |-------|--------|
-| **Sage green accent** | Primary actions, links, brand mark |
+| **Reagent amber accent** | Primary actions, links, brand mark — decoupled from the neutral (ink) hue |
 | **Safety spectrum** | `VERY_SAFE` → `HIGH_RISK` semantic colors (always paired with text) |
 | **Neutral surfaces** | Layered cards for product detail and ingredient accordions |
-| **Typography** | Outfit (headings) + Source Sans 3 (body) — readable, modern, accessible |
+| **Typography** | IBM Plex Sans (headings + body) + IBM Plex Mono (scores, barcodes, data labels) |
 
 **UI implementation rule:** Reuse shared primitives from `app/src/components/ui/` (`Button`, `Input`, `Card`, `SafetyBadge`, etc.) — do not recreate the same Tailwind styles on every screen. See [`docs/plan/directions/05-frontend-ui-primitives.md`](plan/directions/05-frontend-ui-primitives.md) and [`DESIGN.md`](DESIGN.md) §5.5.
 

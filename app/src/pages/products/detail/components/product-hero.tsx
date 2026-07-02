@@ -41,13 +41,13 @@ export const ProductHero: FC<ProductHeroProps> = ({ product }) => {
                     {product.package_size ? ` · ${product.package_size}` : ""}
                 </p>
                 {category_label ? (
-                    <p className="text-xs font-medium uppercase tracking-wide text-muted">
+                    <p className="text-xs font-mono font-medium uppercase tracking-wide text-muted">
                         {category_label}
                     </p>
                 ) : null}
             </div>
 
-            <Card className="p-4">
+            <Card variant="tag" className="p-4">
                 <ProductScoreBadge
                     indicator={color_indicator}
                     overall_score={product.overall_score}

@@ -68,7 +68,7 @@ export const IngredientDetailField: FC<IngredientDetailFieldProps> = ({
 
     return (
         <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-muted">
+            <p className="text-xs font-mono font-medium uppercase tracking-wide text-muted">
                 {label}
             </p>
             <p className="mt-1 leading-relaxed">{display_value}</p>

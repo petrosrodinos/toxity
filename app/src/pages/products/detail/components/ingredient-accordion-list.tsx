@@ -17,10 +17,7 @@ export const IngredientAccordionList: FC<IngredientAccordionListProps> = ({
 
     return (
         <section className="space-y-3">
-            <h2
-                className="text-xl font-bold uppercase tracking-wide text-accent sm:text-2xl"
-                style={{ fontFamily: "var(--heading)" }}
-            >
+            <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-accent sm:text-2xl">
                 Ingredients
             </h2>
             <div className="space-y-2">

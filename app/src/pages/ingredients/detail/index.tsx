@@ -64,7 +64,7 @@ const IngredientDetailContent: FC<{ ingredient: Ingredient }> = ({
                 </div>
             </div>
 
-            <Card className="flex flex-wrap items-center gap-3 p-4">
+            <Card variant="tag" className="flex flex-wrap items-center gap-3 p-4">
                 <SafetyBadge indicator={color_indicator} />
                 {ingredient.overall_score ? (
                     <span className="text-sm font-semibold text-foreground">
@@ -195,7 +195,7 @@ const IngredientDetailContent: FC<{ ingredient: Ingredient }> = ({
                             />
                             {ingredient.references && ingredient.references.length > 0 ? (
                                 <div>
-                                    <p className="text-xs font-medium uppercase tracking-wide text-muted">
+                                    <p className="text-xs font-mono font-medium uppercase tracking-wide text-muted">
                                         References
                                     </p>
                                     <ul className="mt-2 space-y-2">

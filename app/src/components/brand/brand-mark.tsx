@@ -1,4 +1,4 @@
-import { ShieldCheck } from 'lucide-react';
+import { ScanBarcode } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BrandMarkProps {
@@ -19,7 +19,7 @@ export function BrandMark({ size = 'md', showWordmark = true, className }: Brand
   return (
     <span className={cn('inline-flex items-center gap-2 min-w-0', className)}>
       <span
-        className="inline-flex shrink-0 items-center justify-center rounded-xl"
+        className="inline-flex shrink-0 items-center justify-center rounded-md"
         style={{
           width: icon + 10,
           height: icon + 10,
@@ -27,7 +27,7 @@ export function BrandMark({ size = 'md', showWordmark = true, className }: Brand
           boxShadow: '0 2px 8px color-mix(in oklch, var(--accent) 32%, transparent)',
         }}
       >
-        <ShieldCheck
+        <ScanBarcode
           style={{ width: icon, height: icon }}
           className="text-accent-foreground"
           strokeWidth={2.25}

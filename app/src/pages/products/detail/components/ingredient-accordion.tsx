@@ -97,7 +97,7 @@ export const IngredientAccordion: FC<IngredientAccordionProps> = ({
                             value={ingredient.common_uses}
                         />
                         <div>
-                            <p className="text-xs font-medium uppercase tracking-wide text-muted">
+                            <p className="text-xs font-mono font-medium uppercase tracking-wide text-muted">
                                 Safety rating
                             </p>
                             <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -143,7 +143,7 @@ export const IngredientAccordion: FC<IngredientAccordionProps> = ({
                         />
                         {ingredient.references && ingredient.references.length > 0 ? (
                             <div>
-                                <p className="text-xs font-medium uppercase tracking-wide text-muted">
+                                <p className="text-xs font-mono font-medium uppercase tracking-wide text-muted">
                                     Scientific references
                                 </p>
                                 <ul className="mt-2 space-y-2">
