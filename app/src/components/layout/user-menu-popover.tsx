@@ -1,9 +1,10 @@
-import { User, Settings, LogOut, ChevronsUpDown } from 'lucide-react';
+import { User, Settings, LogOut, ChevronsUpDown, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/auth';
 import { Popover } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { Routes } from '@/routes/routes';
+import { RoleTypes } from '@/features/user/interfaces/user.interface';
 
 function getInitials(name: string): string {
   return name
@@ -20,15 +21,19 @@ interface UserMenuPopoverProps {
 }
 
 export default function UserMenuPopover({ collapsed = false, placement = 'top' }: UserMenuPopoverProps) {
-  const { full_name, email, logout } = useAuthStore();
+  const { full_name, email, role, logout } = useAuthStore();
   const navigate = useNavigate();
 
   const displayName = full_name || email || 'User';
   const initials = getInitials(displayName);
+  const isAdmin = role === RoleTypes.ADMIN || role === RoleTypes.SUPER_ADMIN;
 
   const menuItems = [
     { label: 'Profile', icon: User, onClick: () => navigate(Routes.profile.root) },
     { label: 'Preferences', icon: Settings, onClick: () => {} },
+    ...(isAdmin
+      ? [{ label: 'Admin', icon: ShieldCheck, onClick: () => navigate(Routes.admin.root) }]
+      : []),
   ];
 
   const Avatar = ({ size = 'md' }: { size?: 'sm' | 'md' }) => (

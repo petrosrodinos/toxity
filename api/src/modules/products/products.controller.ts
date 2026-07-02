@@ -9,6 +9,7 @@ import {
 } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { JwtGuard } from '@/shared/guards/jwt.guard';
+import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
 import {
     ProductQuerySchema,
@@ -51,15 +52,21 @@ export class ProductsController {
     @ApiOperation({ summary: 'Lookup product by barcode' })
     @ApiParam({ name: 'barcode', description: 'Product barcode' })
     @ApiResponse({ status: 200, type: ProductDetailEntity })
-    find_by_barcode(@Param('barcode') barcode: string) {
-        return this.products_service.find_by_barcode(barcode);
+    find_by_barcode(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('barcode') barcode: string,
+    ) {
+        return this.products_service.find_by_barcode(barcode, user_uuid);
     }
 
     @Get(':uuid')
     @ApiOperation({ summary: 'Get full product detail' })
     @ApiParam({ name: 'uuid', description: 'Product UUID' })
     @ApiResponse({ status: 200, type: ProductDetailEntity })
-    find_one(@Param('uuid') product_uuid: string) {
-        return this.products_service.find_one(product_uuid);
+    find_one(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('uuid') product_uuid: string,
+    ) {
+        return this.products_service.find_one(product_uuid, user_uuid);
     }
 }

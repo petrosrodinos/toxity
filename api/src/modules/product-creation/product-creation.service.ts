@@ -206,6 +206,29 @@ export class ProductCreationService {
         return this.to_entity(job);
     }
 
+    async start_analysis(
+        user_uuid: string,
+        job_uuid: string,
+    ): Promise<ProductCreationJobEntity> {
+        const job = await this.find_owned_job(user_uuid, job_uuid);
+
+        if (job.status !== ProductCreationJobStatus.OCR || !job.ocr_result) {
+            throw new BadRequestException(
+                'Job must complete OCR before AI analysis can start',
+            );
+        }
+
+        const updated = await this.prisma.productCreationJob.update({
+            where: { uuid: job_uuid },
+            data: {
+                status: ProductCreationJobStatus.ANALYZING,
+                error_message: null,
+            },
+        });
+
+        return this.to_entity(updated);
+    }
+
     private async find_owned_job(user_uuid: string, job_uuid: string) {
         const job = await this.prisma.productCreationJob.findFirst({
             where: { uuid: job_uuid, user_uuid },

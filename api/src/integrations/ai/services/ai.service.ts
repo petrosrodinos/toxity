@@ -64,11 +64,11 @@ export class AiService {
 
                 const { object, usage } = await generateObject({
                     model: modelAdapter,
-                    output: 'array',
+                    output: options?.output ?? 'object',
                     schema: options?.schema || z.any(),
                     prompt: options.prompt,
                     system: options?.system || 'You are a helpful assistant.',
-                });
+                } as Parameters<typeof generateObject>[0]);
 
                 const cost = calculateAiCost({
                     provider: options.provider,

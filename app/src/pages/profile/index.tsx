@@ -3,6 +3,7 @@ import { LogOut } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ProfileSettingsForm } from "./components/profile-settings-form";
+import { FavoritesTabs } from "./components/favorites-tabs";
 import { useAuthStore } from "@/stores/auth";
 
 const ProfilePage: FC = () => {
@@ -17,6 +18,16 @@ const ProfilePage: FC = () => {
 
             <Card className="p-6">
                 <ProfileSettingsForm />
+            </Card>
+
+            <Card className="p-6">
+                <p className="text-sm font-medium text-foreground">Favorites</p>
+                <p className="mt-1 text-xs text-muted">
+                    Products, ingredients, and brands you've saved.
+                </p>
+                <div className="mt-4">
+                    <FavoritesTabs />
+                </div>
             </Card>
 
             <Card className="p-6 lg:hidden">

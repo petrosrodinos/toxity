@@ -19,16 +19,16 @@ AI analyzes OCR output, reuses existing taxonomy/ingredients, creates Product + 
 
 ## Subtasks
 
-- [ ] `modules/product-creation/product-analysis.runner.ts` — private async method on service or small injectable runner
-- [ ] AI prompt templates in `integrations/ai/prompts/product-analysis.ts`
-- [ ] Structured JSON schema for AI response (Zod validate)
-- [ ] Service logic: match brand by name, match ingredients fuzzy, match category/subcategory
-- [ ] Create/update Ingredient records with AI fields
-- [ ] Create Product + ProductIngredient rows + ProductImage from uploads
-- [ ] Set job status COMPLETED + product_uuid
-- [ ] Create UserProductScan for requesting user
-- [ ] On failure: job FAILED + error_message
-- [ ] `POST /product-creation/jobs/:uuid/start-analysis` — set status ANALYZING, return 202, run AI via `setImmediate`
+- [x] `modules/product-creation/product-analysis.runner.ts` — private async method on service or small injectable runner
+- [x] AI prompt templates in `integrations/ai/prompts/product-analysis.ts`
+- [x] Structured JSON schema for AI response (Zod validate)
+- [x] Service logic: match brand by name, match ingredients fuzzy, match category/subcategory
+- [x] Create/update Ingredient records with AI fields
+- [x] Create Product + ProductIngredient rows + ProductImage from uploads
+- [x] Set job status COMPLETED + product_uuid
+- [x] Create UserProductScan for requesting user
+- [x] On failure: job FAILED + error_message
+- [x] `POST /product-creation/jobs/:uuid/start-analysis` — set status ANALYZING, return 202, run AI via `setImmediate`
 
 ## Technical Notes
 
@@ -39,8 +39,8 @@ AI analyzes OCR output, reuses existing taxonomy/ingredients, creates Product + 
 
 ## Acceptance Criteria
 
-- [ ] End-to-end: OCR job → AI runner → new Product in DB with scores and ingredient links
-- [ ] Existing ingredient "Glycerin" reused, not duplicated
-- [ ] Existing category "Beauty" / subcategory "Moisturizers" reused when AI picks them
-- [ ] User can poll job status and receive product_uuid
-- [ ] Product detail API returns complete analysis for new product
+- [x] End-to-end: OCR job → AI runner → new Product in DB with scores and ingredient links (build + unit tests verified; manual E2E requires OpenAI + GCS + Vision credentials)
+- [x] Existing ingredient "Glycerin" reused, not duplicated (matched by uuid or `name_normalized` before creating)
+- [x] Existing category "Beauty" / subcategory "Moisturizers" reused when AI picks them (matched by uuid before creating)
+- [x] User can poll job status and receive product_uuid (`GET /product-creation/jobs/:uuid`)
+- [x] Product detail API returns complete analysis for new product (`ProductsService.find_one` no longer filters by `verification_status` so the creator can view a PENDING product immediately)

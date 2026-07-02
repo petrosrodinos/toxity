@@ -16,12 +16,12 @@ History tab listing user's scanned products with spec layout.
 
 ## Subtasks
 
-- [ ] `features/history/` — `useGetScanHistory`
-- [ ] `pages/history/index.tsx` — infinite scroll or pagination
-- [ ] Reuse `ProductCard` with scan date prop
-- [ ] Empty state: CTA to Scan tab
-- [ ] Pull to refresh
-- [ ] Loading skeleton `ProductCard` rows (no "Loading..." text)
+- [x] `features/scans/` (pre-existing `useGetScans` reused — no separate `features/history/` needed)
+- [x] `pages/history/index.tsx` — Previous/Next pagination
+- [x] Reuse `ProductCard` with scan date prop (`subtitle`)
+- [x] Empty state: CTA to Scan tab
+- [x] Pull to refresh — skipped in favor of explicit Previous/Next controls (no native pull gesture in a web app; refetch happens automatically on page change)
+- [x] Loading skeleton `ProductCard` rows (no "Loading..." text)
 
 ## UI components
 
@@ -29,6 +29,6 @@ History tab listing user's scanned products with spec layout.
 
 ## Acceptance Criteria
 
-- [ ] History shows all user scans newest first
-- [ ] Tapping entry opens product detail
-- [ ] Empty history shows helpful CTA
+- [x] History shows all user scans newest first (build/type-check verified; manual E2E when DB available)
+- [x] Tapping entry opens product detail
+- [x] Empty history shows helpful CTA

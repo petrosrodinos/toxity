@@ -307,6 +307,33 @@ exports.Prisma.ProductCreationJobScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.UserFavoriteScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  user_uuid: 'user_uuid',
+  entity_type: 'entity_type',
+  entity_uuid: 'entity_uuid',
+  created_at: 'created_at'
+};
+
+exports.Prisma.ProductAnalysisVersionScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  product_uuid: 'product_uuid',
+  ai_version: 'ai_version',
+  snapshot: 'snapshot',
+  created_at: 'created_at'
+};
+
+exports.Prisma.IngredientAnalysisVersionScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  ingredient_uuid: 'ingredient_uuid',
+  ai_version: 'ai_version',
+  snapshot: 'snapshot',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -314,6 +341,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -392,6 +423,12 @@ exports.ProductCreationJobStatus = exports.$Enums.ProductCreationJobStatus = {
   FAILED: 'FAILED'
 };
 
+exports.FavoriteEntityType = exports.$Enums.FavoriteEntityType = {
+  PRODUCT: 'PRODUCT',
+  INGREDIENT: 'INGREDIENT',
+  BRAND: 'BRAND'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
@@ -404,7 +441,10 @@ exports.Prisma.ModelName = {
   ProductIngredient: 'ProductIngredient',
   ProductImage: 'ProductImage',
   UserProductScan: 'UserProductScan',
-  ProductCreationJob: 'ProductCreationJob'
+  ProductCreationJob: 'ProductCreationJob',
+  UserFavorite: 'UserFavorite',
+  ProductAnalysisVersion: 'ProductAnalysisVersion',
+  IngredientAnalysisVersion: 'IngredientAnalysisVersion'
 };
 
 /**

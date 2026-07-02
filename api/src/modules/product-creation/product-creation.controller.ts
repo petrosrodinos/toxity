@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Get,
+    HttpCode,
     Param,
     Post,
     UploadedFile,
@@ -20,6 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { memoryStorage } from 'multer';
 import { ProductCreationService } from './product-creation.service';
+import { ProductAnalysisRunner } from './product-analysis.runner';
 import { JwtGuard } from '@/shared/guards/jwt.guard';
 import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { CreateProductCreationJobDto } from './dto/create-product-creation-job.dto';
@@ -37,6 +39,7 @@ const image_upload_interceptor = FileInterceptor('image', {
 export class ProductCreationController {
     constructor(
         private readonly product_creation_service: ProductCreationService,
+        private readonly product_analysis_runner: ProductAnalysisRunner,
     ) {}
 
     @Post('jobs')
@@ -127,5 +130,34 @@ export class ProductCreationController {
         @Param('uuid') job_uuid: string,
     ) {
         return this.product_creation_service.analyze(user_uuid, job_uuid);
+    }
+
+    @Post('jobs/:uuid/start-analysis')
+    @HttpCode(202)
+    @ApiOperation({
+        summary: 'Start AI product analysis',
+        description:
+            'Marks the job as ANALYZING and runs the AI analysis pipeline in-process. Poll GET /product-creation/jobs/:uuid for completion.',
+    })
+    @ApiParam({ name: 'uuid', description: 'Product creation job UUID' })
+    @ApiResponse({ status: 202, type: ProductCreationJobEntity })
+    async start_analysis(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('uuid') job_uuid: string,
+    ) {
+        const job = await this.product_creation_service.start_analysis(
+            user_uuid,
+            job_uuid,
+        );
+
+        setImmediate(() => {
+            this.product_analysis_runner.run(job_uuid).catch(() => {
+                // ProductAnalysisRunner.run already handles its own
+                // failure state on the job; this catch only guards
+                // against it rejecting unexpectedly.
+            });
+        });
+
+        return job;
     }
 }

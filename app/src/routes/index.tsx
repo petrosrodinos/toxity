@@ -2,6 +2,7 @@ import { Routes as ReactRoutes, Route, Navigate } from "react-router-dom";
 import { Routes } from "@/routes/routes";
 import ProtectedRoute from "@/routes/protected-route";
 import { useAuthStore } from "@/stores/auth";
+import { RoleTypes } from "@/features/user/interfaces/user.interface";
 import SignIn from "@/pages/auth/pages/sign-in";
 import SignUp from "@/pages/auth/pages/sign-up";
 import ForgotPassword from "@/pages/auth/pages/forgot-password";
@@ -16,6 +17,7 @@ import ProfilePage from "@/pages/profile";
 import IngredientDetailPage from "@/pages/ingredients/detail";
 import ProductDetailPage from "@/pages/products/detail";
 import ProductCreatePage from "@/pages/products/create";
+import AdminPage from "@/pages/admin";
 
 function RootRedirect() {
     const { isLoggedIn } = useAuthStore();
@@ -65,6 +67,18 @@ export default function AppRoutes() {
                 <Route
                     path={Routes.products.create}
                     element={<ProductCreatePage />}
+                />
+                <Route
+                    path={Routes.admin.root}
+                    element={
+                        <ProtectedRoute
+                            loggedIn={true}
+                            requiredRoles={[RoleTypes.ADMIN]}
+                            fallbackPath={Routes.home.root}
+                        >
+                            <AdminPage />
+                        </ProtectedRoute>
+                    }
                 />
             </Route>
 

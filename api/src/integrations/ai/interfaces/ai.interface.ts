@@ -6,7 +6,7 @@ export interface AIGenerateOptions {
     system?: string;
     prompt: string;
     schema?: z.ZodSchema;
-    output?: 'json' | 'no-schema';
+    output?: 'object' | 'array' | 'no-schema';
     temperature?: number;
     maxTokens?: number;
     topP?: number;
@@ -20,7 +20,7 @@ export interface AIGenerateTextResponse {
 }
 
 export interface AIGenerateObjectResponse {
-    response: z.ZodSchema[] | null;
+    response: unknown;
     usage?: AICostResponse
 }
 

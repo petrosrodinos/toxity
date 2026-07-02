@@ -13,12 +13,17 @@ export const Routes = {
     },
     search: {
         root: "/search",
+        by_category: (category_uuid: string) =>
+            `/search?category_uuid=${encodeURIComponent(category_uuid)}`,
     },
     history: {
         root: "/history",
     },
     profile: {
         root: "/profile",
+    },
+    admin: {
+        root: "/admin",
     },
     ingredients: {
         detail: (ingredient_uuid: string) => `/ingredients/${ingredient_uuid}`,

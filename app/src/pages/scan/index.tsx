@@ -1,13 +1,16 @@
 import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { Camera, ScanLine } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useBarcodeLookup } from "@/features/scan/hooks/use-barcode-lookup";
 import { useBarcodeScanner } from "./hooks/use-barcode-scanner";
 import { cn } from "@/lib/utils";
+import { Routes } from "@/routes/routes";
 
 const ScanPage: FC = () => {
+    const navigate = useNavigate();
     const [manual_barcode, set_manual_barcode] = useState("");
     const lookup_mutation = useBarcodeLookup();
     const stop_scanner_ref = useRef<(() => void) | null>(null);
@@ -139,6 +142,14 @@ const ScanPage: FC = () => {
                     Look up barcode
                 </Button>
             </form>
+
+            <Button
+                type="button"
+                variant="ghost"
+                onClick={() => navigate(Routes.products.create)}
+            >
+                Scan label instead
+            </Button>
         </div>
     );
 };

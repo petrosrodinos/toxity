@@ -9,6 +9,8 @@ import {
     type ColorIndicator,
 } from "@/components/ui/safety-badge";
 import { useGetIngredient } from "@/features/ingredients/hooks/use-ingredients";
+import FavoriteToggle from "@/components/favorite-toggle";
+import AdminReanalyzePanel from "@/components/admin-reanalyze-panel";
 import type { Ingredient } from "@/features/ingredients/interfaces/ingredients.interfaces";
 import { Routes } from "@/routes/routes";
 import { cn } from "@/lib/utils";
@@ -71,6 +73,11 @@ const IngredientDetailContent: FC<{ ingredient: Ingredient }> = ({
                         Score {format_score(ingredient.overall_score)}
                     </span>
                 ) : null}
+                <FavoriteToggle
+                    entity_type="INGREDIENT"
+                    entity_uuid={ingredient.uuid}
+                    className="ml-auto"
+                />
             </Card>
 
             {ingredient.ai_summary ? (
@@ -218,6 +225,8 @@ const IngredientDetailContent: FC<{ ingredient: Ingredient }> = ({
                     </div>
                 )}
             </Card>
+
+            <AdminReanalyzePanel entity_type="ingredient" entity_uuid={ingredient.uuid} />
         </div>
     );
 };

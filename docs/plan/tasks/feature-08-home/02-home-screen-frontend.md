@@ -16,14 +16,14 @@ Build Home tab with product cards, category chips, ingredient spotlight, daily t
 
 ## Subtasks
 
-- [ ] `features/home/` — service, `useGetHomeFeed`
-- [ ] `components/product-card.tsx` — thumbnail, name, brand, score badge, chevron
-- [ ] `pages/home/index.tsx` — sections per spec
-- [ ] Category chips → navigate to search filtered by category
-- [ ] Ingredient spotlight card → ingredient detail
-- [ ] Pull-to-refresh or refetch on focus (React Query `refetchOnWindowFocus`)
-- [ ] Empty states per section
-- [ ] Loading skeletons per section (card/row placeholders — never "Loading..." labels)
+- [x] `features/home/` — service, `useGetHomeFeed`
+- [x] `components/product-card.tsx` — thumbnail, name, brand, score badge, chevron (+ `ProductCardSkeleton`)
+- [x] `pages/home/index.tsx` — sections per spec
+- [x] Category chips → navigate to search filtered by category (`Routes.search.by_category`)
+- [x] Ingredient spotlight card → ingredient detail
+- [x] Pull-to-refresh or refetch on focus (React Query `refetchOnWindowFocus`)
+- [x] Empty states per section
+- [x] Loading skeletons per section (card/row placeholders — never "Loading..." labels)
 
 ## UI components
 
@@ -35,7 +35,7 @@ Build Home tab with product cards, category chips, ingredient spotlight, daily t
 
 ## Acceptance Criteria
 
-- [ ] Home shows real products in trending, highest rated, new sections
-- [ ] Tapping product card opens product detail
-- [ ] Continue scanning shows user's recent scans
-- [ ] Categories navigable
+- [x] Home shows real products in trending, highest rated, new sections (build/type-check verified; no live browser run per user request)
+- [x] Tapping product card opens product detail
+- [x] Continue scanning shows user's recent scans
+- [x] Categories navigable

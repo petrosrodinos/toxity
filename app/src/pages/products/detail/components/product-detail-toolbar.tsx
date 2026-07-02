@@ -1,6 +1,7 @@
 import { useState, type FC } from "react";
-import { Heart, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import FavoriteToggle from "@/components/favorite-toggle";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +13,9 @@ const ProductDetailTabs = {
 type ProductDetailTab =
     (typeof ProductDetailTabs)[keyof typeof ProductDetailTabs];
 
-export const ProductDetailToolbar: FC = () => {
+export const ProductDetailToolbar: FC<{ product_uuid: string }> = ({
+    product_uuid,
+}) => {
     const [active_tab, set_active_tab] = useState<ProductDetailTab>(
         ProductDetailTabs.ANALYSIS,
     );
@@ -68,16 +71,7 @@ export const ProductDetailToolbar: FC = () => {
             </div>
 
             <div className="ml-auto flex items-center gap-2">
-                <Button
-                    type="button"
-                    variant="outline"
-                    aria-label="Favorite (coming soon)"
-                    disabled
-                    title="Favorites coming soon"
-                    className="h-10 w-10 px-0"
-                >
-                    <Heart className="h-4 w-4" />
-                </Button>
+                <FavoriteToggle entity_type="PRODUCT" entity_uuid={product_uuid} />
                 <Button
                     type="button"
                     variant="outline"

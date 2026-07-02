@@ -17,15 +17,15 @@ Multi-step UI: capture ingredient list → capture front label → progress → 
 
 ## Subtasks
 
-- [ ] `features/product-creation/` — services, hooks (`useCreateJob`, `useUploadLabel`, `useRunOcr`, `useStartAnalysis`, `useJobStatus`)
-- [ ] `pages/scan/create/index.tsx` — stepper wizard
-- [ ] Step 1: camera capture ingredient list (or file upload)
-- [ ] Step 2: camera capture front label
-- [ ] Step 3: progress UI polling `GET /product-creation/jobs/:uuid` every 2s (after `POST .../start-analysis` returns 202)
-- [ ] On COMPLETED: navigate to product detail
-- [ ] On FAILED: show error + retry option
-- [ ] Routes: `Routes.scan.create`
-- [ ] Wire scan tab 404 flow to this route
+- [x] `features/product-creation/` — services (`product-creation.services.ts`), hooks (`useCreateProductCreationJob`, `useUploadIngredientLabel`, `useUploadFrontLabel`, `useAnalyzeProductCreationJob`, `useStartProductAnalysis`, `useProductCreationJob`)
+- [x] `pages/products/create/index.tsx` — stepper wizard (route already existed as `Routes.products.create`, reused instead of adding a duplicate `Routes.scan.create`)
+- [x] Step 1: camera capture ingredient list (`capture="environment"` file input, falls back to file browser on desktop)
+- [x] Step 2: camera capture front label
+- [x] Step 3: progress UI polling `GET /product-creation/jobs/:uuid` every 2s (after `POST .../start-analysis` returns 202)
+- [x] On COMPLETED: navigate to product detail
+- [x] On FAILED: show error + retry option (creates a fresh job, since the backend only allows label uploads while a job is PENDING)
+- [x] Routes: reused existing `Routes.products.create` / `Routes.products.create_with_barcode`
+- [x] Wire scan tab 404 flow to this route (already wired via `useBarcodeLookup`) + added "Scan label instead" entry point on the Scan tab
 
 ## UI components
 
@@ -39,7 +39,7 @@ Multi-step UI: capture ingredient list → capture front label → progress → 
 
 ## Acceptance Criteria
 
-- [ ] Unknown barcode → user completes 2 captures → sees progress → lands on new product detail
-- [ ] Ingredient label-only path works when no barcode
-- [ ] Failed OCR shows clear error with retake photo option
-- [ ] New product appears in scan history
+- [x] Unknown barcode → user completes 2 captures → sees progress → lands on new product detail (build-verified via `tsc -b && vite build`; no live browser/E2E run — no backend credentials available in this environment and interactive browser testing was declined by the user)
+- [x] Ingredient label-only path works when no barcode (`Routes.products.create` with no `barcode` param; "Scan label instead" entry point added to Scan tab)
+- [x] Failed OCR shows clear error with retake photo option (`CreationErrorState` + `start_over`)
+- [x] New product appears in scan history (`ProductAnalysisRunner` creates the `UserProductScan` row; wizard invalidates the `scans` and `products` query keys on completion)

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from 'generated/prisma';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { IngredientsService } from '@/modules/ingredients/ingredients.service';
+import { FavoritesService } from '@/modules/favorites/favorites.service';
 import { ProductQueryType } from './dto/product-query.schema';
 import {
     ProductDetailEntity,
@@ -46,9 +47,13 @@ export class ProductsService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly ingredients_service: IngredientsService,
+        private readonly favorites_service: FavoritesService,
     ) {}
 
-    async find_by_barcode(barcode: string): Promise<ProductDetailEntity> {
+    async find_by_barcode(
+        barcode: string,
+        user_uuid: string,
+    ): Promise<ProductDetailEntity> {
         const product = await this.prisma.product.findFirst({
             where: {
                 barcode,
@@ -61,14 +66,27 @@ export class ProductsService {
             throw new NotFoundException('Product not found');
         }
 
-        return this.to_detail_entity(product);
+        const is_favorited = await this.favorites_service.isFavorited(
+            user_uuid,
+            'PRODUCT',
+            product.uuid,
+        );
+
+        return this.to_detail_entity(product, is_favorited);
     }
 
-    async find_one(product_uuid: string): Promise<ProductDetailEntity> {
+    async find_one(
+        product_uuid: string,
+        user_uuid: string,
+    ): Promise<ProductDetailEntity> {
+        // Not filtered by verification_status: a user who just created a
+        // product via the AI pipeline (Feature 07) must be able to open it
+        // immediately while it awaits admin approval (Feature 11). Discovery
+        // surfaces (find_all, find_by_barcode, home, search) stay
+        // APPROVED-only so unreviewed products aren't publicly surfaced.
         const product = await this.prisma.product.findFirst({
             where: {
                 uuid: product_uuid,
-                verification_status: 'APPROVED',
             },
             include: product_detail_include,
         });
@@ -77,7 +95,13 @@ export class ProductsService {
             throw new NotFoundException('Product not found');
         }
 
-        return this.to_detail_entity(product);
+        const is_favorited = await this.favorites_service.isFavorited(
+            user_uuid,
+            'PRODUCT',
+            product.uuid,
+        );
+
+        return this.to_detail_entity(product, is_favorited);
     }
 
     async find_all(query: ProductQueryType) {
@@ -148,7 +172,10 @@ export class ProductsService {
         };
     }
 
-    private to_detail_entity(product: ProductDetailRecord): ProductDetailEntity {
+    private to_detail_entity(
+        product: ProductDetailRecord,
+        is_favorited: boolean,
+    ): ProductDetailEntity {
         const list_item = this.to_list_item({
             ...product,
             images: product.images.slice(0, 1),
@@ -202,7 +229,7 @@ export class ProductsService {
             faq:
                 (product.faq as unknown as ProductFaqItemEntity[] | null) ??
                 null,
-            is_favorited: false,
+            is_favorited,
         };
     }
 

@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from 'generated/prisma';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
+import { FavoritesService } from '@/modules/favorites/favorites.service';
 import { normalize_ingredient_name } from '@/shared/utils/ingredient.utils';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { IngredientQueryType } from './dto/ingredient-query.schema';
@@ -17,7 +18,10 @@ type IngredientRecord = Prisma.IngredientGetPayload<object>;
 
 @Injectable()
 export class IngredientsService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly favorites_service: FavoritesService,
+    ) {}
 
     async find_all(query: IngredientQueryType) {
         const search_filter = query.search
@@ -79,7 +83,10 @@ export class IngredientsService {
         };
     }
 
-    async find_one(ingredient_uuid: string): Promise<IngredientEntity> {
+    async find_one(
+        ingredient_uuid: string,
+        user_uuid: string,
+    ): Promise<IngredientEntity> {
         const ingredient = await this.prisma.ingredient.findUnique({
             where: { uuid: ingredient_uuid },
         });
@@ -88,7 +95,13 @@ export class IngredientsService {
             throw new NotFoundException('Ingredient not found');
         }
 
-        return this.to_entity(ingredient);
+        const is_favorited = await this.favorites_service.isFavorited(
+            user_uuid,
+            'INGREDIENT',
+            ingredient.uuid,
+        );
+
+        return this.to_entity(ingredient, is_favorited);
     }
 
     async create(dto: CreateIngredientDto): Promise<IngredientEntity> {
@@ -124,11 +137,15 @@ export class IngredientsService {
             },
         });
 
-        return this.to_entity(ingredient);
+        return this.to_entity(ingredient, false);
     }
 
+    // Used to embed ingredients inside a product's detail response. Always
+    // reports is_favorited: false to avoid an is_favorited lookup per
+    // ingredient per product — favorite status is authoritative only on the
+    // ingredient's own detail page (find_one).
     to_public_entity(ingredient: IngredientRecord): IngredientEntity {
-        return this.to_entity(ingredient);
+        return this.to_entity(ingredient, false);
     }
 
     private to_list_item(
@@ -144,7 +161,10 @@ export class IngredientsService {
         };
     }
 
-    private to_entity(ingredient: IngredientRecord): IngredientEntity {
+    private to_entity(
+        ingredient: IngredientRecord,
+        is_favorited: boolean,
+    ): IngredientEntity {
         return {
             ...this.to_list_item(ingredient),
             scientific_name: ingredient.scientific_name,
@@ -179,6 +199,7 @@ export class IngredientsService {
             ai_version: ingredient.ai_version,
             created_at: ingredient.created_at,
             updated_at: ingredient.updated_at,
+            is_favorited,
         };
     }
 }

@@ -115,4 +115,7 @@ export class IngredientEntity extends IngredientListItemEntity {
 
     @ApiProperty()
     updated_at: Date;
+
+    @ApiProperty()
+    is_favorited: boolean;
 }

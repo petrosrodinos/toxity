@@ -70,6 +70,12 @@ enum ProductCreationJobStatus {
   FAILED
 }
 
+enum FavoriteEntityType {
+  PRODUCT
+  INGREDIENT
+  BRAND
+}
+
 model User {
   id         Int      @id @default(autoincrement())
   uuid       String   @unique @default(uuid())
@@ -84,6 +90,7 @@ model User {
   password_reset_tokens PasswordResetToken[]
   product_scans         UserProductScan[]
   product_creation_jobs ProductCreationJob[]
+  favorites             UserFavorite[]
 
   @@index([email])
   @@index([phone])
@@ -180,11 +187,11 @@ model Brand {
 }
 
 model Ingredient {
-  id                         Int                 @id @default(autoincrement())
-  uuid                       String              @unique @default(uuid())
+  id                         Int                         @id @default(autoincrement())
+  uuid                       String                      @unique @default(uuid())
   name                       String
-  name_normalized            String              @unique
-  synonyms                   String[]            @default([])
+  name_normalized            String                      @unique
+  synonyms                   String[]                    @default([])
   scientific_name            String?
   description                String?
   ai_summary                 String?
@@ -207,17 +214,18 @@ model Ingredient {
   is_vegan                   Boolean?
   is_cruelty_free            Boolean?
   is_biodegradable           Boolean?
-  overall_score              Decimal?            @db.Decimal(4, 2)
-  safety_score               Decimal?            @db.Decimal(4, 2)
-  risk_score                 Decimal?            @db.Decimal(4, 2)
-  confidence_score           Decimal?            @db.Decimal(4, 2)
-  color_indicator            ColorIndicator      @default(UNKNOWN)
+  overall_score              Decimal?                    @db.Decimal(4, 2)
+  safety_score               Decimal?                    @db.Decimal(4, 2)
+  risk_score                 Decimal?                    @db.Decimal(4, 2)
+  confidence_score           Decimal?                    @db.Decimal(4, 2)
+  color_indicator            ColorIndicator              @default(UNKNOWN)
   research_summary           String?
   references                 Json?
   ai_version                 String?
-  created_at                 DateTime            @default(now())
-  updated_at                 DateTime            @updatedAt
+  created_at                 DateTime                    @default(now())
+  updated_at                 DateTime                    @updatedAt
   product_ingredients        ProductIngredient[]
+  analysis_versions          IngredientAnalysisVersion[]
 
   @@index([name])
   @@index([uuid])
@@ -262,11 +270,12 @@ model Product {
   created_at                DateTime           @default(now())
   updated_at                DateTime           @updatedAt
 
-  brand               Brand               @relation(fields: [brand_uuid], references: [uuid])
-  subcategory         Subcategory         @relation(fields: [subcategory_uuid], references: [uuid])
+  brand               Brand                    @relation(fields: [brand_uuid], references: [uuid])
+  subcategory         Subcategory              @relation(fields: [subcategory_uuid], references: [uuid])
   product_ingredients ProductIngredient[]
   images              ProductImage[]
   scans               UserProductScan[]
+  analysis_versions   ProductAnalysisVersion[]
 
   @@unique([name, brand_uuid])
   @@index([name])
@@ -347,4 +356,50 @@ model ProductCreationJob {
   @@index([uuid])
   @@index([status])
   @@map("product_creation_jobs")
+}
+
+model UserFavorite {
+  id          Int                @id @default(autoincrement())
+  uuid        String             @unique @default(uuid())
+  user_uuid   String
+  entity_type FavoriteEntityType
+  entity_uuid String
+  created_at  DateTime           @default(now())
+
+  user User @relation(fields: [user_uuid], references: [uuid], onDelete: Cascade)
+
+  @@unique([user_uuid, entity_type, entity_uuid])
+  @@index([user_uuid])
+  @@index([uuid])
+  @@map("user_favorites")
+}
+
+model ProductAnalysisVersion {
+  id           Int      @id @default(autoincrement())
+  uuid         String   @unique @default(uuid())
+  product_uuid String
+  ai_version   String?
+  snapshot     Json
+  created_at   DateTime @default(now())
+
+  product Product @relation(fields: [product_uuid], references: [uuid], onDelete: Cascade)
+
+  @@index([product_uuid])
+  @@index([uuid])
+  @@map("product_analysis_versions")
+}
+
+model IngredientAnalysisVersion {
+  id              Int      @id @default(autoincrement())
+  uuid            String   @unique @default(uuid())
+  ingredient_uuid String
+  ai_version      String?
+  snapshot        Json
+  created_at      DateTime @default(now())
+
+  ingredient Ingredient @relation(fields: [ingredient_uuid], references: [uuid], onDelete: Cascade)
+
+  @@index([ingredient_uuid])
+  @@index([uuid])
+  @@map("ingredient_analysis_versions")
 }

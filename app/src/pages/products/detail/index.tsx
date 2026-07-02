@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useGetProduct } from "@/features/products/hooks/use-products";
+import AdminReanalyzePanel from "@/components/admin-reanalyze-panel";
 import { Routes } from "@/routes/routes";
 import { IngredientAccordionList } from "./components/ingredient-accordion-list";
 import { ProductDetailToolbar } from "./components/product-detail-toolbar";
@@ -58,12 +59,13 @@ const ProductDetailPage: FC = () => {
                 >
                     <ArrowLeft className="h-4 w-4" />
                 </Link>
-                <ProductDetailToolbar />
+                <ProductDetailToolbar product_uuid={product.uuid} />
             </div>
 
             <ProductHero product={product} />
             <ProductSummary product={product} />
             <IngredientAccordionList ingredients={product.ingredients} />
+            <AdminReanalyzePanel entity_type="product" entity_uuid={product.uuid} />
         </div>
     );
 };

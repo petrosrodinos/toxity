@@ -14,6 +14,11 @@ import { IngredientsModule } from './modules/ingredients/ingredients.module';
 import { ProductsModule } from './modules/products/products.module';
 import { ScansModule } from './modules/scans/scans.module';
 import { ProductCreationModule } from './modules/product-creation/product-creation.module';
+import { HomeModule } from './modules/home/home.module';
+import { SearchModule } from './modules/search/search.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { ReanalysisModule } from './modules/reanalysis/reanalysis.module';
 import { ConfigModule } from './shared/config/env/env.module';
 
 @Module({
@@ -33,6 +38,11 @@ import { ConfigModule } from './shared/config/env/env.module';
     ProductsModule,
     ScansModule,
     ProductCreationModule,
+    HomeModule,
+    SearchModule,
+    FavoritesModule,
+    AdminModule,
+    ReanalysisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

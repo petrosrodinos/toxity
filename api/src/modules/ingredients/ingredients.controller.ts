@@ -9,6 +9,7 @@ import {
 } from '@nestjs/swagger';
 import { IngredientsService } from './ingredients.service';
 import { JwtGuard } from '@/shared/guards/jwt.guard';
+import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
 import {
     IngredientQuerySchema,
@@ -44,7 +45,10 @@ export class IngredientsController {
     @ApiOperation({ summary: 'Get full ingredient detail' })
     @ApiParam({ name: 'uuid', description: 'Ingredient UUID' })
     @ApiResponse({ status: 200, type: IngredientEntity })
-    find_one(@Param('uuid') ingredient_uuid: string) {
-        return this.ingredients_service.find_one(ingredient_uuid);
+    find_one(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('uuid') ingredient_uuid: string,
+    ) {
+        return this.ingredients_service.find_one(ingredient_uuid, user_uuid);
     }
 }

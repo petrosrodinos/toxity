@@ -50,6 +50,7 @@ export type Ingredient = {
     ai_version?: string | null;
     created_at: string;
     updated_at: string;
+    is_favorited: boolean;
 };
 
 export type IngredientQuery = {

@@ -73,6 +73,21 @@ export type UserProductScan = $Result.DefaultSelection<Prisma.$UserProductScanPa
  * 
  */
 export type ProductCreationJob = $Result.DefaultSelection<Prisma.$ProductCreationJobPayload>
+/**
+ * Model UserFavorite
+ * 
+ */
+export type UserFavorite = $Result.DefaultSelection<Prisma.$UserFavoritePayload>
+/**
+ * Model ProductAnalysisVersion
+ * 
+ */
+export type ProductAnalysisVersion = $Result.DefaultSelection<Prisma.$ProductAnalysisVersionPayload>
+/**
+ * Model IngredientAnalysisVersion
+ * 
+ */
+export type IngredientAnalysisVersion = $Result.DefaultSelection<Prisma.$IngredientAnalysisVersionPayload>
 
 /**
  * Enums
@@ -161,6 +176,15 @@ export const ProductCreationJobStatus: {
 
 export type ProductCreationJobStatus = (typeof ProductCreationJobStatus)[keyof typeof ProductCreationJobStatus]
 
+
+export const FavoriteEntityType: {
+  PRODUCT: 'PRODUCT',
+  INGREDIENT: 'INGREDIENT',
+  BRAND: 'BRAND'
+};
+
+export type FavoriteEntityType = (typeof FavoriteEntityType)[keyof typeof FavoriteEntityType]
+
 }
 
 export type AuthRole = $Enums.AuthRole
@@ -194,6 +218,10 @@ export const ProductImageType: typeof $Enums.ProductImageType
 export type ProductCreationJobStatus = $Enums.ProductCreationJobStatus
 
 export const ProductCreationJobStatus: typeof $Enums.ProductCreationJobStatus
+
+export type FavoriteEntityType = $Enums.FavoriteEntityType
+
+export const FavoriteEntityType: typeof $Enums.FavoriteEntityType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -431,6 +459,36 @@ export class PrismaClient<
     * ```
     */
   get productCreationJob(): Prisma.ProductCreationJobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userFavorite`: Exposes CRUD operations for the **UserFavorite** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserFavorites
+    * const userFavorites = await prisma.userFavorite.findMany()
+    * ```
+    */
+  get userFavorite(): Prisma.UserFavoriteDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.productAnalysisVersion`: Exposes CRUD operations for the **ProductAnalysisVersion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProductAnalysisVersions
+    * const productAnalysisVersions = await prisma.productAnalysisVersion.findMany()
+    * ```
+    */
+  get productAnalysisVersion(): Prisma.ProductAnalysisVersionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.ingredientAnalysisVersion`: Exposes CRUD operations for the **IngredientAnalysisVersion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IngredientAnalysisVersions
+    * const ingredientAnalysisVersions = await prisma.ingredientAnalysisVersion.findMany()
+    * ```
+    */
+  get ingredientAnalysisVersion(): Prisma.IngredientAnalysisVersionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -876,7 +934,10 @@ export namespace Prisma {
     ProductIngredient: 'ProductIngredient',
     ProductImage: 'ProductImage',
     UserProductScan: 'UserProductScan',
-    ProductCreationJob: 'ProductCreationJob'
+    ProductCreationJob: 'ProductCreationJob',
+    UserFavorite: 'UserFavorite',
+    ProductAnalysisVersion: 'ProductAnalysisVersion',
+    IngredientAnalysisVersion: 'IngredientAnalysisVersion'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -892,7 +953,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passwordResetToken" | "document" | "category" | "subcategory" | "brand" | "ingredient" | "product" | "productIngredient" | "productImage" | "userProductScan" | "productCreationJob"
+      modelProps: "user" | "passwordResetToken" | "document" | "category" | "subcategory" | "brand" | "ingredient" | "product" | "productIngredient" | "productImage" | "userProductScan" | "productCreationJob" | "userFavorite" | "productAnalysisVersion" | "ingredientAnalysisVersion"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1784,6 +1845,228 @@ export namespace Prisma {
           }
         }
       }
+      UserFavorite: {
+        payload: Prisma.$UserFavoritePayload<ExtArgs>
+        fields: Prisma.UserFavoriteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserFavoriteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserFavoriteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>
+          }
+          findFirst: {
+            args: Prisma.UserFavoriteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserFavoriteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>
+          }
+          findMany: {
+            args: Prisma.UserFavoriteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>[]
+          }
+          create: {
+            args: Prisma.UserFavoriteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>
+          }
+          createMany: {
+            args: Prisma.UserFavoriteCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserFavoriteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>[]
+          }
+          delete: {
+            args: Prisma.UserFavoriteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>
+          }
+          update: {
+            args: Prisma.UserFavoriteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>
+          }
+          deleteMany: {
+            args: Prisma.UserFavoriteDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserFavoriteUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserFavoriteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>[]
+          }
+          upsert: {
+            args: Prisma.UserFavoriteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFavoritePayload>
+          }
+          aggregate: {
+            args: Prisma.UserFavoriteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserFavorite>
+          }
+          groupBy: {
+            args: Prisma.UserFavoriteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserFavoriteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserFavoriteCountArgs<ExtArgs>
+            result: $Utils.Optional<UserFavoriteCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProductAnalysisVersion: {
+        payload: Prisma.$ProductAnalysisVersionPayload<ExtArgs>
+        fields: Prisma.ProductAnalysisVersionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProductAnalysisVersionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProductAnalysisVersionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>
+          }
+          findFirst: {
+            args: Prisma.ProductAnalysisVersionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProductAnalysisVersionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>
+          }
+          findMany: {
+            args: Prisma.ProductAnalysisVersionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>[]
+          }
+          create: {
+            args: Prisma.ProductAnalysisVersionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>
+          }
+          createMany: {
+            args: Prisma.ProductAnalysisVersionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProductAnalysisVersionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>[]
+          }
+          delete: {
+            args: Prisma.ProductAnalysisVersionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>
+          }
+          update: {
+            args: Prisma.ProductAnalysisVersionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProductAnalysisVersionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProductAnalysisVersionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProductAnalysisVersionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProductAnalysisVersionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductAnalysisVersionPayload>
+          }
+          aggregate: {
+            args: Prisma.ProductAnalysisVersionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProductAnalysisVersion>
+          }
+          groupBy: {
+            args: Prisma.ProductAnalysisVersionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProductAnalysisVersionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProductAnalysisVersionCountArgs<ExtArgs>
+            result: $Utils.Optional<ProductAnalysisVersionCountAggregateOutputType> | number
+          }
+        }
+      }
+      IngredientAnalysisVersion: {
+        payload: Prisma.$IngredientAnalysisVersionPayload<ExtArgs>
+        fields: Prisma.IngredientAnalysisVersionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IngredientAnalysisVersionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IngredientAnalysisVersionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>
+          }
+          findFirst: {
+            args: Prisma.IngredientAnalysisVersionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IngredientAnalysisVersionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>
+          }
+          findMany: {
+            args: Prisma.IngredientAnalysisVersionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>[]
+          }
+          create: {
+            args: Prisma.IngredientAnalysisVersionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>
+          }
+          createMany: {
+            args: Prisma.IngredientAnalysisVersionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.IngredientAnalysisVersionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>[]
+          }
+          delete: {
+            args: Prisma.IngredientAnalysisVersionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>
+          }
+          update: {
+            args: Prisma.IngredientAnalysisVersionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>
+          }
+          deleteMany: {
+            args: Prisma.IngredientAnalysisVersionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IngredientAnalysisVersionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.IngredientAnalysisVersionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>[]
+          }
+          upsert: {
+            args: Prisma.IngredientAnalysisVersionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IngredientAnalysisVersionPayload>
+          }
+          aggregate: {
+            args: Prisma.IngredientAnalysisVersionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIngredientAnalysisVersion>
+          }
+          groupBy: {
+            args: Prisma.IngredientAnalysisVersionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IngredientAnalysisVersionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IngredientAnalysisVersionCountArgs<ExtArgs>
+            result: $Utils.Optional<IngredientAnalysisVersionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1904,6 +2187,9 @@ export namespace Prisma {
     productImage?: ProductImageOmit
     userProductScan?: UserProductScanOmit
     productCreationJob?: ProductCreationJobOmit
+    userFavorite?: UserFavoriteOmit
+    productAnalysisVersion?: ProductAnalysisVersionOmit
+    ingredientAnalysisVersion?: IngredientAnalysisVersionOmit
   }
 
   /* Types for Logging */
@@ -1987,12 +2273,14 @@ export namespace Prisma {
     password_reset_tokens: number
     product_scans: number
     product_creation_jobs: number
+    favorites: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     password_reset_tokens?: boolean | UserCountOutputTypeCountPassword_reset_tokensArgs
     product_scans?: boolean | UserCountOutputTypeCountProduct_scansArgs
     product_creation_jobs?: boolean | UserCountOutputTypeCountProduct_creation_jobsArgs
+    favorites?: boolean | UserCountOutputTypeCountFavoritesArgs
   }
 
   // Custom InputTypes
@@ -2025,6 +2313,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountProduct_creation_jobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProductCreationJobWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFavoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserFavoriteWhereInput
   }
 
 
@@ -2127,10 +2422,12 @@ export namespace Prisma {
 
   export type IngredientCountOutputType = {
     product_ingredients: number
+    analysis_versions: number
   }
 
   export type IngredientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product_ingredients?: boolean | IngredientCountOutputTypeCountProduct_ingredientsArgs
+    analysis_versions?: boolean | IngredientCountOutputTypeCountAnalysis_versionsArgs
   }
 
   // Custom InputTypes
@@ -2151,6 +2448,13 @@ export namespace Prisma {
     where?: ProductIngredientWhereInput
   }
 
+  /**
+   * IngredientCountOutputType without action
+   */
+  export type IngredientCountOutputTypeCountAnalysis_versionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IngredientAnalysisVersionWhereInput
+  }
+
 
   /**
    * Count Type ProductCountOutputType
@@ -2160,12 +2464,14 @@ export namespace Prisma {
     product_ingredients: number
     images: number
     scans: number
+    analysis_versions: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product_ingredients?: boolean | ProductCountOutputTypeCountProduct_ingredientsArgs
     images?: boolean | ProductCountOutputTypeCountImagesArgs
     scans?: boolean | ProductCountOutputTypeCountScansArgs
+    analysis_versions?: boolean | ProductCountOutputTypeCountAnalysis_versionsArgs
   }
 
   // Custom InputTypes
@@ -2198,6 +2504,13 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountScansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserProductScanWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountAnalysis_versionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductAnalysisVersionWhereInput
   }
 
 
@@ -2438,6 +2751,7 @@ export namespace Prisma {
     password_reset_tokens?: boolean | User$password_reset_tokensArgs<ExtArgs>
     product_scans?: boolean | User$product_scansArgs<ExtArgs>
     product_creation_jobs?: boolean | User$product_creation_jobsArgs<ExtArgs>
+    favorites?: boolean | User$favoritesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2482,6 +2796,7 @@ export namespace Prisma {
     password_reset_tokens?: boolean | User$password_reset_tokensArgs<ExtArgs>
     product_scans?: boolean | User$product_scansArgs<ExtArgs>
     product_creation_jobs?: boolean | User$product_creation_jobsArgs<ExtArgs>
+    favorites?: boolean | User$favoritesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2493,6 +2808,7 @@ export namespace Prisma {
       password_reset_tokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
       product_scans: Prisma.$UserProductScanPayload<ExtArgs>[]
       product_creation_jobs: Prisma.$ProductCreationJobPayload<ExtArgs>[]
+      favorites: Prisma.$UserFavoritePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2901,6 +3217,7 @@ export namespace Prisma {
     password_reset_tokens<T extends User$password_reset_tokensArgs<ExtArgs> = {}>(args?: Subset<T, User$password_reset_tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     product_scans<T extends User$product_scansArgs<ExtArgs> = {}>(args?: Subset<T, User$product_scansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductScanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     product_creation_jobs<T extends User$product_creation_jobsArgs<ExtArgs> = {}>(args?: Subset<T, User$product_creation_jobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductCreationJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    favorites<T extends User$favoritesArgs<ExtArgs> = {}>(args?: Subset<T, User$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3396,6 +3713,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProductCreationJobScalarFieldEnum | ProductCreationJobScalarFieldEnum[]
+  }
+
+  /**
+   * User.favorites
+   */
+  export type User$favoritesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    where?: UserFavoriteWhereInput
+    orderBy?: UserFavoriteOrderByWithRelationInput | UserFavoriteOrderByWithRelationInput[]
+    cursor?: UserFavoriteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserFavoriteScalarFieldEnum | UserFavoriteScalarFieldEnum[]
   }
 
   /**
@@ -9572,6 +9913,7 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     product_ingredients?: boolean | Ingredient$product_ingredientsArgs<ExtArgs>
+    analysis_versions?: boolean | Ingredient$analysis_versionsArgs<ExtArgs>
     _count?: boolean | IngredientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["ingredient"]>
 
@@ -9698,6 +10040,7 @@ export namespace Prisma {
   export type IngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uuid" | "name" | "name_normalized" | "synonyms" | "scientific_name" | "description" | "ai_summary" | "full_description" | "benefits" | "risks" | "safety_explanation" | "purpose" | "common_uses" | "pregnancy_safety" | "child_safety" | "allergy_risk" | "carcinogenic_evidence" | "hormone_disruption_risk" | "irritation_risk" | "acne_rating" | "comedogenic_rating" | "sensitive_skin_suitability" | "environmental_impact" | "is_vegan" | "is_cruelty_free" | "is_biodegradable" | "overall_score" | "safety_score" | "risk_score" | "confidence_score" | "color_indicator" | "research_summary" | "references" | "ai_version" | "created_at" | "updated_at", ExtArgs["result"]["ingredient"]>
   export type IngredientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product_ingredients?: boolean | Ingredient$product_ingredientsArgs<ExtArgs>
+    analysis_versions?: boolean | Ingredient$analysis_versionsArgs<ExtArgs>
     _count?: boolean | IngredientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IngredientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -9707,6 +10050,7 @@ export namespace Prisma {
     name: "Ingredient"
     objects: {
       product_ingredients: Prisma.$ProductIngredientPayload<ExtArgs>[]
+      analysis_versions: Prisma.$IngredientAnalysisVersionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -10141,6 +10485,7 @@ export namespace Prisma {
   export interface Prisma__IngredientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     product_ingredients<T extends Ingredient$product_ingredientsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$product_ingredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductIngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    analysis_versions<T extends Ingredient$analysis_versionsArgs<ExtArgs> = {}>(args?: Subset<T, Ingredient$analysis_versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10619,6 +10964,30 @@ export namespace Prisma {
   }
 
   /**
+   * Ingredient.analysis_versions
+   */
+  export type Ingredient$analysis_versionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    where?: IngredientAnalysisVersionWhereInput
+    orderBy?: IngredientAnalysisVersionOrderByWithRelationInput | IngredientAnalysisVersionOrderByWithRelationInput[]
+    cursor?: IngredientAnalysisVersionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IngredientAnalysisVersionScalarFieldEnum | IngredientAnalysisVersionScalarFieldEnum[]
+  }
+
+  /**
    * Ingredient without action
    */
   export type IngredientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11076,6 +11445,7 @@ export namespace Prisma {
     product_ingredients?: boolean | Product$product_ingredientsArgs<ExtArgs>
     images?: boolean | Product$imagesArgs<ExtArgs>
     scans?: boolean | Product$scansArgs<ExtArgs>
+    analysis_versions?: boolean | Product$analysis_versionsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -11204,6 +11574,7 @@ export namespace Prisma {
     product_ingredients?: boolean | Product$product_ingredientsArgs<ExtArgs>
     images?: boolean | Product$imagesArgs<ExtArgs>
     scans?: boolean | Product$scansArgs<ExtArgs>
+    analysis_versions?: boolean | Product$analysis_versionsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11223,6 +11594,7 @@ export namespace Prisma {
       product_ingredients: Prisma.$ProductIngredientPayload<ExtArgs>[]
       images: Prisma.$ProductImagePayload<ExtArgs>[]
       scans: Prisma.$UserProductScanPayload<ExtArgs>[]
+      analysis_versions: Prisma.$ProductAnalysisVersionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -11659,6 +12031,7 @@ export namespace Prisma {
     product_ingredients<T extends Product$product_ingredientsArgs<ExtArgs> = {}>(args?: Subset<T, Product$product_ingredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductIngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     images<T extends Product$imagesArgs<ExtArgs> = {}>(args?: Subset<T, Product$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     scans<T extends Product$scansArgs<ExtArgs> = {}>(args?: Subset<T, Product$scansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductScanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    analysis_versions<T extends Product$analysis_versionsArgs<ExtArgs> = {}>(args?: Subset<T, Product$analysis_versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12188,6 +12561,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserProductScanScalarFieldEnum | UserProductScanScalarFieldEnum[]
+  }
+
+  /**
+   * Product.analysis_versions
+   */
+  export type Product$analysis_versionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    where?: ProductAnalysisVersionWhereInput
+    orderBy?: ProductAnalysisVersionOrderByWithRelationInput | ProductAnalysisVersionOrderByWithRelationInput[]
+    cursor?: ProductAnalysisVersionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductAnalysisVersionScalarFieldEnum | ProductAnalysisVersionScalarFieldEnum[]
   }
 
   /**
@@ -16702,6 +17099,3313 @@ export namespace Prisma {
 
 
   /**
+   * Model UserFavorite
+   */
+
+  export type AggregateUserFavorite = {
+    _count: UserFavoriteCountAggregateOutputType | null
+    _avg: UserFavoriteAvgAggregateOutputType | null
+    _sum: UserFavoriteSumAggregateOutputType | null
+    _min: UserFavoriteMinAggregateOutputType | null
+    _max: UserFavoriteMaxAggregateOutputType | null
+  }
+
+  export type UserFavoriteAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type UserFavoriteSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type UserFavoriteMinAggregateOutputType = {
+    id: number | null
+    uuid: string | null
+    user_uuid: string | null
+    entity_type: $Enums.FavoriteEntityType | null
+    entity_uuid: string | null
+    created_at: Date | null
+  }
+
+  export type UserFavoriteMaxAggregateOutputType = {
+    id: number | null
+    uuid: string | null
+    user_uuid: string | null
+    entity_type: $Enums.FavoriteEntityType | null
+    entity_uuid: string | null
+    created_at: Date | null
+  }
+
+  export type UserFavoriteCountAggregateOutputType = {
+    id: number
+    uuid: number
+    user_uuid: number
+    entity_type: number
+    entity_uuid: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type UserFavoriteAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type UserFavoriteSumAggregateInputType = {
+    id?: true
+  }
+
+  export type UserFavoriteMinAggregateInputType = {
+    id?: true
+    uuid?: true
+    user_uuid?: true
+    entity_type?: true
+    entity_uuid?: true
+    created_at?: true
+  }
+
+  export type UserFavoriteMaxAggregateInputType = {
+    id?: true
+    uuid?: true
+    user_uuid?: true
+    entity_type?: true
+    entity_uuid?: true
+    created_at?: true
+  }
+
+  export type UserFavoriteCountAggregateInputType = {
+    id?: true
+    uuid?: true
+    user_uuid?: true
+    entity_type?: true
+    entity_uuid?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type UserFavoriteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserFavorite to aggregate.
+     */
+    where?: UserFavoriteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserFavorites to fetch.
+     */
+    orderBy?: UserFavoriteOrderByWithRelationInput | UserFavoriteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserFavoriteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserFavorites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserFavorites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserFavorites
+    **/
+    _count?: true | UserFavoriteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserFavoriteAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserFavoriteSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserFavoriteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserFavoriteMaxAggregateInputType
+  }
+
+  export type GetUserFavoriteAggregateType<T extends UserFavoriteAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserFavorite]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserFavorite[P]>
+      : GetScalarType<T[P], AggregateUserFavorite[P]>
+  }
+
+
+
+
+  export type UserFavoriteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserFavoriteWhereInput
+    orderBy?: UserFavoriteOrderByWithAggregationInput | UserFavoriteOrderByWithAggregationInput[]
+    by: UserFavoriteScalarFieldEnum[] | UserFavoriteScalarFieldEnum
+    having?: UserFavoriteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserFavoriteCountAggregateInputType | true
+    _avg?: UserFavoriteAvgAggregateInputType
+    _sum?: UserFavoriteSumAggregateInputType
+    _min?: UserFavoriteMinAggregateInputType
+    _max?: UserFavoriteMaxAggregateInputType
+  }
+
+  export type UserFavoriteGroupByOutputType = {
+    id: number
+    uuid: string
+    user_uuid: string
+    entity_type: $Enums.FavoriteEntityType
+    entity_uuid: string
+    created_at: Date
+    _count: UserFavoriteCountAggregateOutputType | null
+    _avg: UserFavoriteAvgAggregateOutputType | null
+    _sum: UserFavoriteSumAggregateOutputType | null
+    _min: UserFavoriteMinAggregateOutputType | null
+    _max: UserFavoriteMaxAggregateOutputType | null
+  }
+
+  type GetUserFavoriteGroupByPayload<T extends UserFavoriteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserFavoriteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserFavoriteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserFavoriteGroupByOutputType[P]>
+            : GetScalarType<T[P], UserFavoriteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserFavoriteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    user_uuid?: boolean
+    entity_type?: boolean
+    entity_uuid?: boolean
+    created_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userFavorite"]>
+
+  export type UserFavoriteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    user_uuid?: boolean
+    entity_type?: boolean
+    entity_uuid?: boolean
+    created_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userFavorite"]>
+
+  export type UserFavoriteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    user_uuid?: boolean
+    entity_type?: boolean
+    entity_uuid?: boolean
+    created_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userFavorite"]>
+
+  export type UserFavoriteSelectScalar = {
+    id?: boolean
+    uuid?: boolean
+    user_uuid?: boolean
+    entity_type?: boolean
+    entity_uuid?: boolean
+    created_at?: boolean
+  }
+
+  export type UserFavoriteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uuid" | "user_uuid" | "entity_type" | "entity_uuid" | "created_at", ExtArgs["result"]["userFavorite"]>
+  export type UserFavoriteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserFavoriteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserFavoriteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $UserFavoritePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserFavorite"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      uuid: string
+      user_uuid: string
+      entity_type: $Enums.FavoriteEntityType
+      entity_uuid: string
+      created_at: Date
+    }, ExtArgs["result"]["userFavorite"]>
+    composites: {}
+  }
+
+  type UserFavoriteGetPayload<S extends boolean | null | undefined | UserFavoriteDefaultArgs> = $Result.GetResult<Prisma.$UserFavoritePayload, S>
+
+  type UserFavoriteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserFavoriteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserFavoriteCountAggregateInputType | true
+    }
+
+  export interface UserFavoriteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserFavorite'], meta: { name: 'UserFavorite' } }
+    /**
+     * Find zero or one UserFavorite that matches the filter.
+     * @param {UserFavoriteFindUniqueArgs} args - Arguments to find a UserFavorite
+     * @example
+     * // Get one UserFavorite
+     * const userFavorite = await prisma.userFavorite.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserFavoriteFindUniqueArgs>(args: SelectSubset<T, UserFavoriteFindUniqueArgs<ExtArgs>>): Prisma__UserFavoriteClient<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserFavorite that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserFavoriteFindUniqueOrThrowArgs} args - Arguments to find a UserFavorite
+     * @example
+     * // Get one UserFavorite
+     * const userFavorite = await prisma.userFavorite.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserFavoriteFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFavoriteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserFavoriteClient<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserFavorite that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFavoriteFindFirstArgs} args - Arguments to find a UserFavorite
+     * @example
+     * // Get one UserFavorite
+     * const userFavorite = await prisma.userFavorite.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserFavoriteFindFirstArgs>(args?: SelectSubset<T, UserFavoriteFindFirstArgs<ExtArgs>>): Prisma__UserFavoriteClient<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserFavorite that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFavoriteFindFirstOrThrowArgs} args - Arguments to find a UserFavorite
+     * @example
+     * // Get one UserFavorite
+     * const userFavorite = await prisma.userFavorite.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserFavoriteFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFavoriteFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserFavoriteClient<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserFavorites that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFavoriteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserFavorites
+     * const userFavorites = await prisma.userFavorite.findMany()
+     * 
+     * // Get first 10 UserFavorites
+     * const userFavorites = await prisma.userFavorite.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userFavoriteWithIdOnly = await prisma.userFavorite.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserFavoriteFindManyArgs>(args?: SelectSubset<T, UserFavoriteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserFavorite.
+     * @param {UserFavoriteCreateArgs} args - Arguments to create a UserFavorite.
+     * @example
+     * // Create one UserFavorite
+     * const UserFavorite = await prisma.userFavorite.create({
+     *   data: {
+     *     // ... data to create a UserFavorite
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserFavoriteCreateArgs>(args: SelectSubset<T, UserFavoriteCreateArgs<ExtArgs>>): Prisma__UserFavoriteClient<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserFavorites.
+     * @param {UserFavoriteCreateManyArgs} args - Arguments to create many UserFavorites.
+     * @example
+     * // Create many UserFavorites
+     * const userFavorite = await prisma.userFavorite.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserFavoriteCreateManyArgs>(args?: SelectSubset<T, UserFavoriteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserFavorites and returns the data saved in the database.
+     * @param {UserFavoriteCreateManyAndReturnArgs} args - Arguments to create many UserFavorites.
+     * @example
+     * // Create many UserFavorites
+     * const userFavorite = await prisma.userFavorite.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserFavorites and only return the `id`
+     * const userFavoriteWithIdOnly = await prisma.userFavorite.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserFavoriteCreateManyAndReturnArgs>(args?: SelectSubset<T, UserFavoriteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserFavorite.
+     * @param {UserFavoriteDeleteArgs} args - Arguments to delete one UserFavorite.
+     * @example
+     * // Delete one UserFavorite
+     * const UserFavorite = await prisma.userFavorite.delete({
+     *   where: {
+     *     // ... filter to delete one UserFavorite
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserFavoriteDeleteArgs>(args: SelectSubset<T, UserFavoriteDeleteArgs<ExtArgs>>): Prisma__UserFavoriteClient<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserFavorite.
+     * @param {UserFavoriteUpdateArgs} args - Arguments to update one UserFavorite.
+     * @example
+     * // Update one UserFavorite
+     * const userFavorite = await prisma.userFavorite.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserFavoriteUpdateArgs>(args: SelectSubset<T, UserFavoriteUpdateArgs<ExtArgs>>): Prisma__UserFavoriteClient<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserFavorites.
+     * @param {UserFavoriteDeleteManyArgs} args - Arguments to filter UserFavorites to delete.
+     * @example
+     * // Delete a few UserFavorites
+     * const { count } = await prisma.userFavorite.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserFavoriteDeleteManyArgs>(args?: SelectSubset<T, UserFavoriteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserFavorites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFavoriteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserFavorites
+     * const userFavorite = await prisma.userFavorite.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserFavoriteUpdateManyArgs>(args: SelectSubset<T, UserFavoriteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserFavorites and returns the data updated in the database.
+     * @param {UserFavoriteUpdateManyAndReturnArgs} args - Arguments to update many UserFavorites.
+     * @example
+     * // Update many UserFavorites
+     * const userFavorite = await prisma.userFavorite.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserFavorites and only return the `id`
+     * const userFavoriteWithIdOnly = await prisma.userFavorite.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserFavoriteUpdateManyAndReturnArgs>(args: SelectSubset<T, UserFavoriteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserFavorite.
+     * @param {UserFavoriteUpsertArgs} args - Arguments to update or create a UserFavorite.
+     * @example
+     * // Update or create a UserFavorite
+     * const userFavorite = await prisma.userFavorite.upsert({
+     *   create: {
+     *     // ... data to create a UserFavorite
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserFavorite we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserFavoriteUpsertArgs>(args: SelectSubset<T, UserFavoriteUpsertArgs<ExtArgs>>): Prisma__UserFavoriteClient<$Result.GetResult<Prisma.$UserFavoritePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserFavorites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFavoriteCountArgs} args - Arguments to filter UserFavorites to count.
+     * @example
+     * // Count the number of UserFavorites
+     * const count = await prisma.userFavorite.count({
+     *   where: {
+     *     // ... the filter for the UserFavorites we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserFavoriteCountArgs>(
+      args?: Subset<T, UserFavoriteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserFavoriteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserFavorite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFavoriteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserFavoriteAggregateArgs>(args: Subset<T, UserFavoriteAggregateArgs>): Prisma.PrismaPromise<GetUserFavoriteAggregateType<T>>
+
+    /**
+     * Group by UserFavorite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFavoriteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserFavoriteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserFavoriteGroupByArgs['orderBy'] }
+        : { orderBy?: UserFavoriteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserFavoriteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserFavoriteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserFavorite model
+   */
+  readonly fields: UserFavoriteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserFavorite.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserFavoriteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserFavorite model
+   */
+  interface UserFavoriteFieldRefs {
+    readonly id: FieldRef<"UserFavorite", 'Int'>
+    readonly uuid: FieldRef<"UserFavorite", 'String'>
+    readonly user_uuid: FieldRef<"UserFavorite", 'String'>
+    readonly entity_type: FieldRef<"UserFavorite", 'FavoriteEntityType'>
+    readonly entity_uuid: FieldRef<"UserFavorite", 'String'>
+    readonly created_at: FieldRef<"UserFavorite", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserFavorite findUnique
+   */
+  export type UserFavoriteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFavorite to fetch.
+     */
+    where: UserFavoriteWhereUniqueInput
+  }
+
+  /**
+   * UserFavorite findUniqueOrThrow
+   */
+  export type UserFavoriteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFavorite to fetch.
+     */
+    where: UserFavoriteWhereUniqueInput
+  }
+
+  /**
+   * UserFavorite findFirst
+   */
+  export type UserFavoriteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFavorite to fetch.
+     */
+    where?: UserFavoriteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserFavorites to fetch.
+     */
+    orderBy?: UserFavoriteOrderByWithRelationInput | UserFavoriteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserFavorites.
+     */
+    cursor?: UserFavoriteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserFavorites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserFavorites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserFavorites.
+     */
+    distinct?: UserFavoriteScalarFieldEnum | UserFavoriteScalarFieldEnum[]
+  }
+
+  /**
+   * UserFavorite findFirstOrThrow
+   */
+  export type UserFavoriteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFavorite to fetch.
+     */
+    where?: UserFavoriteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserFavorites to fetch.
+     */
+    orderBy?: UserFavoriteOrderByWithRelationInput | UserFavoriteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserFavorites.
+     */
+    cursor?: UserFavoriteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserFavorites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserFavorites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserFavorites.
+     */
+    distinct?: UserFavoriteScalarFieldEnum | UserFavoriteScalarFieldEnum[]
+  }
+
+  /**
+   * UserFavorite findMany
+   */
+  export type UserFavoriteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFavorites to fetch.
+     */
+    where?: UserFavoriteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserFavorites to fetch.
+     */
+    orderBy?: UserFavoriteOrderByWithRelationInput | UserFavoriteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserFavorites.
+     */
+    cursor?: UserFavoriteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserFavorites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserFavorites.
+     */
+    skip?: number
+    distinct?: UserFavoriteScalarFieldEnum | UserFavoriteScalarFieldEnum[]
+  }
+
+  /**
+   * UserFavorite create
+   */
+  export type UserFavoriteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserFavorite.
+     */
+    data: XOR<UserFavoriteCreateInput, UserFavoriteUncheckedCreateInput>
+  }
+
+  /**
+   * UserFavorite createMany
+   */
+  export type UserFavoriteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserFavorites.
+     */
+    data: UserFavoriteCreateManyInput | UserFavoriteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserFavorite createManyAndReturn
+   */
+  export type UserFavoriteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserFavorites.
+     */
+    data: UserFavoriteCreateManyInput | UserFavoriteCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserFavorite update
+   */
+  export type UserFavoriteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserFavorite.
+     */
+    data: XOR<UserFavoriteUpdateInput, UserFavoriteUncheckedUpdateInput>
+    /**
+     * Choose, which UserFavorite to update.
+     */
+    where: UserFavoriteWhereUniqueInput
+  }
+
+  /**
+   * UserFavorite updateMany
+   */
+  export type UserFavoriteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserFavorites.
+     */
+    data: XOR<UserFavoriteUpdateManyMutationInput, UserFavoriteUncheckedUpdateManyInput>
+    /**
+     * Filter which UserFavorites to update
+     */
+    where?: UserFavoriteWhereInput
+    /**
+     * Limit how many UserFavorites to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserFavorite updateManyAndReturn
+   */
+  export type UserFavoriteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * The data used to update UserFavorites.
+     */
+    data: XOR<UserFavoriteUpdateManyMutationInput, UserFavoriteUncheckedUpdateManyInput>
+    /**
+     * Filter which UserFavorites to update
+     */
+    where?: UserFavoriteWhereInput
+    /**
+     * Limit how many UserFavorites to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserFavorite upsert
+   */
+  export type UserFavoriteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserFavorite to update in case it exists.
+     */
+    where: UserFavoriteWhereUniqueInput
+    /**
+     * In case the UserFavorite found by the `where` argument doesn't exist, create a new UserFavorite with this data.
+     */
+    create: XOR<UserFavoriteCreateInput, UserFavoriteUncheckedCreateInput>
+    /**
+     * In case the UserFavorite was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserFavoriteUpdateInput, UserFavoriteUncheckedUpdateInput>
+  }
+
+  /**
+   * UserFavorite delete
+   */
+  export type UserFavoriteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+    /**
+     * Filter which UserFavorite to delete.
+     */
+    where: UserFavoriteWhereUniqueInput
+  }
+
+  /**
+   * UserFavorite deleteMany
+   */
+  export type UserFavoriteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserFavorites to delete
+     */
+    where?: UserFavoriteWhereInput
+    /**
+     * Limit how many UserFavorites to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserFavorite without action
+   */
+  export type UserFavoriteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFavorite
+     */
+    select?: UserFavoriteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFavorite
+     */
+    omit?: UserFavoriteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFavoriteInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProductAnalysisVersion
+   */
+
+  export type AggregateProductAnalysisVersion = {
+    _count: ProductAnalysisVersionCountAggregateOutputType | null
+    _avg: ProductAnalysisVersionAvgAggregateOutputType | null
+    _sum: ProductAnalysisVersionSumAggregateOutputType | null
+    _min: ProductAnalysisVersionMinAggregateOutputType | null
+    _max: ProductAnalysisVersionMaxAggregateOutputType | null
+  }
+
+  export type ProductAnalysisVersionAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ProductAnalysisVersionSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ProductAnalysisVersionMinAggregateOutputType = {
+    id: number | null
+    uuid: string | null
+    product_uuid: string | null
+    ai_version: string | null
+    created_at: Date | null
+  }
+
+  export type ProductAnalysisVersionMaxAggregateOutputType = {
+    id: number | null
+    uuid: string | null
+    product_uuid: string | null
+    ai_version: string | null
+    created_at: Date | null
+  }
+
+  export type ProductAnalysisVersionCountAggregateOutputType = {
+    id: number
+    uuid: number
+    product_uuid: number
+    ai_version: number
+    snapshot: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type ProductAnalysisVersionAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type ProductAnalysisVersionSumAggregateInputType = {
+    id?: true
+  }
+
+  export type ProductAnalysisVersionMinAggregateInputType = {
+    id?: true
+    uuid?: true
+    product_uuid?: true
+    ai_version?: true
+    created_at?: true
+  }
+
+  export type ProductAnalysisVersionMaxAggregateInputType = {
+    id?: true
+    uuid?: true
+    product_uuid?: true
+    ai_version?: true
+    created_at?: true
+  }
+
+  export type ProductAnalysisVersionCountAggregateInputType = {
+    id?: true
+    uuid?: true
+    product_uuid?: true
+    ai_version?: true
+    snapshot?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type ProductAnalysisVersionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductAnalysisVersion to aggregate.
+     */
+    where?: ProductAnalysisVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductAnalysisVersions to fetch.
+     */
+    orderBy?: ProductAnalysisVersionOrderByWithRelationInput | ProductAnalysisVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProductAnalysisVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductAnalysisVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductAnalysisVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProductAnalysisVersions
+    **/
+    _count?: true | ProductAnalysisVersionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProductAnalysisVersionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProductAnalysisVersionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProductAnalysisVersionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProductAnalysisVersionMaxAggregateInputType
+  }
+
+  export type GetProductAnalysisVersionAggregateType<T extends ProductAnalysisVersionAggregateArgs> = {
+        [P in keyof T & keyof AggregateProductAnalysisVersion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProductAnalysisVersion[P]>
+      : GetScalarType<T[P], AggregateProductAnalysisVersion[P]>
+  }
+
+
+
+
+  export type ProductAnalysisVersionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductAnalysisVersionWhereInput
+    orderBy?: ProductAnalysisVersionOrderByWithAggregationInput | ProductAnalysisVersionOrderByWithAggregationInput[]
+    by: ProductAnalysisVersionScalarFieldEnum[] | ProductAnalysisVersionScalarFieldEnum
+    having?: ProductAnalysisVersionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProductAnalysisVersionCountAggregateInputType | true
+    _avg?: ProductAnalysisVersionAvgAggregateInputType
+    _sum?: ProductAnalysisVersionSumAggregateInputType
+    _min?: ProductAnalysisVersionMinAggregateInputType
+    _max?: ProductAnalysisVersionMaxAggregateInputType
+  }
+
+  export type ProductAnalysisVersionGroupByOutputType = {
+    id: number
+    uuid: string
+    product_uuid: string
+    ai_version: string | null
+    snapshot: JsonValue
+    created_at: Date
+    _count: ProductAnalysisVersionCountAggregateOutputType | null
+    _avg: ProductAnalysisVersionAvgAggregateOutputType | null
+    _sum: ProductAnalysisVersionSumAggregateOutputType | null
+    _min: ProductAnalysisVersionMinAggregateOutputType | null
+    _max: ProductAnalysisVersionMaxAggregateOutputType | null
+  }
+
+  type GetProductAnalysisVersionGroupByPayload<T extends ProductAnalysisVersionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProductAnalysisVersionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProductAnalysisVersionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProductAnalysisVersionGroupByOutputType[P]>
+            : GetScalarType<T[P], ProductAnalysisVersionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProductAnalysisVersionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    product_uuid?: boolean
+    ai_version?: boolean
+    snapshot?: boolean
+    created_at?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productAnalysisVersion"]>
+
+  export type ProductAnalysisVersionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    product_uuid?: boolean
+    ai_version?: boolean
+    snapshot?: boolean
+    created_at?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productAnalysisVersion"]>
+
+  export type ProductAnalysisVersionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    product_uuid?: boolean
+    ai_version?: boolean
+    snapshot?: boolean
+    created_at?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productAnalysisVersion"]>
+
+  export type ProductAnalysisVersionSelectScalar = {
+    id?: boolean
+    uuid?: boolean
+    product_uuid?: boolean
+    ai_version?: boolean
+    snapshot?: boolean
+    created_at?: boolean
+  }
+
+  export type ProductAnalysisVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uuid" | "product_uuid" | "ai_version" | "snapshot" | "created_at", ExtArgs["result"]["productAnalysisVersion"]>
+  export type ProductAnalysisVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type ProductAnalysisVersionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type ProductAnalysisVersionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $ProductAnalysisVersionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProductAnalysisVersion"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      uuid: string
+      product_uuid: string
+      ai_version: string | null
+      snapshot: Prisma.JsonValue
+      created_at: Date
+    }, ExtArgs["result"]["productAnalysisVersion"]>
+    composites: {}
+  }
+
+  type ProductAnalysisVersionGetPayload<S extends boolean | null | undefined | ProductAnalysisVersionDefaultArgs> = $Result.GetResult<Prisma.$ProductAnalysisVersionPayload, S>
+
+  type ProductAnalysisVersionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProductAnalysisVersionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProductAnalysisVersionCountAggregateInputType | true
+    }
+
+  export interface ProductAnalysisVersionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProductAnalysisVersion'], meta: { name: 'ProductAnalysisVersion' } }
+    /**
+     * Find zero or one ProductAnalysisVersion that matches the filter.
+     * @param {ProductAnalysisVersionFindUniqueArgs} args - Arguments to find a ProductAnalysisVersion
+     * @example
+     * // Get one ProductAnalysisVersion
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProductAnalysisVersionFindUniqueArgs>(args: SelectSubset<T, ProductAnalysisVersionFindUniqueArgs<ExtArgs>>): Prisma__ProductAnalysisVersionClient<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProductAnalysisVersion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProductAnalysisVersionFindUniqueOrThrowArgs} args - Arguments to find a ProductAnalysisVersion
+     * @example
+     * // Get one ProductAnalysisVersion
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProductAnalysisVersionFindUniqueOrThrowArgs>(args: SelectSubset<T, ProductAnalysisVersionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProductAnalysisVersionClient<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductAnalysisVersion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductAnalysisVersionFindFirstArgs} args - Arguments to find a ProductAnalysisVersion
+     * @example
+     * // Get one ProductAnalysisVersion
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProductAnalysisVersionFindFirstArgs>(args?: SelectSubset<T, ProductAnalysisVersionFindFirstArgs<ExtArgs>>): Prisma__ProductAnalysisVersionClient<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductAnalysisVersion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductAnalysisVersionFindFirstOrThrowArgs} args - Arguments to find a ProductAnalysisVersion
+     * @example
+     * // Get one ProductAnalysisVersion
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProductAnalysisVersionFindFirstOrThrowArgs>(args?: SelectSubset<T, ProductAnalysisVersionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProductAnalysisVersionClient<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProductAnalysisVersions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductAnalysisVersionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProductAnalysisVersions
+     * const productAnalysisVersions = await prisma.productAnalysisVersion.findMany()
+     * 
+     * // Get first 10 ProductAnalysisVersions
+     * const productAnalysisVersions = await prisma.productAnalysisVersion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const productAnalysisVersionWithIdOnly = await prisma.productAnalysisVersion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProductAnalysisVersionFindManyArgs>(args?: SelectSubset<T, ProductAnalysisVersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProductAnalysisVersion.
+     * @param {ProductAnalysisVersionCreateArgs} args - Arguments to create a ProductAnalysisVersion.
+     * @example
+     * // Create one ProductAnalysisVersion
+     * const ProductAnalysisVersion = await prisma.productAnalysisVersion.create({
+     *   data: {
+     *     // ... data to create a ProductAnalysisVersion
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProductAnalysisVersionCreateArgs>(args: SelectSubset<T, ProductAnalysisVersionCreateArgs<ExtArgs>>): Prisma__ProductAnalysisVersionClient<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProductAnalysisVersions.
+     * @param {ProductAnalysisVersionCreateManyArgs} args - Arguments to create many ProductAnalysisVersions.
+     * @example
+     * // Create many ProductAnalysisVersions
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProductAnalysisVersionCreateManyArgs>(args?: SelectSubset<T, ProductAnalysisVersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProductAnalysisVersions and returns the data saved in the database.
+     * @param {ProductAnalysisVersionCreateManyAndReturnArgs} args - Arguments to create many ProductAnalysisVersions.
+     * @example
+     * // Create many ProductAnalysisVersions
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProductAnalysisVersions and only return the `id`
+     * const productAnalysisVersionWithIdOnly = await prisma.productAnalysisVersion.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProductAnalysisVersionCreateManyAndReturnArgs>(args?: SelectSubset<T, ProductAnalysisVersionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProductAnalysisVersion.
+     * @param {ProductAnalysisVersionDeleteArgs} args - Arguments to delete one ProductAnalysisVersion.
+     * @example
+     * // Delete one ProductAnalysisVersion
+     * const ProductAnalysisVersion = await prisma.productAnalysisVersion.delete({
+     *   where: {
+     *     // ... filter to delete one ProductAnalysisVersion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProductAnalysisVersionDeleteArgs>(args: SelectSubset<T, ProductAnalysisVersionDeleteArgs<ExtArgs>>): Prisma__ProductAnalysisVersionClient<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProductAnalysisVersion.
+     * @param {ProductAnalysisVersionUpdateArgs} args - Arguments to update one ProductAnalysisVersion.
+     * @example
+     * // Update one ProductAnalysisVersion
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProductAnalysisVersionUpdateArgs>(args: SelectSubset<T, ProductAnalysisVersionUpdateArgs<ExtArgs>>): Prisma__ProductAnalysisVersionClient<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProductAnalysisVersions.
+     * @param {ProductAnalysisVersionDeleteManyArgs} args - Arguments to filter ProductAnalysisVersions to delete.
+     * @example
+     * // Delete a few ProductAnalysisVersions
+     * const { count } = await prisma.productAnalysisVersion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProductAnalysisVersionDeleteManyArgs>(args?: SelectSubset<T, ProductAnalysisVersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductAnalysisVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductAnalysisVersionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProductAnalysisVersions
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProductAnalysisVersionUpdateManyArgs>(args: SelectSubset<T, ProductAnalysisVersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductAnalysisVersions and returns the data updated in the database.
+     * @param {ProductAnalysisVersionUpdateManyAndReturnArgs} args - Arguments to update many ProductAnalysisVersions.
+     * @example
+     * // Update many ProductAnalysisVersions
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProductAnalysisVersions and only return the `id`
+     * const productAnalysisVersionWithIdOnly = await prisma.productAnalysisVersion.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProductAnalysisVersionUpdateManyAndReturnArgs>(args: SelectSubset<T, ProductAnalysisVersionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProductAnalysisVersion.
+     * @param {ProductAnalysisVersionUpsertArgs} args - Arguments to update or create a ProductAnalysisVersion.
+     * @example
+     * // Update or create a ProductAnalysisVersion
+     * const productAnalysisVersion = await prisma.productAnalysisVersion.upsert({
+     *   create: {
+     *     // ... data to create a ProductAnalysisVersion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProductAnalysisVersion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProductAnalysisVersionUpsertArgs>(args: SelectSubset<T, ProductAnalysisVersionUpsertArgs<ExtArgs>>): Prisma__ProductAnalysisVersionClient<$Result.GetResult<Prisma.$ProductAnalysisVersionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProductAnalysisVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductAnalysisVersionCountArgs} args - Arguments to filter ProductAnalysisVersions to count.
+     * @example
+     * // Count the number of ProductAnalysisVersions
+     * const count = await prisma.productAnalysisVersion.count({
+     *   where: {
+     *     // ... the filter for the ProductAnalysisVersions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProductAnalysisVersionCountArgs>(
+      args?: Subset<T, ProductAnalysisVersionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProductAnalysisVersionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProductAnalysisVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductAnalysisVersionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProductAnalysisVersionAggregateArgs>(args: Subset<T, ProductAnalysisVersionAggregateArgs>): Prisma.PrismaPromise<GetProductAnalysisVersionAggregateType<T>>
+
+    /**
+     * Group by ProductAnalysisVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductAnalysisVersionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProductAnalysisVersionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProductAnalysisVersionGroupByArgs['orderBy'] }
+        : { orderBy?: ProductAnalysisVersionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProductAnalysisVersionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductAnalysisVersionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProductAnalysisVersion model
+   */
+  readonly fields: ProductAnalysisVersionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProductAnalysisVersion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProductAnalysisVersionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProductAnalysisVersion model
+   */
+  interface ProductAnalysisVersionFieldRefs {
+    readonly id: FieldRef<"ProductAnalysisVersion", 'Int'>
+    readonly uuid: FieldRef<"ProductAnalysisVersion", 'String'>
+    readonly product_uuid: FieldRef<"ProductAnalysisVersion", 'String'>
+    readonly ai_version: FieldRef<"ProductAnalysisVersion", 'String'>
+    readonly snapshot: FieldRef<"ProductAnalysisVersion", 'Json'>
+    readonly created_at: FieldRef<"ProductAnalysisVersion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProductAnalysisVersion findUnique
+   */
+  export type ProductAnalysisVersionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductAnalysisVersion to fetch.
+     */
+    where: ProductAnalysisVersionWhereUniqueInput
+  }
+
+  /**
+   * ProductAnalysisVersion findUniqueOrThrow
+   */
+  export type ProductAnalysisVersionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductAnalysisVersion to fetch.
+     */
+    where: ProductAnalysisVersionWhereUniqueInput
+  }
+
+  /**
+   * ProductAnalysisVersion findFirst
+   */
+  export type ProductAnalysisVersionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductAnalysisVersion to fetch.
+     */
+    where?: ProductAnalysisVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductAnalysisVersions to fetch.
+     */
+    orderBy?: ProductAnalysisVersionOrderByWithRelationInput | ProductAnalysisVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductAnalysisVersions.
+     */
+    cursor?: ProductAnalysisVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductAnalysisVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductAnalysisVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductAnalysisVersions.
+     */
+    distinct?: ProductAnalysisVersionScalarFieldEnum | ProductAnalysisVersionScalarFieldEnum[]
+  }
+
+  /**
+   * ProductAnalysisVersion findFirstOrThrow
+   */
+  export type ProductAnalysisVersionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductAnalysisVersion to fetch.
+     */
+    where?: ProductAnalysisVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductAnalysisVersions to fetch.
+     */
+    orderBy?: ProductAnalysisVersionOrderByWithRelationInput | ProductAnalysisVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductAnalysisVersions.
+     */
+    cursor?: ProductAnalysisVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductAnalysisVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductAnalysisVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductAnalysisVersions.
+     */
+    distinct?: ProductAnalysisVersionScalarFieldEnum | ProductAnalysisVersionScalarFieldEnum[]
+  }
+
+  /**
+   * ProductAnalysisVersion findMany
+   */
+  export type ProductAnalysisVersionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductAnalysisVersions to fetch.
+     */
+    where?: ProductAnalysisVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductAnalysisVersions to fetch.
+     */
+    orderBy?: ProductAnalysisVersionOrderByWithRelationInput | ProductAnalysisVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProductAnalysisVersions.
+     */
+    cursor?: ProductAnalysisVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductAnalysisVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductAnalysisVersions.
+     */
+    skip?: number
+    distinct?: ProductAnalysisVersionScalarFieldEnum | ProductAnalysisVersionScalarFieldEnum[]
+  }
+
+  /**
+   * ProductAnalysisVersion create
+   */
+  export type ProductAnalysisVersionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProductAnalysisVersion.
+     */
+    data: XOR<ProductAnalysisVersionCreateInput, ProductAnalysisVersionUncheckedCreateInput>
+  }
+
+  /**
+   * ProductAnalysisVersion createMany
+   */
+  export type ProductAnalysisVersionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProductAnalysisVersions.
+     */
+    data: ProductAnalysisVersionCreateManyInput | ProductAnalysisVersionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProductAnalysisVersion createManyAndReturn
+   */
+  export type ProductAnalysisVersionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProductAnalysisVersions.
+     */
+    data: ProductAnalysisVersionCreateManyInput | ProductAnalysisVersionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductAnalysisVersion update
+   */
+  export type ProductAnalysisVersionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProductAnalysisVersion.
+     */
+    data: XOR<ProductAnalysisVersionUpdateInput, ProductAnalysisVersionUncheckedUpdateInput>
+    /**
+     * Choose, which ProductAnalysisVersion to update.
+     */
+    where: ProductAnalysisVersionWhereUniqueInput
+  }
+
+  /**
+   * ProductAnalysisVersion updateMany
+   */
+  export type ProductAnalysisVersionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProductAnalysisVersions.
+     */
+    data: XOR<ProductAnalysisVersionUpdateManyMutationInput, ProductAnalysisVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductAnalysisVersions to update
+     */
+    where?: ProductAnalysisVersionWhereInput
+    /**
+     * Limit how many ProductAnalysisVersions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductAnalysisVersion updateManyAndReturn
+   */
+  export type ProductAnalysisVersionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * The data used to update ProductAnalysisVersions.
+     */
+    data: XOR<ProductAnalysisVersionUpdateManyMutationInput, ProductAnalysisVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductAnalysisVersions to update
+     */
+    where?: ProductAnalysisVersionWhereInput
+    /**
+     * Limit how many ProductAnalysisVersions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductAnalysisVersion upsert
+   */
+  export type ProductAnalysisVersionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProductAnalysisVersion to update in case it exists.
+     */
+    where: ProductAnalysisVersionWhereUniqueInput
+    /**
+     * In case the ProductAnalysisVersion found by the `where` argument doesn't exist, create a new ProductAnalysisVersion with this data.
+     */
+    create: XOR<ProductAnalysisVersionCreateInput, ProductAnalysisVersionUncheckedCreateInput>
+    /**
+     * In case the ProductAnalysisVersion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProductAnalysisVersionUpdateInput, ProductAnalysisVersionUncheckedUpdateInput>
+  }
+
+  /**
+   * ProductAnalysisVersion delete
+   */
+  export type ProductAnalysisVersionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter which ProductAnalysisVersion to delete.
+     */
+    where: ProductAnalysisVersionWhereUniqueInput
+  }
+
+  /**
+   * ProductAnalysisVersion deleteMany
+   */
+  export type ProductAnalysisVersionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductAnalysisVersions to delete
+     */
+    where?: ProductAnalysisVersionWhereInput
+    /**
+     * Limit how many ProductAnalysisVersions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductAnalysisVersion without action
+   */
+  export type ProductAnalysisVersionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductAnalysisVersion
+     */
+    select?: ProductAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductAnalysisVersion
+     */
+    omit?: ProductAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductAnalysisVersionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model IngredientAnalysisVersion
+   */
+
+  export type AggregateIngredientAnalysisVersion = {
+    _count: IngredientAnalysisVersionCountAggregateOutputType | null
+    _avg: IngredientAnalysisVersionAvgAggregateOutputType | null
+    _sum: IngredientAnalysisVersionSumAggregateOutputType | null
+    _min: IngredientAnalysisVersionMinAggregateOutputType | null
+    _max: IngredientAnalysisVersionMaxAggregateOutputType | null
+  }
+
+  export type IngredientAnalysisVersionAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type IngredientAnalysisVersionSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type IngredientAnalysisVersionMinAggregateOutputType = {
+    id: number | null
+    uuid: string | null
+    ingredient_uuid: string | null
+    ai_version: string | null
+    created_at: Date | null
+  }
+
+  export type IngredientAnalysisVersionMaxAggregateOutputType = {
+    id: number | null
+    uuid: string | null
+    ingredient_uuid: string | null
+    ai_version: string | null
+    created_at: Date | null
+  }
+
+  export type IngredientAnalysisVersionCountAggregateOutputType = {
+    id: number
+    uuid: number
+    ingredient_uuid: number
+    ai_version: number
+    snapshot: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type IngredientAnalysisVersionAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type IngredientAnalysisVersionSumAggregateInputType = {
+    id?: true
+  }
+
+  export type IngredientAnalysisVersionMinAggregateInputType = {
+    id?: true
+    uuid?: true
+    ingredient_uuid?: true
+    ai_version?: true
+    created_at?: true
+  }
+
+  export type IngredientAnalysisVersionMaxAggregateInputType = {
+    id?: true
+    uuid?: true
+    ingredient_uuid?: true
+    ai_version?: true
+    created_at?: true
+  }
+
+  export type IngredientAnalysisVersionCountAggregateInputType = {
+    id?: true
+    uuid?: true
+    ingredient_uuid?: true
+    ai_version?: true
+    snapshot?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type IngredientAnalysisVersionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IngredientAnalysisVersion to aggregate.
+     */
+    where?: IngredientAnalysisVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IngredientAnalysisVersions to fetch.
+     */
+    orderBy?: IngredientAnalysisVersionOrderByWithRelationInput | IngredientAnalysisVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IngredientAnalysisVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IngredientAnalysisVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IngredientAnalysisVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IngredientAnalysisVersions
+    **/
+    _count?: true | IngredientAnalysisVersionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IngredientAnalysisVersionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IngredientAnalysisVersionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IngredientAnalysisVersionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IngredientAnalysisVersionMaxAggregateInputType
+  }
+
+  export type GetIngredientAnalysisVersionAggregateType<T extends IngredientAnalysisVersionAggregateArgs> = {
+        [P in keyof T & keyof AggregateIngredientAnalysisVersion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIngredientAnalysisVersion[P]>
+      : GetScalarType<T[P], AggregateIngredientAnalysisVersion[P]>
+  }
+
+
+
+
+  export type IngredientAnalysisVersionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IngredientAnalysisVersionWhereInput
+    orderBy?: IngredientAnalysisVersionOrderByWithAggregationInput | IngredientAnalysisVersionOrderByWithAggregationInput[]
+    by: IngredientAnalysisVersionScalarFieldEnum[] | IngredientAnalysisVersionScalarFieldEnum
+    having?: IngredientAnalysisVersionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IngredientAnalysisVersionCountAggregateInputType | true
+    _avg?: IngredientAnalysisVersionAvgAggregateInputType
+    _sum?: IngredientAnalysisVersionSumAggregateInputType
+    _min?: IngredientAnalysisVersionMinAggregateInputType
+    _max?: IngredientAnalysisVersionMaxAggregateInputType
+  }
+
+  export type IngredientAnalysisVersionGroupByOutputType = {
+    id: number
+    uuid: string
+    ingredient_uuid: string
+    ai_version: string | null
+    snapshot: JsonValue
+    created_at: Date
+    _count: IngredientAnalysisVersionCountAggregateOutputType | null
+    _avg: IngredientAnalysisVersionAvgAggregateOutputType | null
+    _sum: IngredientAnalysisVersionSumAggregateOutputType | null
+    _min: IngredientAnalysisVersionMinAggregateOutputType | null
+    _max: IngredientAnalysisVersionMaxAggregateOutputType | null
+  }
+
+  type GetIngredientAnalysisVersionGroupByPayload<T extends IngredientAnalysisVersionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IngredientAnalysisVersionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IngredientAnalysisVersionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IngredientAnalysisVersionGroupByOutputType[P]>
+            : GetScalarType<T[P], IngredientAnalysisVersionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IngredientAnalysisVersionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    ingredient_uuid?: boolean
+    ai_version?: boolean
+    snapshot?: boolean
+    created_at?: boolean
+    ingredient?: boolean | IngredientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ingredientAnalysisVersion"]>
+
+  export type IngredientAnalysisVersionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    ingredient_uuid?: boolean
+    ai_version?: boolean
+    snapshot?: boolean
+    created_at?: boolean
+    ingredient?: boolean | IngredientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ingredientAnalysisVersion"]>
+
+  export type IngredientAnalysisVersionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uuid?: boolean
+    ingredient_uuid?: boolean
+    ai_version?: boolean
+    snapshot?: boolean
+    created_at?: boolean
+    ingredient?: boolean | IngredientDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ingredientAnalysisVersion"]>
+
+  export type IngredientAnalysisVersionSelectScalar = {
+    id?: boolean
+    uuid?: boolean
+    ingredient_uuid?: boolean
+    ai_version?: boolean
+    snapshot?: boolean
+    created_at?: boolean
+  }
+
+  export type IngredientAnalysisVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uuid" | "ingredient_uuid" | "ai_version" | "snapshot" | "created_at", ExtArgs["result"]["ingredientAnalysisVersion"]>
+  export type IngredientAnalysisVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ingredient?: boolean | IngredientDefaultArgs<ExtArgs>
+  }
+  export type IngredientAnalysisVersionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ingredient?: boolean | IngredientDefaultArgs<ExtArgs>
+  }
+  export type IngredientAnalysisVersionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ingredient?: boolean | IngredientDefaultArgs<ExtArgs>
+  }
+
+  export type $IngredientAnalysisVersionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IngredientAnalysisVersion"
+    objects: {
+      ingredient: Prisma.$IngredientPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      uuid: string
+      ingredient_uuid: string
+      ai_version: string | null
+      snapshot: Prisma.JsonValue
+      created_at: Date
+    }, ExtArgs["result"]["ingredientAnalysisVersion"]>
+    composites: {}
+  }
+
+  type IngredientAnalysisVersionGetPayload<S extends boolean | null | undefined | IngredientAnalysisVersionDefaultArgs> = $Result.GetResult<Prisma.$IngredientAnalysisVersionPayload, S>
+
+  type IngredientAnalysisVersionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IngredientAnalysisVersionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IngredientAnalysisVersionCountAggregateInputType | true
+    }
+
+  export interface IngredientAnalysisVersionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IngredientAnalysisVersion'], meta: { name: 'IngredientAnalysisVersion' } }
+    /**
+     * Find zero or one IngredientAnalysisVersion that matches the filter.
+     * @param {IngredientAnalysisVersionFindUniqueArgs} args - Arguments to find a IngredientAnalysisVersion
+     * @example
+     * // Get one IngredientAnalysisVersion
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IngredientAnalysisVersionFindUniqueArgs>(args: SelectSubset<T, IngredientAnalysisVersionFindUniqueArgs<ExtArgs>>): Prisma__IngredientAnalysisVersionClient<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IngredientAnalysisVersion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IngredientAnalysisVersionFindUniqueOrThrowArgs} args - Arguments to find a IngredientAnalysisVersion
+     * @example
+     * // Get one IngredientAnalysisVersion
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IngredientAnalysisVersionFindUniqueOrThrowArgs>(args: SelectSubset<T, IngredientAnalysisVersionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IngredientAnalysisVersionClient<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IngredientAnalysisVersion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IngredientAnalysisVersionFindFirstArgs} args - Arguments to find a IngredientAnalysisVersion
+     * @example
+     * // Get one IngredientAnalysisVersion
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IngredientAnalysisVersionFindFirstArgs>(args?: SelectSubset<T, IngredientAnalysisVersionFindFirstArgs<ExtArgs>>): Prisma__IngredientAnalysisVersionClient<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IngredientAnalysisVersion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IngredientAnalysisVersionFindFirstOrThrowArgs} args - Arguments to find a IngredientAnalysisVersion
+     * @example
+     * // Get one IngredientAnalysisVersion
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IngredientAnalysisVersionFindFirstOrThrowArgs>(args?: SelectSubset<T, IngredientAnalysisVersionFindFirstOrThrowArgs<ExtArgs>>): Prisma__IngredientAnalysisVersionClient<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IngredientAnalysisVersions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IngredientAnalysisVersionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IngredientAnalysisVersions
+     * const ingredientAnalysisVersions = await prisma.ingredientAnalysisVersion.findMany()
+     * 
+     * // Get first 10 IngredientAnalysisVersions
+     * const ingredientAnalysisVersions = await prisma.ingredientAnalysisVersion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const ingredientAnalysisVersionWithIdOnly = await prisma.ingredientAnalysisVersion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IngredientAnalysisVersionFindManyArgs>(args?: SelectSubset<T, IngredientAnalysisVersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IngredientAnalysisVersion.
+     * @param {IngredientAnalysisVersionCreateArgs} args - Arguments to create a IngredientAnalysisVersion.
+     * @example
+     * // Create one IngredientAnalysisVersion
+     * const IngredientAnalysisVersion = await prisma.ingredientAnalysisVersion.create({
+     *   data: {
+     *     // ... data to create a IngredientAnalysisVersion
+     *   }
+     * })
+     * 
+     */
+    create<T extends IngredientAnalysisVersionCreateArgs>(args: SelectSubset<T, IngredientAnalysisVersionCreateArgs<ExtArgs>>): Prisma__IngredientAnalysisVersionClient<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IngredientAnalysisVersions.
+     * @param {IngredientAnalysisVersionCreateManyArgs} args - Arguments to create many IngredientAnalysisVersions.
+     * @example
+     * // Create many IngredientAnalysisVersions
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IngredientAnalysisVersionCreateManyArgs>(args?: SelectSubset<T, IngredientAnalysisVersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many IngredientAnalysisVersions and returns the data saved in the database.
+     * @param {IngredientAnalysisVersionCreateManyAndReturnArgs} args - Arguments to create many IngredientAnalysisVersions.
+     * @example
+     * // Create many IngredientAnalysisVersions
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many IngredientAnalysisVersions and only return the `id`
+     * const ingredientAnalysisVersionWithIdOnly = await prisma.ingredientAnalysisVersion.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends IngredientAnalysisVersionCreateManyAndReturnArgs>(args?: SelectSubset<T, IngredientAnalysisVersionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a IngredientAnalysisVersion.
+     * @param {IngredientAnalysisVersionDeleteArgs} args - Arguments to delete one IngredientAnalysisVersion.
+     * @example
+     * // Delete one IngredientAnalysisVersion
+     * const IngredientAnalysisVersion = await prisma.ingredientAnalysisVersion.delete({
+     *   where: {
+     *     // ... filter to delete one IngredientAnalysisVersion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IngredientAnalysisVersionDeleteArgs>(args: SelectSubset<T, IngredientAnalysisVersionDeleteArgs<ExtArgs>>): Prisma__IngredientAnalysisVersionClient<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IngredientAnalysisVersion.
+     * @param {IngredientAnalysisVersionUpdateArgs} args - Arguments to update one IngredientAnalysisVersion.
+     * @example
+     * // Update one IngredientAnalysisVersion
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IngredientAnalysisVersionUpdateArgs>(args: SelectSubset<T, IngredientAnalysisVersionUpdateArgs<ExtArgs>>): Prisma__IngredientAnalysisVersionClient<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IngredientAnalysisVersions.
+     * @param {IngredientAnalysisVersionDeleteManyArgs} args - Arguments to filter IngredientAnalysisVersions to delete.
+     * @example
+     * // Delete a few IngredientAnalysisVersions
+     * const { count } = await prisma.ingredientAnalysisVersion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IngredientAnalysisVersionDeleteManyArgs>(args?: SelectSubset<T, IngredientAnalysisVersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IngredientAnalysisVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IngredientAnalysisVersionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IngredientAnalysisVersions
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IngredientAnalysisVersionUpdateManyArgs>(args: SelectSubset<T, IngredientAnalysisVersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IngredientAnalysisVersions and returns the data updated in the database.
+     * @param {IngredientAnalysisVersionUpdateManyAndReturnArgs} args - Arguments to update many IngredientAnalysisVersions.
+     * @example
+     * // Update many IngredientAnalysisVersions
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more IngredientAnalysisVersions and only return the `id`
+     * const ingredientAnalysisVersionWithIdOnly = await prisma.ingredientAnalysisVersion.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends IngredientAnalysisVersionUpdateManyAndReturnArgs>(args: SelectSubset<T, IngredientAnalysisVersionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one IngredientAnalysisVersion.
+     * @param {IngredientAnalysisVersionUpsertArgs} args - Arguments to update or create a IngredientAnalysisVersion.
+     * @example
+     * // Update or create a IngredientAnalysisVersion
+     * const ingredientAnalysisVersion = await prisma.ingredientAnalysisVersion.upsert({
+     *   create: {
+     *     // ... data to create a IngredientAnalysisVersion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IngredientAnalysisVersion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IngredientAnalysisVersionUpsertArgs>(args: SelectSubset<T, IngredientAnalysisVersionUpsertArgs<ExtArgs>>): Prisma__IngredientAnalysisVersionClient<$Result.GetResult<Prisma.$IngredientAnalysisVersionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IngredientAnalysisVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IngredientAnalysisVersionCountArgs} args - Arguments to filter IngredientAnalysisVersions to count.
+     * @example
+     * // Count the number of IngredientAnalysisVersions
+     * const count = await prisma.ingredientAnalysisVersion.count({
+     *   where: {
+     *     // ... the filter for the IngredientAnalysisVersions we want to count
+     *   }
+     * })
+    **/
+    count<T extends IngredientAnalysisVersionCountArgs>(
+      args?: Subset<T, IngredientAnalysisVersionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IngredientAnalysisVersionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IngredientAnalysisVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IngredientAnalysisVersionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IngredientAnalysisVersionAggregateArgs>(args: Subset<T, IngredientAnalysisVersionAggregateArgs>): Prisma.PrismaPromise<GetIngredientAnalysisVersionAggregateType<T>>
+
+    /**
+     * Group by IngredientAnalysisVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IngredientAnalysisVersionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IngredientAnalysisVersionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IngredientAnalysisVersionGroupByArgs['orderBy'] }
+        : { orderBy?: IngredientAnalysisVersionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IngredientAnalysisVersionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIngredientAnalysisVersionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IngredientAnalysisVersion model
+   */
+  readonly fields: IngredientAnalysisVersionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IngredientAnalysisVersion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IngredientAnalysisVersionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    ingredient<T extends IngredientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IngredientDefaultArgs<ExtArgs>>): Prisma__IngredientClient<$Result.GetResult<Prisma.$IngredientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IngredientAnalysisVersion model
+   */
+  interface IngredientAnalysisVersionFieldRefs {
+    readonly id: FieldRef<"IngredientAnalysisVersion", 'Int'>
+    readonly uuid: FieldRef<"IngredientAnalysisVersion", 'String'>
+    readonly ingredient_uuid: FieldRef<"IngredientAnalysisVersion", 'String'>
+    readonly ai_version: FieldRef<"IngredientAnalysisVersion", 'String'>
+    readonly snapshot: FieldRef<"IngredientAnalysisVersion", 'Json'>
+    readonly created_at: FieldRef<"IngredientAnalysisVersion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IngredientAnalysisVersion findUnique
+   */
+  export type IngredientAnalysisVersionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which IngredientAnalysisVersion to fetch.
+     */
+    where: IngredientAnalysisVersionWhereUniqueInput
+  }
+
+  /**
+   * IngredientAnalysisVersion findUniqueOrThrow
+   */
+  export type IngredientAnalysisVersionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which IngredientAnalysisVersion to fetch.
+     */
+    where: IngredientAnalysisVersionWhereUniqueInput
+  }
+
+  /**
+   * IngredientAnalysisVersion findFirst
+   */
+  export type IngredientAnalysisVersionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which IngredientAnalysisVersion to fetch.
+     */
+    where?: IngredientAnalysisVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IngredientAnalysisVersions to fetch.
+     */
+    orderBy?: IngredientAnalysisVersionOrderByWithRelationInput | IngredientAnalysisVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IngredientAnalysisVersions.
+     */
+    cursor?: IngredientAnalysisVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IngredientAnalysisVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IngredientAnalysisVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IngredientAnalysisVersions.
+     */
+    distinct?: IngredientAnalysisVersionScalarFieldEnum | IngredientAnalysisVersionScalarFieldEnum[]
+  }
+
+  /**
+   * IngredientAnalysisVersion findFirstOrThrow
+   */
+  export type IngredientAnalysisVersionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which IngredientAnalysisVersion to fetch.
+     */
+    where?: IngredientAnalysisVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IngredientAnalysisVersions to fetch.
+     */
+    orderBy?: IngredientAnalysisVersionOrderByWithRelationInput | IngredientAnalysisVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IngredientAnalysisVersions.
+     */
+    cursor?: IngredientAnalysisVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IngredientAnalysisVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IngredientAnalysisVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IngredientAnalysisVersions.
+     */
+    distinct?: IngredientAnalysisVersionScalarFieldEnum | IngredientAnalysisVersionScalarFieldEnum[]
+  }
+
+  /**
+   * IngredientAnalysisVersion findMany
+   */
+  export type IngredientAnalysisVersionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which IngredientAnalysisVersions to fetch.
+     */
+    where?: IngredientAnalysisVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IngredientAnalysisVersions to fetch.
+     */
+    orderBy?: IngredientAnalysisVersionOrderByWithRelationInput | IngredientAnalysisVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IngredientAnalysisVersions.
+     */
+    cursor?: IngredientAnalysisVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IngredientAnalysisVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IngredientAnalysisVersions.
+     */
+    skip?: number
+    distinct?: IngredientAnalysisVersionScalarFieldEnum | IngredientAnalysisVersionScalarFieldEnum[]
+  }
+
+  /**
+   * IngredientAnalysisVersion create
+   */
+  export type IngredientAnalysisVersionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a IngredientAnalysisVersion.
+     */
+    data: XOR<IngredientAnalysisVersionCreateInput, IngredientAnalysisVersionUncheckedCreateInput>
+  }
+
+  /**
+   * IngredientAnalysisVersion createMany
+   */
+  export type IngredientAnalysisVersionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IngredientAnalysisVersions.
+     */
+    data: IngredientAnalysisVersionCreateManyInput | IngredientAnalysisVersionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IngredientAnalysisVersion createManyAndReturn
+   */
+  export type IngredientAnalysisVersionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * The data used to create many IngredientAnalysisVersions.
+     */
+    data: IngredientAnalysisVersionCreateManyInput | IngredientAnalysisVersionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * IngredientAnalysisVersion update
+   */
+  export type IngredientAnalysisVersionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a IngredientAnalysisVersion.
+     */
+    data: XOR<IngredientAnalysisVersionUpdateInput, IngredientAnalysisVersionUncheckedUpdateInput>
+    /**
+     * Choose, which IngredientAnalysisVersion to update.
+     */
+    where: IngredientAnalysisVersionWhereUniqueInput
+  }
+
+  /**
+   * IngredientAnalysisVersion updateMany
+   */
+  export type IngredientAnalysisVersionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IngredientAnalysisVersions.
+     */
+    data: XOR<IngredientAnalysisVersionUpdateManyMutationInput, IngredientAnalysisVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which IngredientAnalysisVersions to update
+     */
+    where?: IngredientAnalysisVersionWhereInput
+    /**
+     * Limit how many IngredientAnalysisVersions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IngredientAnalysisVersion updateManyAndReturn
+   */
+  export type IngredientAnalysisVersionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * The data used to update IngredientAnalysisVersions.
+     */
+    data: XOR<IngredientAnalysisVersionUpdateManyMutationInput, IngredientAnalysisVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which IngredientAnalysisVersions to update
+     */
+    where?: IngredientAnalysisVersionWhereInput
+    /**
+     * Limit how many IngredientAnalysisVersions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * IngredientAnalysisVersion upsert
+   */
+  export type IngredientAnalysisVersionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the IngredientAnalysisVersion to update in case it exists.
+     */
+    where: IngredientAnalysisVersionWhereUniqueInput
+    /**
+     * In case the IngredientAnalysisVersion found by the `where` argument doesn't exist, create a new IngredientAnalysisVersion with this data.
+     */
+    create: XOR<IngredientAnalysisVersionCreateInput, IngredientAnalysisVersionUncheckedCreateInput>
+    /**
+     * In case the IngredientAnalysisVersion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IngredientAnalysisVersionUpdateInput, IngredientAnalysisVersionUncheckedUpdateInput>
+  }
+
+  /**
+   * IngredientAnalysisVersion delete
+   */
+  export type IngredientAnalysisVersionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+    /**
+     * Filter which IngredientAnalysisVersion to delete.
+     */
+    where: IngredientAnalysisVersionWhereUniqueInput
+  }
+
+  /**
+   * IngredientAnalysisVersion deleteMany
+   */
+  export type IngredientAnalysisVersionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IngredientAnalysisVersions to delete
+     */
+    where?: IngredientAnalysisVersionWhereInput
+    /**
+     * Limit how many IngredientAnalysisVersions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IngredientAnalysisVersion without action
+   */
+  export type IngredientAnalysisVersionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IngredientAnalysisVersion
+     */
+    select?: IngredientAnalysisVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IngredientAnalysisVersion
+     */
+    omit?: IngredientAnalysisVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IngredientAnalysisVersionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16938,6 +20642,42 @@ export namespace Prisma {
   export type ProductCreationJobScalarFieldEnum = (typeof ProductCreationJobScalarFieldEnum)[keyof typeof ProductCreationJobScalarFieldEnum]
 
 
+  export const UserFavoriteScalarFieldEnum: {
+    id: 'id',
+    uuid: 'uuid',
+    user_uuid: 'user_uuid',
+    entity_type: 'entity_type',
+    entity_uuid: 'entity_uuid',
+    created_at: 'created_at'
+  };
+
+  export type UserFavoriteScalarFieldEnum = (typeof UserFavoriteScalarFieldEnum)[keyof typeof UserFavoriteScalarFieldEnum]
+
+
+  export const ProductAnalysisVersionScalarFieldEnum: {
+    id: 'id',
+    uuid: 'uuid',
+    product_uuid: 'product_uuid',
+    ai_version: 'ai_version',
+    snapshot: 'snapshot',
+    created_at: 'created_at'
+  };
+
+  export type ProductAnalysisVersionScalarFieldEnum = (typeof ProductAnalysisVersionScalarFieldEnum)[keyof typeof ProductAnalysisVersionScalarFieldEnum]
+
+
+  export const IngredientAnalysisVersionScalarFieldEnum: {
+    id: 'id',
+    uuid: 'uuid',
+    ingredient_uuid: 'ingredient_uuid',
+    ai_version: 'ai_version',
+    snapshot: 'snapshot',
+    created_at: 'created_at'
+  };
+
+  export type IngredientAnalysisVersionScalarFieldEnum = (typeof IngredientAnalysisVersionScalarFieldEnum)[keyof typeof IngredientAnalysisVersionScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -16952,6 +20692,13 @@ export namespace Prisma {
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -17174,6 +20921,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'FavoriteEntityType'
+   */
+  export type EnumFavoriteEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FavoriteEntityType'>
+    
+
+
+  /**
+   * Reference to a field of type 'FavoriteEntityType[]'
+   */
+  export type ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FavoriteEntityType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -17206,6 +20967,7 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenListRelationFilter
     product_scans?: UserProductScanListRelationFilter
     product_creation_jobs?: ProductCreationJobListRelationFilter
+    favorites?: UserFavoriteListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -17221,6 +20983,7 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenOrderByRelationAggregateInput
     product_scans?: UserProductScanOrderByRelationAggregateInput
     product_creation_jobs?: ProductCreationJobOrderByRelationAggregateInput
+    favorites?: UserFavoriteOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -17239,6 +21002,7 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenListRelationFilter
     product_scans?: UserProductScanListRelationFilter
     product_creation_jobs?: ProductCreationJobListRelationFilter
+    favorites?: UserFavoriteListRelationFilter
   }, "id" | "uuid" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -17687,6 +21451,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Ingredient"> | Date | string
     updated_at?: DateTimeFilter<"Ingredient"> | Date | string
     product_ingredients?: ProductIngredientListRelationFilter
+    analysis_versions?: IngredientAnalysisVersionListRelationFilter
   }
 
   export type IngredientOrderByWithRelationInput = {
@@ -17728,6 +21493,7 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     product_ingredients?: ProductIngredientOrderByRelationAggregateInput
+    analysis_versions?: IngredientAnalysisVersionOrderByRelationAggregateInput
   }
 
   export type IngredientWhereUniqueInput = Prisma.AtLeast<{
@@ -17772,6 +21538,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Ingredient"> | Date | string
     updated_at?: DateTimeFilter<"Ingredient"> | Date | string
     product_ingredients?: ProductIngredientListRelationFilter
+    analysis_versions?: IngredientAnalysisVersionListRelationFilter
   }, "id" | "uuid" | "name_normalized">
 
   export type IngredientOrderByWithAggregationInput = {
@@ -17906,6 +21673,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientListRelationFilter
     images?: ProductImageListRelationFilter
     scans?: UserProductScanListRelationFilter
+    analysis_versions?: ProductAnalysisVersionListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -17949,6 +21717,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientOrderByRelationAggregateInput
     images?: ProductImageOrderByRelationAggregateInput
     scans?: UserProductScanOrderByRelationAggregateInput
+    analysis_versions?: ProductAnalysisVersionOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -17996,6 +21765,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientListRelationFilter
     images?: ProductImageListRelationFilter
     scans?: UserProductScanListRelationFilter
+    analysis_versions?: ProductAnalysisVersionListRelationFilter
   }, "id" | "uuid" | "barcode" | "name_brand_uuid">
 
   export type ProductOrderByWithAggregationInput = {
@@ -18359,6 +22129,193 @@ export namespace Prisma {
     updated_at?: DateTimeWithAggregatesFilter<"ProductCreationJob"> | Date | string
   }
 
+  export type UserFavoriteWhereInput = {
+    AND?: UserFavoriteWhereInput | UserFavoriteWhereInput[]
+    OR?: UserFavoriteWhereInput[]
+    NOT?: UserFavoriteWhereInput | UserFavoriteWhereInput[]
+    id?: IntFilter<"UserFavorite"> | number
+    uuid?: StringFilter<"UserFavorite"> | string
+    user_uuid?: StringFilter<"UserFavorite"> | string
+    entity_type?: EnumFavoriteEntityTypeFilter<"UserFavorite"> | $Enums.FavoriteEntityType
+    entity_uuid?: StringFilter<"UserFavorite"> | string
+    created_at?: DateTimeFilter<"UserFavorite"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type UserFavoriteOrderByWithRelationInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    user_uuid?: SortOrder
+    entity_type?: SortOrder
+    entity_uuid?: SortOrder
+    created_at?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserFavoriteWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    uuid?: string
+    user_uuid_entity_type_entity_uuid?: UserFavoriteUser_uuidEntity_typeEntity_uuidCompoundUniqueInput
+    AND?: UserFavoriteWhereInput | UserFavoriteWhereInput[]
+    OR?: UserFavoriteWhereInput[]
+    NOT?: UserFavoriteWhereInput | UserFavoriteWhereInput[]
+    user_uuid?: StringFilter<"UserFavorite"> | string
+    entity_type?: EnumFavoriteEntityTypeFilter<"UserFavorite"> | $Enums.FavoriteEntityType
+    entity_uuid?: StringFilter<"UserFavorite"> | string
+    created_at?: DateTimeFilter<"UserFavorite"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "uuid" | "user_uuid_entity_type_entity_uuid">
+
+  export type UserFavoriteOrderByWithAggregationInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    user_uuid?: SortOrder
+    entity_type?: SortOrder
+    entity_uuid?: SortOrder
+    created_at?: SortOrder
+    _count?: UserFavoriteCountOrderByAggregateInput
+    _avg?: UserFavoriteAvgOrderByAggregateInput
+    _max?: UserFavoriteMaxOrderByAggregateInput
+    _min?: UserFavoriteMinOrderByAggregateInput
+    _sum?: UserFavoriteSumOrderByAggregateInput
+  }
+
+  export type UserFavoriteScalarWhereWithAggregatesInput = {
+    AND?: UserFavoriteScalarWhereWithAggregatesInput | UserFavoriteScalarWhereWithAggregatesInput[]
+    OR?: UserFavoriteScalarWhereWithAggregatesInput[]
+    NOT?: UserFavoriteScalarWhereWithAggregatesInput | UserFavoriteScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"UserFavorite"> | number
+    uuid?: StringWithAggregatesFilter<"UserFavorite"> | string
+    user_uuid?: StringWithAggregatesFilter<"UserFavorite"> | string
+    entity_type?: EnumFavoriteEntityTypeWithAggregatesFilter<"UserFavorite"> | $Enums.FavoriteEntityType
+    entity_uuid?: StringWithAggregatesFilter<"UserFavorite"> | string
+    created_at?: DateTimeWithAggregatesFilter<"UserFavorite"> | Date | string
+  }
+
+  export type ProductAnalysisVersionWhereInput = {
+    AND?: ProductAnalysisVersionWhereInput | ProductAnalysisVersionWhereInput[]
+    OR?: ProductAnalysisVersionWhereInput[]
+    NOT?: ProductAnalysisVersionWhereInput | ProductAnalysisVersionWhereInput[]
+    id?: IntFilter<"ProductAnalysisVersion"> | number
+    uuid?: StringFilter<"ProductAnalysisVersion"> | string
+    product_uuid?: StringFilter<"ProductAnalysisVersion"> | string
+    ai_version?: StringNullableFilter<"ProductAnalysisVersion"> | string | null
+    snapshot?: JsonFilter<"ProductAnalysisVersion">
+    created_at?: DateTimeFilter<"ProductAnalysisVersion"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }
+
+  export type ProductAnalysisVersionOrderByWithRelationInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    product_uuid?: SortOrder
+    ai_version?: SortOrderInput | SortOrder
+    snapshot?: SortOrder
+    created_at?: SortOrder
+    product?: ProductOrderByWithRelationInput
+  }
+
+  export type ProductAnalysisVersionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    uuid?: string
+    AND?: ProductAnalysisVersionWhereInput | ProductAnalysisVersionWhereInput[]
+    OR?: ProductAnalysisVersionWhereInput[]
+    NOT?: ProductAnalysisVersionWhereInput | ProductAnalysisVersionWhereInput[]
+    product_uuid?: StringFilter<"ProductAnalysisVersion"> | string
+    ai_version?: StringNullableFilter<"ProductAnalysisVersion"> | string | null
+    snapshot?: JsonFilter<"ProductAnalysisVersion">
+    created_at?: DateTimeFilter<"ProductAnalysisVersion"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }, "id" | "uuid">
+
+  export type ProductAnalysisVersionOrderByWithAggregationInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    product_uuid?: SortOrder
+    ai_version?: SortOrderInput | SortOrder
+    snapshot?: SortOrder
+    created_at?: SortOrder
+    _count?: ProductAnalysisVersionCountOrderByAggregateInput
+    _avg?: ProductAnalysisVersionAvgOrderByAggregateInput
+    _max?: ProductAnalysisVersionMaxOrderByAggregateInput
+    _min?: ProductAnalysisVersionMinOrderByAggregateInput
+    _sum?: ProductAnalysisVersionSumOrderByAggregateInput
+  }
+
+  export type ProductAnalysisVersionScalarWhereWithAggregatesInput = {
+    AND?: ProductAnalysisVersionScalarWhereWithAggregatesInput | ProductAnalysisVersionScalarWhereWithAggregatesInput[]
+    OR?: ProductAnalysisVersionScalarWhereWithAggregatesInput[]
+    NOT?: ProductAnalysisVersionScalarWhereWithAggregatesInput | ProductAnalysisVersionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ProductAnalysisVersion"> | number
+    uuid?: StringWithAggregatesFilter<"ProductAnalysisVersion"> | string
+    product_uuid?: StringWithAggregatesFilter<"ProductAnalysisVersion"> | string
+    ai_version?: StringNullableWithAggregatesFilter<"ProductAnalysisVersion"> | string | null
+    snapshot?: JsonWithAggregatesFilter<"ProductAnalysisVersion">
+    created_at?: DateTimeWithAggregatesFilter<"ProductAnalysisVersion"> | Date | string
+  }
+
+  export type IngredientAnalysisVersionWhereInput = {
+    AND?: IngredientAnalysisVersionWhereInput | IngredientAnalysisVersionWhereInput[]
+    OR?: IngredientAnalysisVersionWhereInput[]
+    NOT?: IngredientAnalysisVersionWhereInput | IngredientAnalysisVersionWhereInput[]
+    id?: IntFilter<"IngredientAnalysisVersion"> | number
+    uuid?: StringFilter<"IngredientAnalysisVersion"> | string
+    ingredient_uuid?: StringFilter<"IngredientAnalysisVersion"> | string
+    ai_version?: StringNullableFilter<"IngredientAnalysisVersion"> | string | null
+    snapshot?: JsonFilter<"IngredientAnalysisVersion">
+    created_at?: DateTimeFilter<"IngredientAnalysisVersion"> | Date | string
+    ingredient?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
+  }
+
+  export type IngredientAnalysisVersionOrderByWithRelationInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    ingredient_uuid?: SortOrder
+    ai_version?: SortOrderInput | SortOrder
+    snapshot?: SortOrder
+    created_at?: SortOrder
+    ingredient?: IngredientOrderByWithRelationInput
+  }
+
+  export type IngredientAnalysisVersionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    uuid?: string
+    AND?: IngredientAnalysisVersionWhereInput | IngredientAnalysisVersionWhereInput[]
+    OR?: IngredientAnalysisVersionWhereInput[]
+    NOT?: IngredientAnalysisVersionWhereInput | IngredientAnalysisVersionWhereInput[]
+    ingredient_uuid?: StringFilter<"IngredientAnalysisVersion"> | string
+    ai_version?: StringNullableFilter<"IngredientAnalysisVersion"> | string | null
+    snapshot?: JsonFilter<"IngredientAnalysisVersion">
+    created_at?: DateTimeFilter<"IngredientAnalysisVersion"> | Date | string
+    ingredient?: XOR<IngredientScalarRelationFilter, IngredientWhereInput>
+  }, "id" | "uuid">
+
+  export type IngredientAnalysisVersionOrderByWithAggregationInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    ingredient_uuid?: SortOrder
+    ai_version?: SortOrderInput | SortOrder
+    snapshot?: SortOrder
+    created_at?: SortOrder
+    _count?: IngredientAnalysisVersionCountOrderByAggregateInput
+    _avg?: IngredientAnalysisVersionAvgOrderByAggregateInput
+    _max?: IngredientAnalysisVersionMaxOrderByAggregateInput
+    _min?: IngredientAnalysisVersionMinOrderByAggregateInput
+    _sum?: IngredientAnalysisVersionSumOrderByAggregateInput
+  }
+
+  export type IngredientAnalysisVersionScalarWhereWithAggregatesInput = {
+    AND?: IngredientAnalysisVersionScalarWhereWithAggregatesInput | IngredientAnalysisVersionScalarWhereWithAggregatesInput[]
+    OR?: IngredientAnalysisVersionScalarWhereWithAggregatesInput[]
+    NOT?: IngredientAnalysisVersionScalarWhereWithAggregatesInput | IngredientAnalysisVersionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"IngredientAnalysisVersion"> | number
+    uuid?: StringWithAggregatesFilter<"IngredientAnalysisVersion"> | string
+    ingredient_uuid?: StringWithAggregatesFilter<"IngredientAnalysisVersion"> | string
+    ai_version?: StringNullableWithAggregatesFilter<"IngredientAnalysisVersion"> | string | null
+    snapshot?: JsonWithAggregatesFilter<"IngredientAnalysisVersion">
+    created_at?: DateTimeWithAggregatesFilter<"IngredientAnalysisVersion"> | Date | string
+  }
+
   export type UserCreateInput = {
     uuid?: string
     email: string
@@ -18371,6 +22328,7 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     product_scans?: UserProductScanCreateNestedManyWithoutUserInput
     product_creation_jobs?: ProductCreationJobCreateNestedManyWithoutUserInput
+    favorites?: UserFavoriteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -18386,6 +22344,7 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     product_scans?: UserProductScanUncheckedCreateNestedManyWithoutUserInput
     product_creation_jobs?: ProductCreationJobUncheckedCreateNestedManyWithoutUserInput
+    favorites?: UserFavoriteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -18400,6 +22359,7 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     product_scans?: UserProductScanUpdateManyWithoutUserNestedInput
     product_creation_jobs?: ProductCreationJobUpdateManyWithoutUserNestedInput
+    favorites?: UserFavoriteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -18415,6 +22375,7 @@ export namespace Prisma {
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     product_scans?: UserProductScanUncheckedUpdateManyWithoutUserNestedInput
     product_creation_jobs?: ProductCreationJobUncheckedUpdateManyWithoutUserNestedInput
+    favorites?: UserFavoriteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -18884,6 +22845,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     product_ingredients?: ProductIngredientCreateNestedManyWithoutIngredientInput
+    analysis_versions?: IngredientAnalysisVersionCreateNestedManyWithoutIngredientInput
   }
 
   export type IngredientUncheckedCreateInput = {
@@ -18925,6 +22887,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     product_ingredients?: ProductIngredientUncheckedCreateNestedManyWithoutIngredientInput
+    analysis_versions?: IngredientAnalysisVersionUncheckedCreateNestedManyWithoutIngredientInput
   }
 
   export type IngredientUpdateInput = {
@@ -18965,6 +22928,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     product_ingredients?: ProductIngredientUpdateManyWithoutIngredientNestedInput
+    analysis_versions?: IngredientAnalysisVersionUpdateManyWithoutIngredientNestedInput
   }
 
   export type IngredientUncheckedUpdateInput = {
@@ -19006,6 +22970,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     product_ingredients?: ProductIngredientUncheckedUpdateManyWithoutIngredientNestedInput
+    analysis_versions?: IngredientAnalysisVersionUncheckedUpdateManyWithoutIngredientNestedInput
   }
 
   export type IngredientCreateManyInput = {
@@ -19165,6 +23130,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     scans?: UserProductScanCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -19206,6 +23172,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     scans?: UserProductScanUncheckedCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -19246,6 +23213,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -19287,6 +23255,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUncheckedUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -19662,6 +23631,183 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserFavoriteCreateInput = {
+    uuid?: string
+    entity_type: $Enums.FavoriteEntityType
+    entity_uuid: string
+    created_at?: Date | string
+    user: UserCreateNestedOneWithoutFavoritesInput
+  }
+
+  export type UserFavoriteUncheckedCreateInput = {
+    id?: number
+    uuid?: string
+    user_uuid: string
+    entity_type: $Enums.FavoriteEntityType
+    entity_uuid: string
+    created_at?: Date | string
+  }
+
+  export type UserFavoriteUpdateInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    entity_type?: EnumFavoriteEntityTypeFieldUpdateOperationsInput | $Enums.FavoriteEntityType
+    entity_uuid?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFavoritesNestedInput
+  }
+
+  export type UserFavoriteUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    entity_type?: EnumFavoriteEntityTypeFieldUpdateOperationsInput | $Enums.FavoriteEntityType
+    entity_uuid?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFavoriteCreateManyInput = {
+    id?: number
+    uuid?: string
+    user_uuid: string
+    entity_type: $Enums.FavoriteEntityType
+    entity_uuid: string
+    created_at?: Date | string
+  }
+
+  export type UserFavoriteUpdateManyMutationInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    entity_type?: EnumFavoriteEntityTypeFieldUpdateOperationsInput | $Enums.FavoriteEntityType
+    entity_uuid?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFavoriteUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    entity_type?: EnumFavoriteEntityTypeFieldUpdateOperationsInput | $Enums.FavoriteEntityType
+    entity_uuid?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductAnalysisVersionCreateInput = {
+    uuid?: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    product: ProductCreateNestedOneWithoutAnalysis_versionsInput
+  }
+
+  export type ProductAnalysisVersionUncheckedCreateInput = {
+    id?: number
+    uuid?: string
+    product_uuid: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type ProductAnalysisVersionUpdateInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutAnalysis_versionsNestedInput
+  }
+
+  export type ProductAnalysisVersionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    product_uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductAnalysisVersionCreateManyInput = {
+    id?: number
+    uuid?: string
+    product_uuid: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type ProductAnalysisVersionUpdateManyMutationInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductAnalysisVersionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    product_uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IngredientAnalysisVersionCreateInput = {
+    uuid?: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+    ingredient: IngredientCreateNestedOneWithoutAnalysis_versionsInput
+  }
+
+  export type IngredientAnalysisVersionUncheckedCreateInput = {
+    id?: number
+    uuid?: string
+    ingredient_uuid: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type IngredientAnalysisVersionUpdateInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    ingredient?: IngredientUpdateOneRequiredWithoutAnalysis_versionsNestedInput
+  }
+
+  export type IngredientAnalysisVersionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    ingredient_uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IngredientAnalysisVersionCreateManyInput = {
+    id?: number
+    uuid?: string
+    ingredient_uuid: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type IngredientAnalysisVersionUpdateManyMutationInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IngredientAnalysisVersionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    ingredient_uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -19739,6 +23885,12 @@ export namespace Prisma {
     none?: ProductCreationJobWhereInput
   }
 
+  export type UserFavoriteListRelationFilter = {
+    every?: UserFavoriteWhereInput
+    some?: UserFavoriteWhereInput
+    none?: UserFavoriteWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -19753,6 +23905,10 @@ export namespace Prisma {
   }
 
   export type ProductCreationJobOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserFavoriteOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -20228,7 +24384,17 @@ export namespace Prisma {
     none?: ProductIngredientWhereInput
   }
 
+  export type IngredientAnalysisVersionListRelationFilter = {
+    every?: IngredientAnalysisVersionWhereInput
+    some?: IngredientAnalysisVersionWhereInput
+    none?: IngredientAnalysisVersionWhereInput
+  }
+
   export type ProductIngredientOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type IngredientAnalysisVersionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -20493,7 +24659,17 @@ export namespace Prisma {
     none?: ProductImageWhereInput
   }
 
+  export type ProductAnalysisVersionListRelationFilter = {
+    every?: ProductAnalysisVersionWhereInput
+    some?: ProductAnalysisVersionWhereInput
+    none?: ProductAnalysisVersionWhereInput
+  }
+
   export type ProductImageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProductAnalysisVersionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -20886,6 +25062,179 @@ export namespace Prisma {
     _max?: NestedEnumProductCreationJobStatusFilter<$PrismaModel>
   }
 
+  export type EnumFavoriteEntityTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.FavoriteEntityType | EnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FavoriteEntityType[] | ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FavoriteEntityType[] | ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumFavoriteEntityTypeFilter<$PrismaModel> | $Enums.FavoriteEntityType
+  }
+
+  export type UserFavoriteUser_uuidEntity_typeEntity_uuidCompoundUniqueInput = {
+    user_uuid: string
+    entity_type: $Enums.FavoriteEntityType
+    entity_uuid: string
+  }
+
+  export type UserFavoriteCountOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    user_uuid?: SortOrder
+    entity_type?: SortOrder
+    entity_uuid?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type UserFavoriteAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type UserFavoriteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    user_uuid?: SortOrder
+    entity_type?: SortOrder
+    entity_uuid?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type UserFavoriteMinOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    user_uuid?: SortOrder
+    entity_type?: SortOrder
+    entity_uuid?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type UserFavoriteSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EnumFavoriteEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FavoriteEntityType | EnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FavoriteEntityType[] | ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FavoriteEntityType[] | ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumFavoriteEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.FavoriteEntityType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFavoriteEntityTypeFilter<$PrismaModel>
+    _max?: NestedEnumFavoriteEntityTypeFilter<$PrismaModel>
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type ProductAnalysisVersionCountOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    product_uuid?: SortOrder
+    ai_version?: SortOrder
+    snapshot?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type ProductAnalysisVersionAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ProductAnalysisVersionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    product_uuid?: SortOrder
+    ai_version?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type ProductAnalysisVersionMinOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    product_uuid?: SortOrder
+    ai_version?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type ProductAnalysisVersionSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type IngredientAnalysisVersionCountOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    ingredient_uuid?: SortOrder
+    ai_version?: SortOrder
+    snapshot?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type IngredientAnalysisVersionAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type IngredientAnalysisVersionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    ingredient_uuid?: SortOrder
+    ai_version?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type IngredientAnalysisVersionMinOrderByAggregateInput = {
+    id?: SortOrder
+    uuid?: SortOrder
+    ingredient_uuid?: SortOrder
+    ai_version?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type IngredientAnalysisVersionSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type PasswordResetTokenCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -20907,6 +25256,13 @@ export namespace Prisma {
     connect?: ProductCreationJobWhereUniqueInput | ProductCreationJobWhereUniqueInput[]
   }
 
+  export type UserFavoriteCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserFavoriteCreateWithoutUserInput, UserFavoriteUncheckedCreateWithoutUserInput> | UserFavoriteCreateWithoutUserInput[] | UserFavoriteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserFavoriteCreateOrConnectWithoutUserInput | UserFavoriteCreateOrConnectWithoutUserInput[]
+    createMany?: UserFavoriteCreateManyUserInputEnvelope
+    connect?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+  }
+
   export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -20926,6 +25282,13 @@ export namespace Prisma {
     connectOrCreate?: ProductCreationJobCreateOrConnectWithoutUserInput | ProductCreationJobCreateOrConnectWithoutUserInput[]
     createMany?: ProductCreationJobCreateManyUserInputEnvelope
     connect?: ProductCreationJobWhereUniqueInput | ProductCreationJobWhereUniqueInput[]
+  }
+
+  export type UserFavoriteUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserFavoriteCreateWithoutUserInput, UserFavoriteUncheckedCreateWithoutUserInput> | UserFavoriteCreateWithoutUserInput[] | UserFavoriteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserFavoriteCreateOrConnectWithoutUserInput | UserFavoriteCreateOrConnectWithoutUserInput[]
+    createMany?: UserFavoriteCreateManyUserInputEnvelope
+    connect?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -20986,6 +25349,20 @@ export namespace Prisma {
     deleteMany?: ProductCreationJobScalarWhereInput | ProductCreationJobScalarWhereInput[]
   }
 
+  export type UserFavoriteUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserFavoriteCreateWithoutUserInput, UserFavoriteUncheckedCreateWithoutUserInput> | UserFavoriteCreateWithoutUserInput[] | UserFavoriteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserFavoriteCreateOrConnectWithoutUserInput | UserFavoriteCreateOrConnectWithoutUserInput[]
+    upsert?: UserFavoriteUpsertWithWhereUniqueWithoutUserInput | UserFavoriteUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserFavoriteCreateManyUserInputEnvelope
+    set?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+    disconnect?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+    delete?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+    connect?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+    update?: UserFavoriteUpdateWithWhereUniqueWithoutUserInput | UserFavoriteUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserFavoriteUpdateManyWithWhereWithoutUserInput | UserFavoriteUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserFavoriteScalarWhereInput | UserFavoriteScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -21034,6 +25411,20 @@ export namespace Prisma {
     update?: ProductCreationJobUpdateWithWhereUniqueWithoutUserInput | ProductCreationJobUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ProductCreationJobUpdateManyWithWhereWithoutUserInput | ProductCreationJobUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ProductCreationJobScalarWhereInput | ProductCreationJobScalarWhereInput[]
+  }
+
+  export type UserFavoriteUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserFavoriteCreateWithoutUserInput, UserFavoriteUncheckedCreateWithoutUserInput> | UserFavoriteCreateWithoutUserInput[] | UserFavoriteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserFavoriteCreateOrConnectWithoutUserInput | UserFavoriteCreateOrConnectWithoutUserInput[]
+    upsert?: UserFavoriteUpsertWithWhereUniqueWithoutUserInput | UserFavoriteUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserFavoriteCreateManyUserInputEnvelope
+    set?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+    disconnect?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+    delete?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+    connect?: UserFavoriteWhereUniqueInput | UserFavoriteWhereUniqueInput[]
+    update?: UserFavoriteUpdateWithWhereUniqueWithoutUserInput | UserFavoriteUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserFavoriteUpdateManyWithWhereWithoutUserInput | UserFavoriteUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserFavoriteScalarWhereInput | UserFavoriteScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPassword_reset_tokensInput = {
@@ -21205,11 +25596,25 @@ export namespace Prisma {
     connect?: ProductIngredientWhereUniqueInput | ProductIngredientWhereUniqueInput[]
   }
 
+  export type IngredientAnalysisVersionCreateNestedManyWithoutIngredientInput = {
+    create?: XOR<IngredientAnalysisVersionCreateWithoutIngredientInput, IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput> | IngredientAnalysisVersionCreateWithoutIngredientInput[] | IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput[]
+    connectOrCreate?: IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput | IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput[]
+    createMany?: IngredientAnalysisVersionCreateManyIngredientInputEnvelope
+    connect?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+  }
+
   export type ProductIngredientUncheckedCreateNestedManyWithoutIngredientInput = {
     create?: XOR<ProductIngredientCreateWithoutIngredientInput, ProductIngredientUncheckedCreateWithoutIngredientInput> | ProductIngredientCreateWithoutIngredientInput[] | ProductIngredientUncheckedCreateWithoutIngredientInput[]
     connectOrCreate?: ProductIngredientCreateOrConnectWithoutIngredientInput | ProductIngredientCreateOrConnectWithoutIngredientInput[]
     createMany?: ProductIngredientCreateManyIngredientInputEnvelope
     connect?: ProductIngredientWhereUniqueInput | ProductIngredientWhereUniqueInput[]
+  }
+
+  export type IngredientAnalysisVersionUncheckedCreateNestedManyWithoutIngredientInput = {
+    create?: XOR<IngredientAnalysisVersionCreateWithoutIngredientInput, IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput> | IngredientAnalysisVersionCreateWithoutIngredientInput[] | IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput[]
+    connectOrCreate?: IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput | IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput[]
+    createMany?: IngredientAnalysisVersionCreateManyIngredientInputEnvelope
+    connect?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
   }
 
   export type IngredientUpdatesynonymsInput = {
@@ -21259,6 +25664,20 @@ export namespace Prisma {
     deleteMany?: ProductIngredientScalarWhereInput | ProductIngredientScalarWhereInput[]
   }
 
+  export type IngredientAnalysisVersionUpdateManyWithoutIngredientNestedInput = {
+    create?: XOR<IngredientAnalysisVersionCreateWithoutIngredientInput, IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput> | IngredientAnalysisVersionCreateWithoutIngredientInput[] | IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput[]
+    connectOrCreate?: IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput | IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput[]
+    upsert?: IngredientAnalysisVersionUpsertWithWhereUniqueWithoutIngredientInput | IngredientAnalysisVersionUpsertWithWhereUniqueWithoutIngredientInput[]
+    createMany?: IngredientAnalysisVersionCreateManyIngredientInputEnvelope
+    set?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+    disconnect?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+    delete?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+    connect?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+    update?: IngredientAnalysisVersionUpdateWithWhereUniqueWithoutIngredientInput | IngredientAnalysisVersionUpdateWithWhereUniqueWithoutIngredientInput[]
+    updateMany?: IngredientAnalysisVersionUpdateManyWithWhereWithoutIngredientInput | IngredientAnalysisVersionUpdateManyWithWhereWithoutIngredientInput[]
+    deleteMany?: IngredientAnalysisVersionScalarWhereInput | IngredientAnalysisVersionScalarWhereInput[]
+  }
+
   export type ProductIngredientUncheckedUpdateManyWithoutIngredientNestedInput = {
     create?: XOR<ProductIngredientCreateWithoutIngredientInput, ProductIngredientUncheckedCreateWithoutIngredientInput> | ProductIngredientCreateWithoutIngredientInput[] | ProductIngredientUncheckedCreateWithoutIngredientInput[]
     connectOrCreate?: ProductIngredientCreateOrConnectWithoutIngredientInput | ProductIngredientCreateOrConnectWithoutIngredientInput[]
@@ -21271,6 +25690,20 @@ export namespace Prisma {
     update?: ProductIngredientUpdateWithWhereUniqueWithoutIngredientInput | ProductIngredientUpdateWithWhereUniqueWithoutIngredientInput[]
     updateMany?: ProductIngredientUpdateManyWithWhereWithoutIngredientInput | ProductIngredientUpdateManyWithWhereWithoutIngredientInput[]
     deleteMany?: ProductIngredientScalarWhereInput | ProductIngredientScalarWhereInput[]
+  }
+
+  export type IngredientAnalysisVersionUncheckedUpdateManyWithoutIngredientNestedInput = {
+    create?: XOR<IngredientAnalysisVersionCreateWithoutIngredientInput, IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput> | IngredientAnalysisVersionCreateWithoutIngredientInput[] | IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput[]
+    connectOrCreate?: IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput | IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput[]
+    upsert?: IngredientAnalysisVersionUpsertWithWhereUniqueWithoutIngredientInput | IngredientAnalysisVersionUpsertWithWhereUniqueWithoutIngredientInput[]
+    createMany?: IngredientAnalysisVersionCreateManyIngredientInputEnvelope
+    set?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+    disconnect?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+    delete?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+    connect?: IngredientAnalysisVersionWhereUniqueInput | IngredientAnalysisVersionWhereUniqueInput[]
+    update?: IngredientAnalysisVersionUpdateWithWhereUniqueWithoutIngredientInput | IngredientAnalysisVersionUpdateWithWhereUniqueWithoutIngredientInput[]
+    updateMany?: IngredientAnalysisVersionUpdateManyWithWhereWithoutIngredientInput | IngredientAnalysisVersionUpdateManyWithWhereWithoutIngredientInput[]
+    deleteMany?: IngredientAnalysisVersionScalarWhereInput | IngredientAnalysisVersionScalarWhereInput[]
   }
 
   export type ProductCreatemarketing_claimsInput = {
@@ -21318,6 +25751,13 @@ export namespace Prisma {
     connect?: UserProductScanWhereUniqueInput | UserProductScanWhereUniqueInput[]
   }
 
+  export type ProductAnalysisVersionCreateNestedManyWithoutProductInput = {
+    create?: XOR<ProductAnalysisVersionCreateWithoutProductInput, ProductAnalysisVersionUncheckedCreateWithoutProductInput> | ProductAnalysisVersionCreateWithoutProductInput[] | ProductAnalysisVersionUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductAnalysisVersionCreateOrConnectWithoutProductInput | ProductAnalysisVersionCreateOrConnectWithoutProductInput[]
+    createMany?: ProductAnalysisVersionCreateManyProductInputEnvelope
+    connect?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+  }
+
   export type ProductIngredientUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<ProductIngredientCreateWithoutProductInput, ProductIngredientUncheckedCreateWithoutProductInput> | ProductIngredientCreateWithoutProductInput[] | ProductIngredientUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductIngredientCreateOrConnectWithoutProductInput | ProductIngredientCreateOrConnectWithoutProductInput[]
@@ -21337,6 +25777,13 @@ export namespace Prisma {
     connectOrCreate?: UserProductScanCreateOrConnectWithoutProductInput | UserProductScanCreateOrConnectWithoutProductInput[]
     createMany?: UserProductScanCreateManyProductInputEnvelope
     connect?: UserProductScanWhereUniqueInput | UserProductScanWhereUniqueInput[]
+  }
+
+  export type ProductAnalysisVersionUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<ProductAnalysisVersionCreateWithoutProductInput, ProductAnalysisVersionUncheckedCreateWithoutProductInput> | ProductAnalysisVersionCreateWithoutProductInput[] | ProductAnalysisVersionUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductAnalysisVersionCreateOrConnectWithoutProductInput | ProductAnalysisVersionCreateOrConnectWithoutProductInput[]
+    createMany?: ProductAnalysisVersionCreateManyProductInputEnvelope
+    connect?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -21428,6 +25875,20 @@ export namespace Prisma {
     deleteMany?: UserProductScanScalarWhereInput | UserProductScanScalarWhereInput[]
   }
 
+  export type ProductAnalysisVersionUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ProductAnalysisVersionCreateWithoutProductInput, ProductAnalysisVersionUncheckedCreateWithoutProductInput> | ProductAnalysisVersionCreateWithoutProductInput[] | ProductAnalysisVersionUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductAnalysisVersionCreateOrConnectWithoutProductInput | ProductAnalysisVersionCreateOrConnectWithoutProductInput[]
+    upsert?: ProductAnalysisVersionUpsertWithWhereUniqueWithoutProductInput | ProductAnalysisVersionUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ProductAnalysisVersionCreateManyProductInputEnvelope
+    set?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+    disconnect?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+    delete?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+    connect?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+    update?: ProductAnalysisVersionUpdateWithWhereUniqueWithoutProductInput | ProductAnalysisVersionUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ProductAnalysisVersionUpdateManyWithWhereWithoutProductInput | ProductAnalysisVersionUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ProductAnalysisVersionScalarWhereInput | ProductAnalysisVersionScalarWhereInput[]
+  }
+
   export type ProductIngredientUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<ProductIngredientCreateWithoutProductInput, ProductIngredientUncheckedCreateWithoutProductInput> | ProductIngredientCreateWithoutProductInput[] | ProductIngredientUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductIngredientCreateOrConnectWithoutProductInput | ProductIngredientCreateOrConnectWithoutProductInput[]
@@ -21468,6 +25929,20 @@ export namespace Prisma {
     update?: UserProductScanUpdateWithWhereUniqueWithoutProductInput | UserProductScanUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: UserProductScanUpdateManyWithWhereWithoutProductInput | UserProductScanUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: UserProductScanScalarWhereInput | UserProductScanScalarWhereInput[]
+  }
+
+  export type ProductAnalysisVersionUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ProductAnalysisVersionCreateWithoutProductInput, ProductAnalysisVersionUncheckedCreateWithoutProductInput> | ProductAnalysisVersionCreateWithoutProductInput[] | ProductAnalysisVersionUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductAnalysisVersionCreateOrConnectWithoutProductInput | ProductAnalysisVersionCreateOrConnectWithoutProductInput[]
+    upsert?: ProductAnalysisVersionUpsertWithWhereUniqueWithoutProductInput | ProductAnalysisVersionUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ProductAnalysisVersionCreateManyProductInputEnvelope
+    set?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+    disconnect?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+    delete?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+    connect?: ProductAnalysisVersionWhereUniqueInput | ProductAnalysisVersionWhereUniqueInput[]
+    update?: ProductAnalysisVersionUpdateWithWhereUniqueWithoutProductInput | ProductAnalysisVersionUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ProductAnalysisVersionUpdateManyWithWhereWithoutProductInput | ProductAnalysisVersionUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ProductAnalysisVersionScalarWhereInput | ProductAnalysisVersionScalarWhereInput[]
   }
 
   export type ProductCreateNestedOneWithoutProduct_ingredientsInput = {
@@ -21564,6 +26039,52 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutProduct_creation_jobsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProduct_creation_jobsInput, UserUpdateWithoutProduct_creation_jobsInput>, UserUncheckedUpdateWithoutProduct_creation_jobsInput>
+  }
+
+  export type UserCreateNestedOneWithoutFavoritesInput = {
+    create?: XOR<UserCreateWithoutFavoritesInput, UserUncheckedCreateWithoutFavoritesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFavoritesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumFavoriteEntityTypeFieldUpdateOperationsInput = {
+    set?: $Enums.FavoriteEntityType
+  }
+
+  export type UserUpdateOneRequiredWithoutFavoritesNestedInput = {
+    create?: XOR<UserCreateWithoutFavoritesInput, UserUncheckedCreateWithoutFavoritesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFavoritesInput
+    upsert?: UserUpsertWithoutFavoritesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFavoritesInput, UserUpdateWithoutFavoritesInput>, UserUncheckedUpdateWithoutFavoritesInput>
+  }
+
+  export type ProductCreateNestedOneWithoutAnalysis_versionsInput = {
+    create?: XOR<ProductCreateWithoutAnalysis_versionsInput, ProductUncheckedCreateWithoutAnalysis_versionsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutAnalysis_versionsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type ProductUpdateOneRequiredWithoutAnalysis_versionsNestedInput = {
+    create?: XOR<ProductCreateWithoutAnalysis_versionsInput, ProductUncheckedCreateWithoutAnalysis_versionsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutAnalysis_versionsInput
+    upsert?: ProductUpsertWithoutAnalysis_versionsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutAnalysis_versionsInput, ProductUpdateWithoutAnalysis_versionsInput>, ProductUncheckedUpdateWithoutAnalysis_versionsInput>
+  }
+
+  export type IngredientCreateNestedOneWithoutAnalysis_versionsInput = {
+    create?: XOR<IngredientCreateWithoutAnalysis_versionsInput, IngredientUncheckedCreateWithoutAnalysis_versionsInput>
+    connectOrCreate?: IngredientCreateOrConnectWithoutAnalysis_versionsInput
+    connect?: IngredientWhereUniqueInput
+  }
+
+  export type IngredientUpdateOneRequiredWithoutAnalysis_versionsNestedInput = {
+    create?: XOR<IngredientCreateWithoutAnalysis_versionsInput, IngredientUncheckedCreateWithoutAnalysis_versionsInput>
+    connectOrCreate?: IngredientCreateOrConnectWithoutAnalysis_versionsInput
+    upsert?: IngredientUpsertWithoutAnalysis_versionsInput
+    connect?: IngredientWhereUniqueInput
+    update?: XOR<XOR<IngredientUpdateToOneWithWhereWithoutAnalysis_versionsInput, IngredientUpdateWithoutAnalysis_versionsInput>, IngredientUncheckedUpdateWithoutAnalysis_versionsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -21968,6 +26489,46 @@ export namespace Prisma {
     _max?: NestedEnumProductCreationJobStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumFavoriteEntityTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.FavoriteEntityType | EnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FavoriteEntityType[] | ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FavoriteEntityType[] | ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumFavoriteEntityTypeFilter<$PrismaModel> | $Enums.FavoriteEntityType
+  }
+
+  export type NestedEnumFavoriteEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FavoriteEntityType | EnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FavoriteEntityType[] | ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FavoriteEntityType[] | ListEnumFavoriteEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumFavoriteEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.FavoriteEntityType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFavoriteEntityTypeFilter<$PrismaModel>
+    _max?: NestedEnumFavoriteEntityTypeFilter<$PrismaModel>
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
   export type PasswordResetTokenCreateWithoutUserInput = {
     uuid?: string
     token_hash: string
@@ -22052,6 +26613,31 @@ export namespace Prisma {
 
   export type ProductCreationJobCreateManyUserInputEnvelope = {
     data: ProductCreationJobCreateManyUserInput | ProductCreationJobCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserFavoriteCreateWithoutUserInput = {
+    uuid?: string
+    entity_type: $Enums.FavoriteEntityType
+    entity_uuid: string
+    created_at?: Date | string
+  }
+
+  export type UserFavoriteUncheckedCreateWithoutUserInput = {
+    id?: number
+    uuid?: string
+    entity_type: $Enums.FavoriteEntityType
+    entity_uuid: string
+    created_at?: Date | string
+  }
+
+  export type UserFavoriteCreateOrConnectWithoutUserInput = {
+    where: UserFavoriteWhereUniqueInput
+    create: XOR<UserFavoriteCreateWithoutUserInput, UserFavoriteUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserFavoriteCreateManyUserInputEnvelope = {
+    data: UserFavoriteCreateManyUserInput | UserFavoriteCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -22145,6 +26731,34 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"ProductCreationJob"> | Date | string
   }
 
+  export type UserFavoriteUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserFavoriteWhereUniqueInput
+    update: XOR<UserFavoriteUpdateWithoutUserInput, UserFavoriteUncheckedUpdateWithoutUserInput>
+    create: XOR<UserFavoriteCreateWithoutUserInput, UserFavoriteUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserFavoriteUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserFavoriteWhereUniqueInput
+    data: XOR<UserFavoriteUpdateWithoutUserInput, UserFavoriteUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserFavoriteUpdateManyWithWhereWithoutUserInput = {
+    where: UserFavoriteScalarWhereInput
+    data: XOR<UserFavoriteUpdateManyMutationInput, UserFavoriteUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserFavoriteScalarWhereInput = {
+    AND?: UserFavoriteScalarWhereInput | UserFavoriteScalarWhereInput[]
+    OR?: UserFavoriteScalarWhereInput[]
+    NOT?: UserFavoriteScalarWhereInput | UserFavoriteScalarWhereInput[]
+    id?: IntFilter<"UserFavorite"> | number
+    uuid?: StringFilter<"UserFavorite"> | string
+    user_uuid?: StringFilter<"UserFavorite"> | string
+    entity_type?: EnumFavoriteEntityTypeFilter<"UserFavorite"> | $Enums.FavoriteEntityType
+    entity_uuid?: StringFilter<"UserFavorite"> | string
+    created_at?: DateTimeFilter<"UserFavorite"> | Date | string
+  }
+
   export type UserCreateWithoutPassword_reset_tokensInput = {
     uuid?: string
     email: string
@@ -22156,6 +26770,7 @@ export namespace Prisma {
     updated_at?: Date | string
     product_scans?: UserProductScanCreateNestedManyWithoutUserInput
     product_creation_jobs?: ProductCreationJobCreateNestedManyWithoutUserInput
+    favorites?: UserFavoriteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPassword_reset_tokensInput = {
@@ -22170,6 +26785,7 @@ export namespace Prisma {
     updated_at?: Date | string
     product_scans?: UserProductScanUncheckedCreateNestedManyWithoutUserInput
     product_creation_jobs?: ProductCreationJobUncheckedCreateNestedManyWithoutUserInput
+    favorites?: UserFavoriteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPassword_reset_tokensInput = {
@@ -22199,6 +26815,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     product_scans?: UserProductScanUpdateManyWithoutUserNestedInput
     product_creation_jobs?: ProductCreationJobUpdateManyWithoutUserNestedInput
+    favorites?: UserFavoriteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPassword_reset_tokensInput = {
@@ -22213,6 +26830,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     product_scans?: UserProductScanUncheckedUpdateManyWithoutUserNestedInput
     product_creation_jobs?: ProductCreationJobUncheckedUpdateManyWithoutUserNestedInput
+    favorites?: UserFavoriteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SubcategoryCreateWithoutCategoryInput = {
@@ -22339,6 +26957,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     scans?: UserProductScanCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutSubcategoryInput = {
@@ -22379,6 +26998,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     scans?: UserProductScanUncheckedCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutSubcategoryInput = {
@@ -22517,6 +27137,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     scans?: UserProductScanCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutBrandInput = {
@@ -22557,6 +27178,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     scans?: UserProductScanUncheckedCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutBrandInput = {
@@ -22606,6 +27228,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type IngredientAnalysisVersionCreateWithoutIngredientInput = {
+    uuid?: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput = {
+    id?: number
+    uuid?: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type IngredientAnalysisVersionCreateOrConnectWithoutIngredientInput = {
+    where: IngredientAnalysisVersionWhereUniqueInput
+    create: XOR<IngredientAnalysisVersionCreateWithoutIngredientInput, IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput>
+  }
+
+  export type IngredientAnalysisVersionCreateManyIngredientInputEnvelope = {
+    data: IngredientAnalysisVersionCreateManyIngredientInput | IngredientAnalysisVersionCreateManyIngredientInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ProductIngredientUpsertWithWhereUniqueWithoutIngredientInput = {
     where: ProductIngredientWhereUniqueInput
     update: XOR<ProductIngredientUpdateWithoutIngredientInput, ProductIngredientUncheckedUpdateWithoutIngredientInput>
@@ -22630,6 +27277,34 @@ export namespace Prisma {
     product_uuid?: StringFilter<"ProductIngredient"> | string
     ingredient_uuid?: StringFilter<"ProductIngredient"> | string
     position?: IntFilter<"ProductIngredient"> | number
+  }
+
+  export type IngredientAnalysisVersionUpsertWithWhereUniqueWithoutIngredientInput = {
+    where: IngredientAnalysisVersionWhereUniqueInput
+    update: XOR<IngredientAnalysisVersionUpdateWithoutIngredientInput, IngredientAnalysisVersionUncheckedUpdateWithoutIngredientInput>
+    create: XOR<IngredientAnalysisVersionCreateWithoutIngredientInput, IngredientAnalysisVersionUncheckedCreateWithoutIngredientInput>
+  }
+
+  export type IngredientAnalysisVersionUpdateWithWhereUniqueWithoutIngredientInput = {
+    where: IngredientAnalysisVersionWhereUniqueInput
+    data: XOR<IngredientAnalysisVersionUpdateWithoutIngredientInput, IngredientAnalysisVersionUncheckedUpdateWithoutIngredientInput>
+  }
+
+  export type IngredientAnalysisVersionUpdateManyWithWhereWithoutIngredientInput = {
+    where: IngredientAnalysisVersionScalarWhereInput
+    data: XOR<IngredientAnalysisVersionUpdateManyMutationInput, IngredientAnalysisVersionUncheckedUpdateManyWithoutIngredientInput>
+  }
+
+  export type IngredientAnalysisVersionScalarWhereInput = {
+    AND?: IngredientAnalysisVersionScalarWhereInput | IngredientAnalysisVersionScalarWhereInput[]
+    OR?: IngredientAnalysisVersionScalarWhereInput[]
+    NOT?: IngredientAnalysisVersionScalarWhereInput | IngredientAnalysisVersionScalarWhereInput[]
+    id?: IntFilter<"IngredientAnalysisVersion"> | number
+    uuid?: StringFilter<"IngredientAnalysisVersion"> | string
+    ingredient_uuid?: StringFilter<"IngredientAnalysisVersion"> | string
+    ai_version?: StringNullableFilter<"IngredientAnalysisVersion"> | string | null
+    snapshot?: JsonFilter<"IngredientAnalysisVersion">
+    created_at?: DateTimeFilter<"IngredientAnalysisVersion"> | Date | string
   }
 
   export type BrandCreateWithoutProductsInput = {
@@ -22756,6 +27431,31 @@ export namespace Prisma {
 
   export type UserProductScanCreateManyProductInputEnvelope = {
     data: UserProductScanCreateManyProductInput | UserProductScanCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductAnalysisVersionCreateWithoutProductInput = {
+    uuid?: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type ProductAnalysisVersionUncheckedCreateWithoutProductInput = {
+    id?: number
+    uuid?: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
+  export type ProductAnalysisVersionCreateOrConnectWithoutProductInput = {
+    where: ProductAnalysisVersionWhereUniqueInput
+    create: XOR<ProductAnalysisVersionCreateWithoutProductInput, ProductAnalysisVersionUncheckedCreateWithoutProductInput>
+  }
+
+  export type ProductAnalysisVersionCreateManyProductInputEnvelope = {
+    data: ProductAnalysisVersionCreateManyProductInput | ProductAnalysisVersionCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
@@ -22887,6 +27587,34 @@ export namespace Prisma {
     data: XOR<UserProductScanUpdateManyMutationInput, UserProductScanUncheckedUpdateManyWithoutProductInput>
   }
 
+  export type ProductAnalysisVersionUpsertWithWhereUniqueWithoutProductInput = {
+    where: ProductAnalysisVersionWhereUniqueInput
+    update: XOR<ProductAnalysisVersionUpdateWithoutProductInput, ProductAnalysisVersionUncheckedUpdateWithoutProductInput>
+    create: XOR<ProductAnalysisVersionCreateWithoutProductInput, ProductAnalysisVersionUncheckedCreateWithoutProductInput>
+  }
+
+  export type ProductAnalysisVersionUpdateWithWhereUniqueWithoutProductInput = {
+    where: ProductAnalysisVersionWhereUniqueInput
+    data: XOR<ProductAnalysisVersionUpdateWithoutProductInput, ProductAnalysisVersionUncheckedUpdateWithoutProductInput>
+  }
+
+  export type ProductAnalysisVersionUpdateManyWithWhereWithoutProductInput = {
+    where: ProductAnalysisVersionScalarWhereInput
+    data: XOR<ProductAnalysisVersionUpdateManyMutationInput, ProductAnalysisVersionUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type ProductAnalysisVersionScalarWhereInput = {
+    AND?: ProductAnalysisVersionScalarWhereInput | ProductAnalysisVersionScalarWhereInput[]
+    OR?: ProductAnalysisVersionScalarWhereInput[]
+    NOT?: ProductAnalysisVersionScalarWhereInput | ProductAnalysisVersionScalarWhereInput[]
+    id?: IntFilter<"ProductAnalysisVersion"> | number
+    uuid?: StringFilter<"ProductAnalysisVersion"> | string
+    product_uuid?: StringFilter<"ProductAnalysisVersion"> | string
+    ai_version?: StringNullableFilter<"ProductAnalysisVersion"> | string | null
+    snapshot?: JsonFilter<"ProductAnalysisVersion">
+    created_at?: DateTimeFilter<"ProductAnalysisVersion"> | Date | string
+  }
+
   export type ProductCreateWithoutProduct_ingredientsInput = {
     uuid?: string
     barcode?: string | null
@@ -22924,6 +27652,7 @@ export namespace Prisma {
     subcategory: SubcategoryCreateNestedOneWithoutProductsInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     scans?: UserProductScanCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutProduct_ingredientsInput = {
@@ -22964,6 +27693,7 @@ export namespace Prisma {
     updated_at?: Date | string
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     scans?: UserProductScanUncheckedCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutProduct_ingredientsInput = {
@@ -23008,6 +27738,7 @@ export namespace Prisma {
     ai_version?: string | null
     created_at?: Date | string
     updated_at?: Date | string
+    analysis_versions?: IngredientAnalysisVersionCreateNestedManyWithoutIngredientInput
   }
 
   export type IngredientUncheckedCreateWithoutProduct_ingredientsInput = {
@@ -23048,6 +27779,7 @@ export namespace Prisma {
     ai_version?: string | null
     created_at?: Date | string
     updated_at?: Date | string
+    analysis_versions?: IngredientAnalysisVersionUncheckedCreateNestedManyWithoutIngredientInput
   }
 
   export type IngredientCreateOrConnectWithoutProduct_ingredientsInput = {
@@ -23103,6 +27835,7 @@ export namespace Prisma {
     subcategory?: SubcategoryUpdateOneRequiredWithoutProductsNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutProduct_ingredientsInput = {
@@ -23143,6 +27876,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUncheckedUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type IngredientUpsertWithoutProduct_ingredientsInput = {
@@ -23193,6 +27927,7 @@ export namespace Prisma {
     ai_version?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    analysis_versions?: IngredientAnalysisVersionUpdateManyWithoutIngredientNestedInput
   }
 
   export type IngredientUncheckedUpdateWithoutProduct_ingredientsInput = {
@@ -23233,6 +27968,7 @@ export namespace Prisma {
     ai_version?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    analysis_versions?: IngredientAnalysisVersionUncheckedUpdateManyWithoutIngredientNestedInput
   }
 
   export type ProductCreateWithoutImagesInput = {
@@ -23272,6 +28008,7 @@ export namespace Prisma {
     subcategory: SubcategoryCreateNestedOneWithoutProductsInput
     product_ingredients?: ProductIngredientCreateNestedManyWithoutProductInput
     scans?: UserProductScanCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutImagesInput = {
@@ -23312,6 +28049,7 @@ export namespace Prisma {
     updated_at?: Date | string
     product_ingredients?: ProductIngredientUncheckedCreateNestedManyWithoutProductInput
     scans?: UserProductScanUncheckedCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutImagesInput = {
@@ -23367,6 +28105,7 @@ export namespace Prisma {
     subcategory?: SubcategoryUpdateOneRequiredWithoutProductsNestedInput
     product_ingredients?: ProductIngredientUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutImagesInput = {
@@ -23407,6 +28146,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     product_ingredients?: ProductIngredientUncheckedUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUncheckedUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutProduct_scansInput = {
@@ -23420,6 +28160,7 @@ export namespace Prisma {
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     product_creation_jobs?: ProductCreationJobCreateNestedManyWithoutUserInput
+    favorites?: UserFavoriteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProduct_scansInput = {
@@ -23434,6 +28175,7 @@ export namespace Prisma {
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     product_creation_jobs?: ProductCreationJobUncheckedCreateNestedManyWithoutUserInput
+    favorites?: UserFavoriteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProduct_scansInput = {
@@ -23478,6 +28220,7 @@ export namespace Prisma {
     subcategory: SubcategoryCreateNestedOneWithoutProductsInput
     product_ingredients?: ProductIngredientCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutScansInput = {
@@ -23518,6 +28261,7 @@ export namespace Prisma {
     updated_at?: Date | string
     product_ingredients?: ProductIngredientUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
+    analysis_versions?: ProductAnalysisVersionUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutScansInput = {
@@ -23547,6 +28291,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     product_creation_jobs?: ProductCreationJobUpdateManyWithoutUserNestedInput
+    favorites?: UserFavoriteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProduct_scansInput = {
@@ -23561,6 +28306,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     product_creation_jobs?: ProductCreationJobUncheckedUpdateManyWithoutUserNestedInput
+    favorites?: UserFavoriteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutScansInput = {
@@ -23611,6 +28357,7 @@ export namespace Prisma {
     subcategory?: SubcategoryUpdateOneRequiredWithoutProductsNestedInput
     product_ingredients?: ProductIngredientUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutScansInput = {
@@ -23651,6 +28398,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     product_ingredients?: ProductIngredientUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutProduct_creation_jobsInput = {
@@ -23664,6 +28412,7 @@ export namespace Prisma {
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     product_scans?: UserProductScanCreateNestedManyWithoutUserInput
+    favorites?: UserFavoriteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProduct_creation_jobsInput = {
@@ -23678,6 +28427,7 @@ export namespace Prisma {
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     product_scans?: UserProductScanUncheckedCreateNestedManyWithoutUserInput
+    favorites?: UserFavoriteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProduct_creation_jobsInput = {
@@ -23707,6 +28457,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     product_scans?: UserProductScanUpdateManyWithoutUserNestedInput
+    favorites?: UserFavoriteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProduct_creation_jobsInput = {
@@ -23721,6 +28472,437 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     product_scans?: UserProductScanUncheckedUpdateManyWithoutUserNestedInput
+    favorites?: UserFavoriteUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutFavoritesInput = {
+    uuid?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    name?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    product_scans?: UserProductScanCreateNestedManyWithoutUserInput
+    product_creation_jobs?: ProductCreationJobCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFavoritesInput = {
+    id?: number
+    uuid?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    name?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    product_scans?: UserProductScanUncheckedCreateNestedManyWithoutUserInput
+    product_creation_jobs?: ProductCreationJobUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFavoritesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFavoritesInput, UserUncheckedCreateWithoutFavoritesInput>
+  }
+
+  export type UserUpsertWithoutFavoritesInput = {
+    update: XOR<UserUpdateWithoutFavoritesInput, UserUncheckedUpdateWithoutFavoritesInput>
+    create: XOR<UserCreateWithoutFavoritesInput, UserUncheckedCreateWithoutFavoritesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFavoritesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFavoritesInput, UserUncheckedUpdateWithoutFavoritesInput>
+  }
+
+  export type UserUpdateWithoutFavoritesInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    product_scans?: UserProductScanUpdateManyWithoutUserNestedInput
+    product_creation_jobs?: ProductCreationJobUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFavoritesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    product_scans?: UserProductScanUncheckedUpdateManyWithoutUserNestedInput
+    product_creation_jobs?: ProductCreationJobUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProductCreateWithoutAnalysis_versionsInput = {
+    uuid?: string
+    barcode?: string | null
+    name: string
+    description?: string | null
+    ai_summary?: string | null
+    benefits?: string | null
+    risks?: string | null
+    warnings?: string | null
+    suitability?: string | null
+    recommended_usage?: string | null
+    storage_info?: string | null
+    pregnancy_safety?: $Enums.SafetyLevel | null
+    children_safety?: $Enums.SafetyLevel | null
+    sensitive_skin_safety?: $Enums.SafetyLevel | null
+    allergy_warnings?: string | null
+    environmental_impact?: string | null
+    is_vegan?: boolean | null
+    is_cruelty_free?: boolean | null
+    overall_score: Decimal | DecimalJsLike | number | string
+    color_indicator: $Enums.ColorIndicator
+    scientific_confidence?: Decimal | DecimalJsLike | number | string | null
+    marketing_claims?: ProductCreatemarketing_claimsInput | string[]
+    package_size?: string | null
+    verification_status?: $Enums.VerificationStatus
+    is_featured?: boolean
+    scan_count?: number
+    ai_version?: string | null
+    faq?: NullableJsonNullValueInput | InputJsonValue
+    alternative_product_uuids?: ProductCreatealternative_product_uuidsInput | string[]
+    similar_product_uuids?: ProductCreatesimilar_product_uuidsInput | string[]
+    created_at?: Date | string
+    updated_at?: Date | string
+    brand: BrandCreateNestedOneWithoutProductsInput
+    subcategory: SubcategoryCreateNestedOneWithoutProductsInput
+    product_ingredients?: ProductIngredientCreateNestedManyWithoutProductInput
+    images?: ProductImageCreateNestedManyWithoutProductInput
+    scans?: UserProductScanCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutAnalysis_versionsInput = {
+    id?: number
+    uuid?: string
+    barcode?: string | null
+    name: string
+    brand_uuid: string
+    subcategory_uuid: string
+    description?: string | null
+    ai_summary?: string | null
+    benefits?: string | null
+    risks?: string | null
+    warnings?: string | null
+    suitability?: string | null
+    recommended_usage?: string | null
+    storage_info?: string | null
+    pregnancy_safety?: $Enums.SafetyLevel | null
+    children_safety?: $Enums.SafetyLevel | null
+    sensitive_skin_safety?: $Enums.SafetyLevel | null
+    allergy_warnings?: string | null
+    environmental_impact?: string | null
+    is_vegan?: boolean | null
+    is_cruelty_free?: boolean | null
+    overall_score: Decimal | DecimalJsLike | number | string
+    color_indicator: $Enums.ColorIndicator
+    scientific_confidence?: Decimal | DecimalJsLike | number | string | null
+    marketing_claims?: ProductCreatemarketing_claimsInput | string[]
+    package_size?: string | null
+    verification_status?: $Enums.VerificationStatus
+    is_featured?: boolean
+    scan_count?: number
+    ai_version?: string | null
+    faq?: NullableJsonNullValueInput | InputJsonValue
+    alternative_product_uuids?: ProductCreatealternative_product_uuidsInput | string[]
+    similar_product_uuids?: ProductCreatesimilar_product_uuidsInput | string[]
+    created_at?: Date | string
+    updated_at?: Date | string
+    product_ingredients?: ProductIngredientUncheckedCreateNestedManyWithoutProductInput
+    images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
+    scans?: UserProductScanUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutAnalysis_versionsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutAnalysis_versionsInput, ProductUncheckedCreateWithoutAnalysis_versionsInput>
+  }
+
+  export type ProductUpsertWithoutAnalysis_versionsInput = {
+    update: XOR<ProductUpdateWithoutAnalysis_versionsInput, ProductUncheckedUpdateWithoutAnalysis_versionsInput>
+    create: XOR<ProductCreateWithoutAnalysis_versionsInput, ProductUncheckedCreateWithoutAnalysis_versionsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutAnalysis_versionsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutAnalysis_versionsInput, ProductUncheckedUpdateWithoutAnalysis_versionsInput>
+  }
+
+  export type ProductUpdateWithoutAnalysis_versionsInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ai_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    benefits?: NullableStringFieldUpdateOperationsInput | string | null
+    risks?: NullableStringFieldUpdateOperationsInput | string | null
+    warnings?: NullableStringFieldUpdateOperationsInput | string | null
+    suitability?: NullableStringFieldUpdateOperationsInput | string | null
+    recommended_usage?: NullableStringFieldUpdateOperationsInput | string | null
+    storage_info?: NullableStringFieldUpdateOperationsInput | string | null
+    pregnancy_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    children_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    sensitive_skin_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    allergy_warnings?: NullableStringFieldUpdateOperationsInput | string | null
+    environmental_impact?: NullableStringFieldUpdateOperationsInput | string | null
+    is_vegan?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_cruelty_free?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    overall_score?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    color_indicator?: EnumColorIndicatorFieldUpdateOperationsInput | $Enums.ColorIndicator
+    scientific_confidence?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    marketing_claims?: ProductUpdatemarketing_claimsInput | string[]
+    package_size?: NullableStringFieldUpdateOperationsInput | string | null
+    verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+    is_featured?: BoolFieldUpdateOperationsInput | boolean
+    scan_count?: IntFieldUpdateOperationsInput | number
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    faq?: NullableJsonNullValueInput | InputJsonValue
+    alternative_product_uuids?: ProductUpdatealternative_product_uuidsInput | string[]
+    similar_product_uuids?: ProductUpdatesimilar_product_uuidsInput | string[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    brand?: BrandUpdateOneRequiredWithoutProductsNestedInput
+    subcategory?: SubcategoryUpdateOneRequiredWithoutProductsNestedInput
+    product_ingredients?: ProductIngredientUpdateManyWithoutProductNestedInput
+    images?: ProductImageUpdateManyWithoutProductNestedInput
+    scans?: UserProductScanUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutAnalysis_versionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    brand_uuid?: StringFieldUpdateOperationsInput | string
+    subcategory_uuid?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ai_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    benefits?: NullableStringFieldUpdateOperationsInput | string | null
+    risks?: NullableStringFieldUpdateOperationsInput | string | null
+    warnings?: NullableStringFieldUpdateOperationsInput | string | null
+    suitability?: NullableStringFieldUpdateOperationsInput | string | null
+    recommended_usage?: NullableStringFieldUpdateOperationsInput | string | null
+    storage_info?: NullableStringFieldUpdateOperationsInput | string | null
+    pregnancy_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    children_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    sensitive_skin_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    allergy_warnings?: NullableStringFieldUpdateOperationsInput | string | null
+    environmental_impact?: NullableStringFieldUpdateOperationsInput | string | null
+    is_vegan?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_cruelty_free?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    overall_score?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    color_indicator?: EnumColorIndicatorFieldUpdateOperationsInput | $Enums.ColorIndicator
+    scientific_confidence?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    marketing_claims?: ProductUpdatemarketing_claimsInput | string[]
+    package_size?: NullableStringFieldUpdateOperationsInput | string | null
+    verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+    is_featured?: BoolFieldUpdateOperationsInput | boolean
+    scan_count?: IntFieldUpdateOperationsInput | number
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    faq?: NullableJsonNullValueInput | InputJsonValue
+    alternative_product_uuids?: ProductUpdatealternative_product_uuidsInput | string[]
+    similar_product_uuids?: ProductUpdatesimilar_product_uuidsInput | string[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    product_ingredients?: ProductIngredientUncheckedUpdateManyWithoutProductNestedInput
+    images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
+    scans?: UserProductScanUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type IngredientCreateWithoutAnalysis_versionsInput = {
+    uuid?: string
+    name: string
+    name_normalized: string
+    synonyms?: IngredientCreatesynonymsInput | string[]
+    scientific_name?: string | null
+    description?: string | null
+    ai_summary?: string | null
+    full_description?: string | null
+    benefits?: string | null
+    risks?: string | null
+    safety_explanation?: string | null
+    purpose?: string | null
+    common_uses?: string | null
+    pregnancy_safety?: $Enums.SafetyLevel | null
+    child_safety?: $Enums.SafetyLevel | null
+    allergy_risk?: string | null
+    carcinogenic_evidence?: string | null
+    hormone_disruption_risk?: string | null
+    irritation_risk?: string | null
+    acne_rating?: number | null
+    comedogenic_rating?: number | null
+    sensitive_skin_suitability?: $Enums.SafetyLevel | null
+    environmental_impact?: string | null
+    is_vegan?: boolean | null
+    is_cruelty_free?: boolean | null
+    is_biodegradable?: boolean | null
+    overall_score?: Decimal | DecimalJsLike | number | string | null
+    safety_score?: Decimal | DecimalJsLike | number | string | null
+    risk_score?: Decimal | DecimalJsLike | number | string | null
+    confidence_score?: Decimal | DecimalJsLike | number | string | null
+    color_indicator?: $Enums.ColorIndicator
+    research_summary?: string | null
+    references?: NullableJsonNullValueInput | InputJsonValue
+    ai_version?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    product_ingredients?: ProductIngredientCreateNestedManyWithoutIngredientInput
+  }
+
+  export type IngredientUncheckedCreateWithoutAnalysis_versionsInput = {
+    id?: number
+    uuid?: string
+    name: string
+    name_normalized: string
+    synonyms?: IngredientCreatesynonymsInput | string[]
+    scientific_name?: string | null
+    description?: string | null
+    ai_summary?: string | null
+    full_description?: string | null
+    benefits?: string | null
+    risks?: string | null
+    safety_explanation?: string | null
+    purpose?: string | null
+    common_uses?: string | null
+    pregnancy_safety?: $Enums.SafetyLevel | null
+    child_safety?: $Enums.SafetyLevel | null
+    allergy_risk?: string | null
+    carcinogenic_evidence?: string | null
+    hormone_disruption_risk?: string | null
+    irritation_risk?: string | null
+    acne_rating?: number | null
+    comedogenic_rating?: number | null
+    sensitive_skin_suitability?: $Enums.SafetyLevel | null
+    environmental_impact?: string | null
+    is_vegan?: boolean | null
+    is_cruelty_free?: boolean | null
+    is_biodegradable?: boolean | null
+    overall_score?: Decimal | DecimalJsLike | number | string | null
+    safety_score?: Decimal | DecimalJsLike | number | string | null
+    risk_score?: Decimal | DecimalJsLike | number | string | null
+    confidence_score?: Decimal | DecimalJsLike | number | string | null
+    color_indicator?: $Enums.ColorIndicator
+    research_summary?: string | null
+    references?: NullableJsonNullValueInput | InputJsonValue
+    ai_version?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    product_ingredients?: ProductIngredientUncheckedCreateNestedManyWithoutIngredientInput
+  }
+
+  export type IngredientCreateOrConnectWithoutAnalysis_versionsInput = {
+    where: IngredientWhereUniqueInput
+    create: XOR<IngredientCreateWithoutAnalysis_versionsInput, IngredientUncheckedCreateWithoutAnalysis_versionsInput>
+  }
+
+  export type IngredientUpsertWithoutAnalysis_versionsInput = {
+    update: XOR<IngredientUpdateWithoutAnalysis_versionsInput, IngredientUncheckedUpdateWithoutAnalysis_versionsInput>
+    create: XOR<IngredientCreateWithoutAnalysis_versionsInput, IngredientUncheckedCreateWithoutAnalysis_versionsInput>
+    where?: IngredientWhereInput
+  }
+
+  export type IngredientUpdateToOneWithWhereWithoutAnalysis_versionsInput = {
+    where?: IngredientWhereInput
+    data: XOR<IngredientUpdateWithoutAnalysis_versionsInput, IngredientUncheckedUpdateWithoutAnalysis_versionsInput>
+  }
+
+  export type IngredientUpdateWithoutAnalysis_versionsInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    name_normalized?: StringFieldUpdateOperationsInput | string
+    synonyms?: IngredientUpdatesynonymsInput | string[]
+    scientific_name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ai_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    full_description?: NullableStringFieldUpdateOperationsInput | string | null
+    benefits?: NullableStringFieldUpdateOperationsInput | string | null
+    risks?: NullableStringFieldUpdateOperationsInput | string | null
+    safety_explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    common_uses?: NullableStringFieldUpdateOperationsInput | string | null
+    pregnancy_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    child_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    allergy_risk?: NullableStringFieldUpdateOperationsInput | string | null
+    carcinogenic_evidence?: NullableStringFieldUpdateOperationsInput | string | null
+    hormone_disruption_risk?: NullableStringFieldUpdateOperationsInput | string | null
+    irritation_risk?: NullableStringFieldUpdateOperationsInput | string | null
+    acne_rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comedogenic_rating?: NullableIntFieldUpdateOperationsInput | number | null
+    sensitive_skin_suitability?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    environmental_impact?: NullableStringFieldUpdateOperationsInput | string | null
+    is_vegan?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_cruelty_free?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_biodegradable?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    overall_score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    safety_score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    risk_score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    confidence_score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    color_indicator?: EnumColorIndicatorFieldUpdateOperationsInput | $Enums.ColorIndicator
+    research_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    references?: NullableJsonNullValueInput | InputJsonValue
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    product_ingredients?: ProductIngredientUpdateManyWithoutIngredientNestedInput
+  }
+
+  export type IngredientUncheckedUpdateWithoutAnalysis_versionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    name_normalized?: StringFieldUpdateOperationsInput | string
+    synonyms?: IngredientUpdatesynonymsInput | string[]
+    scientific_name?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ai_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    full_description?: NullableStringFieldUpdateOperationsInput | string | null
+    benefits?: NullableStringFieldUpdateOperationsInput | string | null
+    risks?: NullableStringFieldUpdateOperationsInput | string | null
+    safety_explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    common_uses?: NullableStringFieldUpdateOperationsInput | string | null
+    pregnancy_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    child_safety?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    allergy_risk?: NullableStringFieldUpdateOperationsInput | string | null
+    carcinogenic_evidence?: NullableStringFieldUpdateOperationsInput | string | null
+    hormone_disruption_risk?: NullableStringFieldUpdateOperationsInput | string | null
+    irritation_risk?: NullableStringFieldUpdateOperationsInput | string | null
+    acne_rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comedogenic_rating?: NullableIntFieldUpdateOperationsInput | number | null
+    sensitive_skin_suitability?: NullableEnumSafetyLevelFieldUpdateOperationsInput | $Enums.SafetyLevel | null
+    environmental_impact?: NullableStringFieldUpdateOperationsInput | string | null
+    is_vegan?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_cruelty_free?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    is_biodegradable?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    overall_score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    safety_score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    risk_score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    confidence_score?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    color_indicator?: EnumColorIndicatorFieldUpdateOperationsInput | $Enums.ColorIndicator
+    research_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    references?: NullableJsonNullValueInput | InputJsonValue
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    product_ingredients?: ProductIngredientUncheckedUpdateManyWithoutIngredientNestedInput
   }
 
   export type PasswordResetTokenCreateManyUserInput = {
@@ -23751,6 +28933,14 @@ export namespace Prisma {
     error_message?: string | null
     created_at?: Date | string
     updated_at?: Date | string
+  }
+
+  export type UserFavoriteCreateManyUserInput = {
+    id?: number
+    uuid?: string
+    entity_type: $Enums.FavoriteEntityType
+    entity_uuid: string
+    created_at?: Date | string
   }
 
   export type PasswordResetTokenUpdateWithoutUserInput = {
@@ -23838,6 +29028,29 @@ export namespace Prisma {
     error_message?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFavoriteUpdateWithoutUserInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    entity_type?: EnumFavoriteEntityTypeFieldUpdateOperationsInput | $Enums.FavoriteEntityType
+    entity_uuid?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFavoriteUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    entity_type?: EnumFavoriteEntityTypeFieldUpdateOperationsInput | $Enums.FavoriteEntityType
+    entity_uuid?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFavoriteUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    entity_type?: EnumFavoriteEntityTypeFieldUpdateOperationsInput | $Enums.FavoriteEntityType
+    entity_uuid?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SubcategoryCreateManyCategoryInput = {
@@ -23955,6 +29168,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutSubcategoryInput = {
@@ -23995,6 +29209,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUncheckedUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutSubcategoryInput = {
@@ -24108,6 +29323,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutBrandInput = {
@@ -24148,6 +29364,7 @@ export namespace Prisma {
     product_ingredients?: ProductIngredientUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     scans?: UserProductScanUncheckedUpdateManyWithoutProductNestedInput
+    analysis_versions?: ProductAnalysisVersionUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutBrandInput = {
@@ -24193,6 +29410,14 @@ export namespace Prisma {
     position: number
   }
 
+  export type IngredientAnalysisVersionCreateManyIngredientInput = {
+    id?: number
+    uuid?: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
+  }
+
   export type ProductIngredientUpdateWithoutIngredientInput = {
     position?: IntFieldUpdateOperationsInput | number
     product?: ProductUpdateOneRequiredWithoutProduct_ingredientsNestedInput
@@ -24208,6 +29433,29 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     product_uuid?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type IngredientAnalysisVersionUpdateWithoutIngredientInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IngredientAnalysisVersionUncheckedUpdateWithoutIngredientInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IngredientAnalysisVersionUncheckedUpdateManyWithoutIngredientInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProductIngredientCreateManyProductInput = {
@@ -24230,6 +29478,14 @@ export namespace Prisma {
     user_uuid: string
     scanned_at?: Date | string
     scan_method: $Enums.ScanMethod
+  }
+
+  export type ProductAnalysisVersionCreateManyProductInput = {
+    id?: number
+    uuid?: string
+    ai_version?: string | null
+    snapshot: JsonNullValueInput | InputJsonValue
+    created_at?: Date | string
   }
 
   export type ProductIngredientUpdateWithoutProductInput = {
@@ -24293,6 +29549,29 @@ export namespace Prisma {
     user_uuid?: StringFieldUpdateOperationsInput | string
     scanned_at?: DateTimeFieldUpdateOperationsInput | Date | string
     scan_method?: EnumScanMethodFieldUpdateOperationsInput | $Enums.ScanMethod
+  }
+
+  export type ProductAnalysisVersionUpdateWithoutProductInput = {
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductAnalysisVersionUncheckedUpdateWithoutProductInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductAnalysisVersionUncheckedUpdateManyWithoutProductInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uuid?: StringFieldUpdateOperationsInput | string
+    ai_version?: NullableStringFieldUpdateOperationsInput | string | null
+    snapshot?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

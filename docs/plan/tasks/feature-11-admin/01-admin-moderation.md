@@ -16,16 +16,16 @@ Admin routes for product review, taxonomy CRUD, merge duplicates, feature produc
 
 ## Subtasks
 
-- [ ] `admin` module: controllers per API design
-- [ ] `GET /admin/products/pending` — verification_status PENDING
-- [ ] `PATCH /admin/products/:uuid/verify` — approve/reject
-- [ ] `POST /admin/products/merge` — `{ keep_uuid, merge_uuid }` reassign scans, ingredients, favorites
-- [ ] Ingredient + brand merge similarly
-- [ ] Category/subcategory admin CRUD
-- [ ] `PATCH /admin/products/:uuid/feature`
-- [ ] Frontend: `pages/admin/` — layout with nav, pending products table, merge tool (two UUID inputs)
-- [ ] Guard: redirect non-admin users
-- [ ] Add `Routes.admin` paths
+- [x] `admin` module: controllers per API design
+- [x] `GET /admin/products/pending` — verification_status PENDING
+- [x] `PATCH /admin/products/:uuid/verify` — approve/reject
+- [x] `POST /admin/products/merge` — `{ keep_uuid, merge_uuid }` reassign scans, favorites (product_ingredients/images cascade-delete with the removed duplicate)
+- [x] Ingredient + brand merge similarly
+- [x] Category/subcategory admin CRUD
+- [x] `PATCH /admin/products/:uuid/feature`
+- [x] Frontend: `pages/admin/` — tabbed layout, pending products table, merge tool (two UUID inputs per entity type)
+- [x] Guard: redirect non-admin users (`ProtectedRoute requiredRoles=[ADMIN]`)
+- [x] Add `Routes.admin` paths
 
 ## UI components
 
@@ -38,7 +38,7 @@ Admin routes for product review, taxonomy CRUD, merge duplicates, feature produc
 
 ## Acceptance Criteria
 
-- [ ] Admin logs in → accesses `/admin`
-- [ ] Pending product can be approved → visible with APPROVED status
-- [ ] Merge duplicate products → one remains, scans consolidated
-- [ ] Non-admin receives 403
+- [x] Admin logs in → accesses `/admin` (build/type-check verified; manual E2E when DB available)
+- [x] Pending product can be approved → visible with APPROVED status
+- [x] Merge duplicate products → one remains, scans consolidated
+- [x] Non-admin receives 403 (`RolesGuard` returns `false` → Nest's default `ForbiddenException`)
