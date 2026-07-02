@@ -24,6 +24,7 @@ Visual tokens live in `app/src/index.css` — use theme classes (`bg-accent`, `t
 | `PasswordInput` | `password-input.tsx` | Password fields with show/hide toggle |
 | `Card` | `card.tsx` | Section containers, list items, feed cards |
 | `SafetyBadge` | `safety-badge.tsx` | Product/ingredient score bands (`compact` for inline lists) |
+| `Skeleton` | `skeleton.tsx` | Placeholder blocks while data loads (lists, cards, detail pages) |
 | `ActionButtonWithPending` | `action-button-with-pending.tsx` | Submit actions with built-in loading state |
 | `Drawer` | `drawer.tsx` | Mobile sheets / slide-over panels |
 | `Popover` | `popover.tsx` | Menus, user menu, anchored overlays |
@@ -58,12 +59,43 @@ Do **not** add raw `<button className="rounded-xl bg-accent ...">` or `<input cl
 
 ---
 
+## Loading states
+
+Use **skeleton placeholders** for any async data fetch (pages, lists, cards, detail sections). **Never** show bare text like `"Loading..."`, `"Loading profile…"`, or a centered spinner as the primary page indicator.
+
+| Context | Pattern |
+|---------|---------|
+| Page / list / card data (`useQuery` `isLoading`) | `<Skeleton>` blocks that mirror the final layout (same heights, grid, card count) |
+| Home feed, search results, history | Skeleton rows/cards — not a single loading label |
+| Product / ingredient detail | Page-local skeleton component (e.g. `ProductDetailLoading`) |
+| Form submit / mutation | `Button loading={isSubmitting}` or `ActionButtonWithPending` — spinner on the button only |
+| OCR / AI job progress | Step labels with real status text (e.g. "Analyzing 12 ingredients…") — not generic "Loading" |
+
+Skeleton styling: `animate-pulse` + `bg-surface-secondary` + `rounded-xl` (or `rounded-lg`), matching the content it replaces. Prefer a shared `Skeleton` primitive over copy-pasting pulse blocks; page-local skeleton layouts (e.g. `ProductDetailLoading`) are fine when layout-specific.
+
+```tsx
+import { Skeleton } from "@/components/ui/skeleton";
+
+if (isLoading) {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-8 w-2/3" />
+      <Skeleton className="aspect-[4/3] w-full" />
+      <Skeleton className="h-40 w-full" />
+    </div>
+  );
+}
+```
+
+---
+
 ## When building a new screen
 
 1. Check this table and [DESIGN.md](../../DESIGN.md) §5.5 first.
-2. Compose page components from `Button`, `Input`, `Card`, `SafetyBadge`, etc.
-3. Put **feature-specific** layout in `pages/<section>/components/` (e.g. `IngredientAccordion`, `ProductCard`).
-4. If you need a new reusable control (e.g. `FilterChip`, `SegmentedControl`), add **one** primitive to `components/ui/` and use it everywhere.
+2. Compose page components from `Button`, `Input`, `Card`, `SafetyBadge`, `Skeleton`, etc.
+3. While data loads, render skeleton placeholders — never `"Loading..."` text.
+4. Put **feature-specific** layout in `pages/<section>/components/` (e.g. `IngredientAccordion`, `ProductCard`).
+5. If you need a new reusable control (e.g. `FilterChip`, `SegmentedControl`), add **one** primitive to `components/ui/` and use it everywhere.
 
 ---
 
@@ -75,6 +107,8 @@ Do **not** add raw `<button className="rounded-xl bg-accent ...">` or `<input cl
 | Custom styled `<input>` in forms | `<Input />` or `<PasswordInput />` |
 | One-off score pill markup | `<SafetyBadge />` |
 | New card wrapper with same border/radius tokens | `<Card>` + children |
+| `"Loading..."` / `"Loading profile…"` text while fetching | Skeleton blocks mirroring final layout |
+| Full-page spinner or centered loading label | `<Skeleton>` rows/cards per section |
 | Third-party UI kits (MUI, Chakra, etc.) | Extend `components/ui/` |
 
 ---

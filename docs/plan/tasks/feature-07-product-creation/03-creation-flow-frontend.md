@@ -12,7 +12,7 @@ Multi-step UI: capture ingredient list → capture front label → progress → 
 
 - Entry from scan 404 with barcode prefilled
 - Alternative entry: Scan tab "Scan label instead"
-- Steps match spec: ingredient label photo, front label photo, analyzing spinner
+- Steps match spec: ingredient label photo, front label photo, analyzing progress (named step labels — not generic "Loading...")
 - Poll job status until complete
 
 ## Subtasks
@@ -29,7 +29,7 @@ Multi-step UI: capture ingredient list → capture front label → progress → 
 
 ## UI components
 
-> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — step CTAs use `Button` / `Button variant="scan"`; file inputs styled via shared patterns. Progress step uses `Button loading` — no one-off spinner buttons.
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — step CTAs use `Button` / `Button variant="scan"`; file inputs styled via shared patterns. Analysis step shows job status text + optional `Skeleton` preview — not `"Loading..."` or one-off spinner buttons.
 
 ## Technical Notes
 

@@ -28,10 +28,11 @@ Wire frontend auth flows to API endpoints and build minimal profile settings.
 - [x] Add routes to `app/src/routes/routes.ts` and `routes/index.tsx`
 - [x] Profile settings page (name field)
 - [x] Toast on all mutation success/error
+- [ ] Profile settings loading: `Skeleton` form fields (replace any "Loading profile…" text)
 
 ## UI components
 
-> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — reuse `Button`, `Input`, `PasswordInput`, `Card` from `app/src/components/ui/`.
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — reuse `Button`, `Input`, `PasswordInput`, `Card`, `Skeleton` from `app/src/components/ui/`. `useGetMe` pending → skeleton fields, not loading labels.
 
 ## Acceptance Criteria
 

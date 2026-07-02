@@ -24,11 +24,11 @@ Implement Scan tab: camera barcode scanning → lookup → navigate to product d
 - [x] On success: `navigate(Routes.products.detail(uuid))`
 - [x] On 404: navigate to creation flow route with barcode query param
 - [x] Error states: camera denied, invalid barcode, network error
-- [x] Loading overlay during lookup
+- [x] Lookup pending state via `Button loading` on submit (not "Loading..." page text)
 
 ## UI components
 
-> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — `Button variant="scan"` for primary actions; `Input` for manual barcode entry; loading overlay via `Button loading` or existing patterns. No duplicate CTA/input styles.
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — `Button variant="scan"` for primary actions; `Input` for manual barcode entry; lookup pending = `Button loading` on the scan/submit action. No duplicate CTA/input styles. No bare loading labels.
 
 ## Technical Notes
 

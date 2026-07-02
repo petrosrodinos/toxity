@@ -367,7 +367,7 @@ flowchart TD
 - UX-1: Safety color never appears without text label (e.g. “Moderate risk”)
 - UX-2: Logged-in mobile layout uses **fixed bottom navigation** with five tabs; Scan is always visible (center or emphasized tab)
 - UX-3: Main content area scrolls independently; bottom nav does not obscure primary CTAs (safe-area padding)
-- UX-4: Loading states for OCR/AI jobs with progress steps
+- UX-4: Async data uses **skeleton placeholders** that mirror final layout — never bare `"Loading..."` labels or full-page spinners; OCR/AI jobs show named progress steps (e.g. "Analyzing ingredients…")
 - UX-5: Empty states educate (e.g. “Scan your first product”)
 - UX-6: Dark and light themes via `data-theme` attribute
 

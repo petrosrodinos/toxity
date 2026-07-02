@@ -18,7 +18,7 @@ const EnvSchema = z.object({
     GCS_PROJECT_ID: z.string().optional(),
     GCS_BUCKET_NAME: z.string().optional(),
     GCS_FOLDER_NAME: z.string().optional(),
-    GCS_CREDENTIALS_PATH: z.string().optional(),
+    GCS_CREDENTIALS_JSON_BASE64: z.string().optional(),
     GCS_CREDENTIALS: z.string().optional(),
     GOOGLE_VISION_CREDENTIALS_PATH: z.string().optional(),
     STRIPE_PUBLISHABLE_KEY: z.string().optional(),

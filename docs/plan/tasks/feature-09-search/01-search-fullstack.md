@@ -23,11 +23,12 @@ Search products, ingredients, brands by query with filters and sort options.
 - [ ] Frontend: `features/search/`, `useSearch` with debounce
 - [ ] `pages/search/index.tsx` — search input, filter chips, sort dropdown
 - [ ] Result rows by type with navigation
-- [ ] Empty and loading states
+- [ ] Empty state with helpful copy
+- [ ] Loading skeleton result rows (debounced search — no "Loading..." label)
 
 ## UI components
 
-> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — search field = `Input`; filter chips compose `Button variant="outline"` or add one `FilterChip` primitive in `components/ui/` if reused. Result rows use `Card` + `SafetyBadge`.
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — search field = `Input`; filter chips compose `Button variant="outline"` or add one `FilterChip` primitive in `components/ui/` if reused. Result rows use `Card` + `SafetyBadge`. While `useSearch` fetches, show skeleton cards — never bare loading text.
 
 ## Technical Notes
 

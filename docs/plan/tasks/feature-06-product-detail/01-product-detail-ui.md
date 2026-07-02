@@ -21,6 +21,7 @@ Build the full Product Details page per spec: hero, score badge, summary, expand
 - [ ] `features/products/interfaces/products.interfaces.ts` — match API shape
 - [ ] `useGetProduct(product_uuid)` hook
 - [ ] `pages/products/detail/index.tsx` — ProductDetailPage
+- [ ] `ProductDetailLoading` — skeleton layout (no "Loading..." text)
 - [ ] `Route`: `Routes.products.detail` → `/products/:product_id`
 - [ ] Components: `ProductHero`, `ProductSummary`, `IngredientAccordionList` (compose `Card` / `SafetyBadge`)
 - [ ] `ProductScoreBadge` — thin wrapper around `SafetyBadge`, not new badge markup

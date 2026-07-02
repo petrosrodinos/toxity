@@ -21,10 +21,11 @@ History tab listing user's scanned products with spec layout.
 - [ ] Reuse `ProductCard` with scan date prop
 - [ ] Empty state: CTA to Scan tab
 - [ ] Pull to refresh
+- [ ] Loading skeleton `ProductCard` rows (no "Loading..." text)
 
 ## UI components
 
-> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — reuse shared `ProductCard` (`Card` + `SafetyBadge`); empty-state CTA = `Button variant="scan"`.
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — reuse shared `ProductCard` (`Card` + `SafetyBadge`); empty-state CTA = `Button variant="scan"`. Initial fetch shows skeleton cards, not loading labels.
 
 ## Acceptance Criteria
 

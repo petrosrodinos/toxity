@@ -23,11 +23,11 @@ Build Home tab with product cards, category chips, ingredient spotlight, daily t
 - [ ] Ingredient spotlight card → ingredient detail
 - [ ] Pull-to-refresh or refetch on focus (React Query `refetchOnWindowFocus`)
 - [ ] Empty states per section
-- [ ] Loading skeletons
+- [ ] Loading skeletons per section (card/row placeholders — never "Loading..." labels)
 
 ## UI components
 
-> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — `ProductCard` must use `Card` + `SafetyBadge` internally; home sections use `Button` for CTAs. One shared `components/product-card.tsx` for Home, History, and Search.
+> **Required:** [05-frontend-ui-primitives.md](../../directions/05-frontend-ui-primitives.md) — `ProductCard` must use `Card` + `SafetyBadge` internally; home sections use `Button` for CTAs. One shared `components/product-card.tsx` for Home, History, and Search. While `useGetHomeFeed` loads, show `Skeleton` blocks — not text spinners.
 
 ## Technical Notes
 

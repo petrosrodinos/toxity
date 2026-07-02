@@ -23,6 +23,7 @@ Build ingredient detail screen with safety color, scores, and educational sectio
 - [x] Sections as collapsible cards or stacked layout
 - [x] Link from product ingredient accordion (stub link until Feature 06) — `IngredientLink` component
 - [x] Add route to `routes.ts`
+- [x] Loading skeleton layout while `useGetIngredient` fetches (no "Loading..." text)
 
 ## UI components
 
