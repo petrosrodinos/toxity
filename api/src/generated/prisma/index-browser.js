@@ -154,9 +154,89 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  name: 'name',
+  slug: 'slug',
+  icon_url: 'icon_url',
+  sort_order: 'sort_order',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.SubcategoryScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  category_uuid: 'category_uuid',
+  name: 'name',
+  slug: 'slug',
+  sort_order: 'sort_order',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.BrandScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  name: 'name',
+  slug: 'slug',
+  logo_url: 'logo_url',
+  website: 'website',
+  country: 'country',
+  description: 'description',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.IngredientScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  name: 'name',
+  name_normalized: 'name_normalized',
+  synonyms: 'synonyms',
+  scientific_name: 'scientific_name',
+  description: 'description',
+  ai_summary: 'ai_summary',
+  full_description: 'full_description',
+  benefits: 'benefits',
+  risks: 'risks',
+  safety_explanation: 'safety_explanation',
+  purpose: 'purpose',
+  common_uses: 'common_uses',
+  pregnancy_safety: 'pregnancy_safety',
+  child_safety: 'child_safety',
+  allergy_risk: 'allergy_risk',
+  carcinogenic_evidence: 'carcinogenic_evidence',
+  hormone_disruption_risk: 'hormone_disruption_risk',
+  irritation_risk: 'irritation_risk',
+  acne_rating: 'acne_rating',
+  comedogenic_rating: 'comedogenic_rating',
+  sensitive_skin_suitability: 'sensitive_skin_suitability',
+  environmental_impact: 'environmental_impact',
+  is_vegan: 'is_vegan',
+  is_cruelty_free: 'is_cruelty_free',
+  is_biodegradable: 'is_biodegradable',
+  overall_score: 'overall_score',
+  safety_score: 'safety_score',
+  risk_score: 'risk_score',
+  confidence_score: 'confidence_score',
+  color_indicator: 'color_indicator',
+  research_summary: 'research_summary',
+  references: 'references',
+  ai_version: 'ai_version',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -167,6 +247,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AuthRole = exports.$Enums.AuthRole = {
   USER: 'USER',
@@ -186,10 +272,30 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   OTHER: 'OTHER'
 };
 
+exports.SafetyLevel = exports.$Enums.SafetyLevel = {
+  SAFE: 'SAFE',
+  CAUTION: 'CAUTION',
+  AVOID: 'AVOID',
+  UNKNOWN: 'UNKNOWN'
+};
+
+exports.ColorIndicator = exports.$Enums.ColorIndicator = {
+  VERY_SAFE: 'VERY_SAFE',
+  SAFE: 'SAFE',
+  MODERATE: 'MODERATE',
+  CAUTION: 'CAUTION',
+  HIGH_RISK: 'HIGH_RISK',
+  UNKNOWN: 'UNKNOWN'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
-  Document: 'Document'
+  Document: 'Document',
+  Category: 'Category',
+  Subcategory: 'Subcategory',
+  Brand: 'Brand',
+  Ingredient: 'Ingredient'
 };
 
 /**

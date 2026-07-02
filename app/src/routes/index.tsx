@@ -13,6 +13,7 @@ import ScanPage from "@/pages/scan";
 import SearchPage from "@/pages/search";
 import HistoryPage from "@/pages/history";
 import ProfilePage from "@/pages/profile";
+import IngredientDetailPage from "@/pages/ingredients/detail";
 
 function RootRedirect() {
     const { isLoggedIn } = useAuthStore();
@@ -51,6 +52,10 @@ export default function AppRoutes() {
                 <Route path={Routes.search.root} element={<SearchPage />} />
                 <Route path={Routes.history.root} element={<HistoryPage />} />
                 <Route path={Routes.profile.root} element={<ProfilePage />} />
+                <Route
+                    path={Routes.ingredients.detail(":ingredient_uuid")}
+                    element={<IngredientDetailPage />}
+                />
             </Route>
 
             {/* Legacy dashboard redirects */}

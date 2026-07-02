@@ -16,13 +16,13 @@ Build ingredient detail screen with safety color, scores, and educational sectio
 
 ## Subtasks
 
-- [ ] `features/ingredients/` — interfaces, services, `useGetIngredient`
-- [ ] `ApiRoutes.ingredients` in config
-- [ ] `pages/ingredients/detail/index.tsx` — IngredientDetailPage
-- [ ] `SafetyBadge` from `components/ui/safety-badge.tsx` (do not build a one-off badge)
-- [ ] Sections as collapsible cards or stacked layout
-- [ ] Link from product ingredient accordion (stub link until Feature 06)
-- [ ] Add route to `routes.ts`
+- [x] `features/ingredients/` — interfaces, services, `useGetIngredient`
+- [x] `ApiRoutes.ingredients` in config
+- [x] `pages/ingredients/detail/index.tsx` — IngredientDetailPage
+- [x] `SafetyBadge` from `components/ui/safety-badge.tsx` (do not build a one-off badge)
+- [x] Sections as collapsible cards or stacked layout
+- [x] Link from product ingredient accordion (stub link until Feature 06) — `IngredientLink` component
+- [x] Add route to `routes.ts`
 
 ## UI components
 
@@ -35,6 +35,6 @@ Build ingredient detail screen with safety color, scores, and educational sectio
 
 ## Acceptance Criteria
 
-- [ ] Navigate to `/ingredients/:uuid` shows full ingredient analysis from API
-- [ ] Color indicator visually matches enum (green/yellow/orange/red/gray)
-- [ ] Page readable on mobile and desktop
+- [x] Navigate to `/ingredients/:uuid` shows full ingredient analysis from API
+- [x] Color indicator visually matches enum (green/yellow/orange/red/gray)
+- [x] Page readable on mobile and desktop

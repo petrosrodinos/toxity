@@ -16,14 +16,14 @@ Create global ingredient model and API for detail/list — foundation for produc
 
 ## Subtasks
 
-- [ ] Add Ingredient model + ColorIndicator and related enums to Prisma
-- [ ] Migration
-- [ ] `ingredients` module: controller, service
-- [ ] `GET /ingredients/:uuid` — full analysis fields
-- [ ] `GET /ingredients` — search, filter by color_indicator, paginated
-- [ ] `POST /admin/ingredients` — ADMIN only, for seeding (minimal DTO: name + optional fields)
-- [ ] Seed 10–20 common ingredients (Water, Glycerin, Niacinamide, etc.) with sample scores for UI dev
-- [ ] Register in AppModule
+- [x] Add Ingredient model + ColorIndicator and related enums to Prisma
+- [x] Migration
+- [x] `ingredients` module: controller, service
+- [x] `GET /ingredients/:uuid` — full analysis fields
+- [x] `GET /ingredients` — search, filter by color_indicator, paginated
+- [x] `POST /admin/ingredients` — ADMIN only, for seeding (minimal DTO: name + optional fields)
+- [x] Seed 10–20 common ingredients (Water, Glycerin, Niacinamide, etc.) with sample scores for UI dev
+- [x] Register in AppModule
 
 ## Technical Notes
 
@@ -32,6 +32,6 @@ Create global ingredient model and API for detail/list — foundation for produc
 
 ## Acceptance Criteria
 
-- [ ] `GET /ingredients` returns seeded ingredients
-- [ ] `GET /ingredients/:uuid` returns full detail including color_indicator
-- [ ] Search `?search=niacin` finds Niacinamide
+- [x] `GET /ingredients` returns seeded ingredients
+- [x] `GET /ingredients/:uuid` returns full detail including color_indicator
+- [x] Search `?search=niacin` finds Niacinamide

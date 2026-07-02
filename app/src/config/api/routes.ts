@@ -12,6 +12,10 @@ export const ApiRoutes = {
         prefix: "/users",
         me: "/users/me",
     },
+    ingredients: {
+        prefix: "/ingredients",
+        by_uuid: (ingredient_uuid: string) => `/ingredients/${ingredient_uuid}`,
+    },
     google_maps: {
         timezone: "/google-maps/timezone",
     },

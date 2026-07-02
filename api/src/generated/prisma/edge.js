@@ -126,9 +126,89 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  name: 'name',
+  slug: 'slug',
+  icon_url: 'icon_url',
+  sort_order: 'sort_order',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.SubcategoryScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  category_uuid: 'category_uuid',
+  name: 'name',
+  slug: 'slug',
+  sort_order: 'sort_order',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.BrandScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  name: 'name',
+  slug: 'slug',
+  logo_url: 'logo_url',
+  website: 'website',
+  country: 'country',
+  description: 'description',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.IngredientScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  name: 'name',
+  name_normalized: 'name_normalized',
+  synonyms: 'synonyms',
+  scientific_name: 'scientific_name',
+  description: 'description',
+  ai_summary: 'ai_summary',
+  full_description: 'full_description',
+  benefits: 'benefits',
+  risks: 'risks',
+  safety_explanation: 'safety_explanation',
+  purpose: 'purpose',
+  common_uses: 'common_uses',
+  pregnancy_safety: 'pregnancy_safety',
+  child_safety: 'child_safety',
+  allergy_risk: 'allergy_risk',
+  carcinogenic_evidence: 'carcinogenic_evidence',
+  hormone_disruption_risk: 'hormone_disruption_risk',
+  irritation_risk: 'irritation_risk',
+  acne_rating: 'acne_rating',
+  comedogenic_rating: 'comedogenic_rating',
+  sensitive_skin_suitability: 'sensitive_skin_suitability',
+  environmental_impact: 'environmental_impact',
+  is_vegan: 'is_vegan',
+  is_cruelty_free: 'is_cruelty_free',
+  is_biodegradable: 'is_biodegradable',
+  overall_score: 'overall_score',
+  safety_score: 'safety_score',
+  risk_score: 'risk_score',
+  confidence_score: 'confidence_score',
+  color_indicator: 'color_indicator',
+  research_summary: 'research_summary',
+  references: 'references',
+  ai_version: 'ai_version',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -139,6 +219,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AuthRole = exports.$Enums.AuthRole = {
   USER: 'USER',
@@ -158,10 +244,30 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   OTHER: 'OTHER'
 };
 
+exports.ColorIndicator = exports.$Enums.ColorIndicator = {
+  VERY_SAFE: 'VERY_SAFE',
+  SAFE: 'SAFE',
+  MODERATE: 'MODERATE',
+  CAUTION: 'CAUTION',
+  HIGH_RISK: 'HIGH_RISK',
+  UNKNOWN: 'UNKNOWN'
+};
+
+exports.SafetyLevel = exports.$Enums.SafetyLevel = {
+  SAFE: 'SAFE',
+  CAUTION: 'CAUTION',
+  AVOID: 'AVOID',
+  UNKNOWN: 'UNKNOWN'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
-  Document: 'Document'
+  Document: 'Document',
+  Category: 'Category',
+  Subcategory: 'Subcategory',
+  Brand: 'Brand',
+  Ingredient: 'Ingredient'
 };
 /**
  * Create the Client
@@ -171,10 +277,10 @@ const config = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum AuthRole {\n  USER\n  ADMIN\n  SUPER_ADMIN\n  SUPPORT\n}\n\nenum DocumentType {\n  LOGO\n  BANNER\n  IMAGE\n  VIDEO\n  AUDIO\n  PDF\n  DOCUMENT\n  OTHER\n}\n\nmodel User {\n  id         Int      @id @default(autoincrement())\n  uuid       String   @unique @default(uuid())\n  email      String   @unique\n  phone      String?  @unique\n  password   String\n  role       AuthRole\n  name       String?\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  password_reset_tokens PasswordResetToken[]\n\n  @@index([email])\n  @@index([phone])\n  @@index([uuid])\n  @@map(\"users\")\n}\n\nmodel PasswordResetToken {\n  id         Int      @id @default(autoincrement())\n  uuid       String   @unique @default(uuid())\n  user_uuid  String\n  token_hash String\n  expires_at DateTime\n  created_at DateTime @default(now())\n\n  user User @relation(fields: [user_uuid], references: [uuid], onDelete: Cascade)\n\n  @@index([user_uuid])\n  @@index([uuid])\n  @@map(\"password_reset_tokens\")\n}\n\nmodel Document {\n  id         Int          @id @default(autoincrement())\n  uuid       String       @unique @default(uuid())\n  user_uuid  String\n  filename   String\n  mimetype   String\n  size       Int\n  url        String\n  path       String\n  type       DocumentType @default(LOGO)\n  created_at DateTime     @default(now())\n\n  @@index([user_uuid])\n  @@index([uuid])\n  @@map(\"documents\")\n}\n"
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum AuthRole {\n  USER\n  ADMIN\n  SUPER_ADMIN\n  SUPPORT\n}\n\nenum DocumentType {\n  LOGO\n  BANNER\n  IMAGE\n  VIDEO\n  AUDIO\n  PDF\n  DOCUMENT\n  OTHER\n}\n\nenum ColorIndicator {\n  VERY_SAFE\n  SAFE\n  MODERATE\n  CAUTION\n  HIGH_RISK\n  UNKNOWN\n}\n\nenum SafetyLevel {\n  SAFE\n  CAUTION\n  AVOID\n  UNKNOWN\n}\n\nmodel User {\n  id         Int      @id @default(autoincrement())\n  uuid       String   @unique @default(uuid())\n  email      String   @unique\n  phone      String?  @unique\n  password   String\n  role       AuthRole\n  name       String?\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  password_reset_tokens PasswordResetToken[]\n\n  @@index([email])\n  @@index([phone])\n  @@index([uuid])\n  @@map(\"users\")\n}\n\nmodel PasswordResetToken {\n  id         Int      @id @default(autoincrement())\n  uuid       String   @unique @default(uuid())\n  user_uuid  String\n  token_hash String\n  expires_at DateTime\n  created_at DateTime @default(now())\n\n  user User @relation(fields: [user_uuid], references: [uuid], onDelete: Cascade)\n\n  @@index([user_uuid])\n  @@index([uuid])\n  @@map(\"password_reset_tokens\")\n}\n\nmodel Document {\n  id         Int          @id @default(autoincrement())\n  uuid       String       @unique @default(uuid())\n  user_uuid  String\n  filename   String\n  mimetype   String\n  size       Int\n  url        String\n  path       String\n  type       DocumentType @default(LOGO)\n  created_at DateTime     @default(now())\n\n  @@index([user_uuid])\n  @@index([uuid])\n  @@map(\"documents\")\n}\n\nmodel Category {\n  id         Int      @id @default(autoincrement())\n  uuid       String   @unique @default(uuid())\n  name       String   @unique\n  slug       String   @unique\n  icon_url   String?\n  sort_order Int      @default(0)\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  subcategories Subcategory[]\n\n  @@index([name])\n  @@index([uuid])\n  @@map(\"categories\")\n}\n\nmodel Subcategory {\n  id            Int      @id @default(autoincrement())\n  uuid          String   @unique @default(uuid())\n  category_uuid String\n  name          String\n  slug          String\n  sort_order    Int      @default(0)\n  created_at    DateTime @default(now())\n  updated_at    DateTime @updatedAt\n\n  category Category @relation(fields: [category_uuid], references: [uuid], onDelete: Cascade)\n\n  @@unique([category_uuid, name])\n  @@unique([category_uuid, slug])\n  @@index([category_uuid])\n  @@index([uuid])\n  @@map(\"subcategories\")\n}\n\nmodel Brand {\n  id          Int      @id @default(autoincrement())\n  uuid        String   @unique @default(uuid())\n  name        String   @unique\n  slug        String   @unique\n  logo_url    String?\n  website     String?\n  country     String?\n  description String?\n  created_at  DateTime @default(now())\n  updated_at  DateTime @updatedAt\n\n  @@index([name])\n  @@index([uuid])\n  @@map(\"brands\")\n}\n\nmodel Ingredient {\n  id                         Int            @id @default(autoincrement())\n  uuid                       String         @unique @default(uuid())\n  name                       String\n  name_normalized            String         @unique\n  synonyms                   String[]       @default([])\n  scientific_name            String?\n  description                String?\n  ai_summary                 String?\n  full_description           String?\n  benefits                   String?\n  risks                      String?\n  safety_explanation         String?\n  purpose                    String?\n  common_uses                String?\n  pregnancy_safety           SafetyLevel?\n  child_safety               SafetyLevel?\n  allergy_risk               String?\n  carcinogenic_evidence      String?\n  hormone_disruption_risk    String?\n  irritation_risk            String?\n  acne_rating                Int?\n  comedogenic_rating         Int?\n  sensitive_skin_suitability SafetyLevel?\n  environmental_impact       String?\n  is_vegan                   Boolean?\n  is_cruelty_free            Boolean?\n  is_biodegradable           Boolean?\n  overall_score              Decimal?       @db.Decimal(4, 2)\n  safety_score               Decimal?       @db.Decimal(4, 2)\n  risk_score                 Decimal?       @db.Decimal(4, 2)\n  confidence_score           Decimal?       @db.Decimal(4, 2)\n  color_indicator            ColorIndicator @default(UNKNOWN)\n  research_summary           String?\n  references                 Json?\n  ai_version                 String?\n  created_at                 DateTime       @default(now())\n  updated_at                 DateTime       @updatedAt\n\n  @@index([name])\n  @@index([uuid])\n  @@index([color_indicator])\n  @@map(\"ingredients\")\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"AuthRole\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"password_reset_tokens\",\"kind\":\"object\",\"type\":\"PasswordResetToken\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"users\"},\"PasswordResetToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"password_reset_tokens\"},\"Document\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mimetype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"DocumentType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"documents\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"AuthRole\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"password_reset_tokens\",\"kind\":\"object\",\"type\":\"PasswordResetToken\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"users\"},\"PasswordResetToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"password_reset_tokens\"},\"Document\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mimetype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"DocumentType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"documents\"},\"Category\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"icon_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sort_order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"subcategories\",\"kind\":\"object\",\"type\":\"Subcategory\",\"relationName\":\"CategoryToSubcategory\"}],\"dbName\":\"categories\"},\"Subcategory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sort_order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"category\",\"kind\":\"object\",\"type\":\"Category\",\"relationName\":\"CategoryToSubcategory\"}],\"dbName\":\"subcategories\"},\"Brand\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logo_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"brands\"},\"Ingredient\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name_normalized\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"synonyms\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"scientific_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ai_summary\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"full_description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"benefits\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"risks\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"safety_explanation\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"purpose\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"common_uses\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pregnancy_safety\",\"kind\":\"enum\",\"type\":\"SafetyLevel\"},{\"name\":\"child_safety\",\"kind\":\"enum\",\"type\":\"SafetyLevel\"},{\"name\":\"allergy_risk\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"carcinogenic_evidence\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hormone_disruption_risk\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"irritation_risk\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"acne_rating\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"comedogenic_rating\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sensitive_skin_suitability\",\"kind\":\"enum\",\"type\":\"SafetyLevel\"},{\"name\":\"environmental_impact\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_vegan\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_cruelty_free\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_biodegradable\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"overall_score\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"safety_score\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"risk_score\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"confidence_score\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"color_indicator\",\"kind\":\"enum\",\"type\":\"ColorIndicator\"},{\"name\":\"research_summary\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"references\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"ai_version\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"ingredients\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
   getRuntime: async () => require('./query_compiler_bg.js'),

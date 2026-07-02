@@ -20,4 +20,7 @@ export const Routes = {
     profile: {
         root: "/profile",
     },
+    ingredients: {
+        detail: (ingredient_uuid: string) => `/ingredients/${ingredient_uuid}`,
+    },
 };

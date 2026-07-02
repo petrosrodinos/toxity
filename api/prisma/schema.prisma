@@ -28,6 +28,22 @@ enum DocumentType {
   OTHER
 }
 
+enum ColorIndicator {
+  VERY_SAFE
+  SAFE
+  MODERATE
+  CAUTION
+  HIGH_RISK
+  UNKNOWN
+}
+
+enum SafetyLevel {
+  SAFE
+  CAUTION
+  AVOID
+  UNKNOWN
+}
+
 model User {
   id         Int      @id @default(autoincrement())
   uuid       String   @unique @default(uuid())
@@ -77,4 +93,102 @@ model Document {
   @@index([user_uuid])
   @@index([uuid])
   @@map("documents")
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  uuid       String   @unique @default(uuid())
+  name       String   @unique
+  slug       String   @unique
+  icon_url   String?
+  sort_order Int      @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  subcategories Subcategory[]
+
+  @@index([name])
+  @@index([uuid])
+  @@map("categories")
+}
+
+model Subcategory {
+  id            Int      @id @default(autoincrement())
+  uuid          String   @unique @default(uuid())
+  category_uuid String
+  name          String
+  slug          String
+  sort_order    Int      @default(0)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  category Category @relation(fields: [category_uuid], references: [uuid], onDelete: Cascade)
+
+  @@unique([category_uuid, name])
+  @@unique([category_uuid, slug])
+  @@index([category_uuid])
+  @@index([uuid])
+  @@map("subcategories")
+}
+
+model Brand {
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  logo_url    String?
+  website     String?
+  country     String?
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@index([name])
+  @@index([uuid])
+  @@map("brands")
+}
+
+model Ingredient {
+  id                         Int             @id @default(autoincrement())
+  uuid                       String          @unique @default(uuid())
+  name                       String
+  name_normalized            String          @unique
+  synonyms                   String[]        @default([])
+  scientific_name            String?
+  description                String?
+  ai_summary                 String?
+  full_description           String?
+  benefits                   String?
+  risks                      String?
+  safety_explanation         String?
+  purpose                    String?
+  common_uses                String?
+  pregnancy_safety           SafetyLevel?
+  child_safety               SafetyLevel?
+  allergy_risk               String?
+  carcinogenic_evidence      String?
+  hormone_disruption_risk    String?
+  irritation_risk            String?
+  acne_rating                Int?
+  comedogenic_rating         Int?
+  sensitive_skin_suitability SafetyLevel?
+  environmental_impact       String?
+  is_vegan                   Boolean?
+  is_cruelty_free            Boolean?
+  is_biodegradable           Boolean?
+  overall_score              Decimal?        @db.Decimal(4, 2)
+  safety_score               Decimal?        @db.Decimal(4, 2)
+  risk_score                 Decimal?        @db.Decimal(4, 2)
+  confidence_score           Decimal?        @db.Decimal(4, 2)
+  color_indicator            ColorIndicator  @default(UNKNOWN)
+  research_summary           String?
+  references                 Json?
+  ai_version                 String?
+  created_at                 DateTime        @default(now())
+  updated_at                 DateTime        @updatedAt
+
+  @@index([name])
+  @@index([uuid])
+  @@index([color_indicator])
+  @@map("ingredients")
 }

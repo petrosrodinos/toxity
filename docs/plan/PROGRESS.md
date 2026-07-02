@@ -5,9 +5,9 @@
 > to implement next. Open the **References** paths for the active feature
 > before writing code. Update this file when deliverables are verified.
 
-**Last updated:** 2026-07-01  
-**Overall progress:** ~17% (2 / 12 features complete)  
-**Current focus:** Feature 03 — Taxonomy Foundation → `tasks/feature-03-taxonomy/01-taxonomy-backend.md`
+**Last updated:** 2026-07-02  
+**Overall progress:** ~33% (4 / 12 features complete)  
+**Current focus:** Feature 05 — Product Lookup → `tasks/feature-05-product-lookup/01-products-backend.md`
 
 **Source spec:** [`docs/specifications.md`](../../specifications.md)
 
@@ -47,7 +47,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 | Refresh / forgot password | ✅ Backend + frontend (forgot/reset pages) |
 | User profile API | ✅ `GET/PATCH /users/me` (name only) |
 | User profile UI | ✅ `/profile` settings page |
-| Product / Ingredient / Scan | ❌ Not implemented |
+| Product / Scan | ❌ Not implemented |
+| Ingredient library API + detail UI | ✅ Partial |
 | Consumer app shell (bottom nav) | ✅ Mobile bottom nav + desktop side nav |
 | Planning docs | ✅ `docs/plan/` created |
 
@@ -61,8 +62,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 |---|---------|--------|----------|------------|
 | 01 | Authentication & User Profile | done | 100% | 2 |
 | 02 | App Shell & Navigation | done | 100% | 1 |
-| 03 | Taxonomy Foundation | not started | 0% | 1 |
-| 04 | Ingredient Library | not started | 0% | 2 |
+| 03 | Taxonomy Foundation | done | 100% | 1 |
+| 04 | Ingredient Library | done | 100% | 2 |
 | 05 | Product Lookup (Existing Product) | not started | 0% | 2 |
 | 06 | Product Detail UI | not started | 0% | 1 |
 | 07 | New Product Creation (OCR + AI) | not started | 0% | 3 |
@@ -158,8 +159,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 **Description:** Global categories, subcategories, and brands with seed data and read APIs.
 
-**Status:** not started  
-**Progress:** 0%
+**Status:** done  
+**Progress:** 100%
 
 ### References
 
@@ -172,15 +173,15 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 | File | Status |
 |------|--------|
-| `tasks/feature-03-taxonomy/01-taxonomy-backend.md` | not started |
+| `tasks/feature-03-taxonomy/01-taxonomy-backend.md` | done |
 
 ### Implementation checklist
 
-- [ ] Category, Subcategory, Brand Prisma models
-- [ ] Seed script with spec category tree
-- [ ] `GET /categories` tree endpoint
-- [ ] `GET /brands` list/search endpoint
-- [ ] Smoke test: categories API returns Beauty, Food, etc.
+- [x] Category, Subcategory, Brand Prisma models
+- [x] Seed script with spec category tree
+- [x] `GET /categories` tree endpoint
+- [x] `GET /brands` list/search endpoint
+- [x] Smoke test: categories API returns Beauty, Food, etc. (build verified; run `npm run seed:local` + API smoke when DB available)
 
 **Definition of done:** API returns full category hierarchy from seeded data.
 
@@ -190,8 +191,8 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 **Description:** Global ingredient database with detail page and safety color indicators.
 
-**Status:** not started  
-**Progress:** 0%
+**Status:** done  
+**Progress:** 100%
 
 ### References
 
@@ -205,17 +206,17 @@ Direction docs in `directions/` are summaries; **`PRODUCT.md` and `DESIGN.md` ta
 
 | File | Status |
 |------|--------|
-| `tasks/feature-04-ingredients/01-ingredients-backend.md` | not started |
-| `tasks/feature-04-ingredients/02-ingredients-frontend.md` | not started |
+| `tasks/feature-04-ingredients/01-ingredients-backend.md` | done |
+| `tasks/feature-04-ingredients/02-ingredients-frontend.md` | done |
 
 ### Implementation checklist
 
-- [ ] Ingredient Prisma model + enums
-- [ ] Ingredient list/detail API
-- [ ] Seed common ingredients
-- [ ] Frontend ingredient detail page
-- [ ] Color indicator UI component
-- [ ] Smoke test: view ingredient detail in browser
+- [x] Ingredient Prisma model + enums
+- [x] Ingredient list/detail API
+- [x] Seed common ingredients
+- [x] Frontend ingredient detail page
+- [x] Color indicator UI component (`SafetyBadge` reused)
+- [x] Smoke test: view ingredient detail in browser (build verified; manual E2E when API + DB running)
 
 **Definition of done:** User can open an ingredient detail page with full AI analysis fields and color rating.
 

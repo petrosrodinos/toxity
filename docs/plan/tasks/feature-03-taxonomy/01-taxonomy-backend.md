@@ -16,13 +16,13 @@ Implement global taxonomy and brand entities with seed data and read APIs.
 
 ## Subtasks
 
-- [ ] Add Category, Subcategory, Brand models to Prisma schema
-- [ ] Migration + `prisma/seed.ts` with full category tree from spec
-- [ ] `categories` module: `GET /categories` (tree), `GET /categories/:uuid/products` (empty until products exist)
-- [ ] `brands` module: `GET /brands`, `GET /brands/:uuid`
-- [ ] Zod query schemas for pagination/search on brands list
-- [ ] Register modules in AppModule
-- [ ] Swagger documentation
+- [x] Add Category, Subcategory, Brand models to Prisma schema
+- [x] Migration + `prisma/seed.ts` with full category tree from spec
+- [x] `categories` module: `GET /categories` (tree), `GET /categories/:uuid/products` (empty until products exist)
+- [x] `brands` module: `GET /brands`, `GET /brands/:uuid`
+- [x] Zod query schemas for pagination/search on brands list
+- [x] Register modules in AppModule
+- [x] Swagger documentation
 
 ## Technical Notes
 
@@ -31,6 +31,6 @@ Implement global taxonomy and brand entities with seed data and read APIs.
 
 ## Acceptance Criteria
 
-- [ ] `GET /categories` returns nested tree with all spec subcategories
-- [ ] `GET /brands?search=ordinary` returns paginated brands (after manual seed or first product)
-- [ ] Seed runs cleanly on fresh DB: `npx prisma db seed`
+- [x] `GET /categories` returns nested tree with all spec subcategories
+- [x] `GET /brands?search=ordinary` returns paginated brands (after manual seed or first product)
+- [x] Seed runs cleanly on fresh DB: `npx prisma db seed`

@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -12,6 +15,7 @@
     "migrate:dev": "dotenv -e .env.development -- npx prisma migrate dev --name init && npx prisma generate",
     "migrate:prod": "dotenv -e .env.production -- npx prisma migrate deploy",
     "migrate:staging": "dotenv -e .env.staging -- npx prisma migrate dev --name init && npx prisma generate",
+    "seed:local": "dotenv -e .env.local -- npx prisma db seed",
     "studio:local": "npx dotenv -e .env.local -- npx prisma studio",
     "studio:dev": "npx dotenv -e .env.development -- npx prisma studio",
     "studio:prod": "npx dotenv -e .env.production -- npx prisma studio",
