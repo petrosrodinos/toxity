@@ -229,6 +229,84 @@ exports.Prisma.IngredientScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.ProductScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  barcode: 'barcode',
+  name: 'name',
+  brand_uuid: 'brand_uuid',
+  subcategory_uuid: 'subcategory_uuid',
+  description: 'description',
+  ai_summary: 'ai_summary',
+  benefits: 'benefits',
+  risks: 'risks',
+  warnings: 'warnings',
+  suitability: 'suitability',
+  recommended_usage: 'recommended_usage',
+  storage_info: 'storage_info',
+  pregnancy_safety: 'pregnancy_safety',
+  children_safety: 'children_safety',
+  sensitive_skin_safety: 'sensitive_skin_safety',
+  allergy_warnings: 'allergy_warnings',
+  environmental_impact: 'environmental_impact',
+  is_vegan: 'is_vegan',
+  is_cruelty_free: 'is_cruelty_free',
+  overall_score: 'overall_score',
+  color_indicator: 'color_indicator',
+  scientific_confidence: 'scientific_confidence',
+  marketing_claims: 'marketing_claims',
+  package_size: 'package_size',
+  verification_status: 'verification_status',
+  is_featured: 'is_featured',
+  scan_count: 'scan_count',
+  ai_version: 'ai_version',
+  faq: 'faq',
+  alternative_product_uuids: 'alternative_product_uuids',
+  similar_product_uuids: 'similar_product_uuids',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ProductIngredientScalarFieldEnum = {
+  id: 'id',
+  product_uuid: 'product_uuid',
+  ingredient_uuid: 'ingredient_uuid',
+  position: 'position'
+};
+
+exports.Prisma.ProductImageScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  product_uuid: 'product_uuid',
+  url: 'url',
+  type: 'type',
+  sort_order: 'sort_order'
+};
+
+exports.Prisma.UserProductScanScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  user_uuid: 'user_uuid',
+  product_uuid: 'product_uuid',
+  scanned_at: 'scanned_at',
+  scan_method: 'scan_method'
+};
+
+exports.Prisma.ProductCreationJobScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  user_uuid: 'user_uuid',
+  status: 'status',
+  barcode: 'barcode',
+  ingredient_label_image_url: 'ingredient_label_image_url',
+  front_label_image_url: 'front_label_image_url',
+  ocr_result: 'ocr_result',
+  product_uuid: 'product_uuid',
+  error_message: 'error_message',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -288,6 +366,32 @@ exports.ColorIndicator = exports.$Enums.ColorIndicator = {
   UNKNOWN: 'UNKNOWN'
 };
 
+exports.VerificationStatus = exports.$Enums.VerificationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+exports.ProductImageType = exports.$Enums.ProductImageType = {
+  HERO: 'HERO',
+  PACKAGE: 'PACKAGE',
+  INGREDIENT_LABEL: 'INGREDIENT_LABEL',
+  FRONT_LABEL: 'FRONT_LABEL'
+};
+
+exports.ScanMethod = exports.$Enums.ScanMethod = {
+  BARCODE: 'BARCODE',
+  OCR: 'OCR'
+};
+
+exports.ProductCreationJobStatus = exports.$Enums.ProductCreationJobStatus = {
+  PENDING: 'PENDING',
+  OCR: 'OCR',
+  ANALYZING: 'ANALYZING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
@@ -295,7 +399,12 @@ exports.Prisma.ModelName = {
   Category: 'Category',
   Subcategory: 'Subcategory',
   Brand: 'Brand',
-  Ingredient: 'Ingredient'
+  Ingredient: 'Ingredient',
+  Product: 'Product',
+  ProductIngredient: 'ProductIngredient',
+  ProductImage: 'ProductImage',
+  UserProductScan: 'UserProductScan',
+  ProductCreationJob: 'ProductCreationJob'
 };
 
 /**

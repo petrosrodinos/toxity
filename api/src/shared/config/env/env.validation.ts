@@ -20,6 +20,7 @@ const EnvSchema = z.object({
     GCS_FOLDER_NAME: z.string().optional(),
     GCS_CREDENTIALS_PATH: z.string().optional(),
     GCS_CREDENTIALS: z.string().optional(),
+    GOOGLE_VISION_CREDENTIALS_PATH: z.string().optional(),
     STRIPE_PUBLISHABLE_KEY: z.string().optional(),
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_WEBHOOK_SECRET: z.string().optional(),

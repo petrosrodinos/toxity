@@ -1,0 +1,131 @@
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+    ApiBearerAuth,
+    ApiBody,
+    ApiConsumes,
+    ApiOperation,
+    ApiParam,
+    ApiResponse,
+    ApiTags,
+} from '@nestjs/swagger';
+import { memoryStorage } from 'multer';
+import { ProductCreationService } from './product-creation.service';
+import { JwtGuard } from '@/shared/guards/jwt.guard';
+import { CurrentUser } from '@/shared/decorators/current-user.decorator';
+import { CreateProductCreationJobDto } from './dto/create-product-creation-job.dto';
+import { ProductCreationJobEntity } from './entities/product-creation-job.entity';
+
+const image_upload_interceptor = FileInterceptor('image', {
+    storage: memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 },
+});
+
+@ApiTags('Product Creation')
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
+@Controller('product-creation')
+export class ProductCreationController {
+    constructor(
+        private readonly product_creation_service: ProductCreationService,
+    ) {}
+
+    @Post('jobs')
+    @ApiOperation({ summary: 'Start a new product creation job' })
+    @ApiResponse({ status: 201, type: ProductCreationJobEntity })
+    create_job(
+        @CurrentUser('uuid') user_uuid: string,
+        @Body() dto: CreateProductCreationJobDto,
+    ) {
+        return this.product_creation_service.create_job(user_uuid, dto);
+    }
+
+    @Get('jobs/:uuid')
+    @ApiOperation({ summary: 'Get product creation job status' })
+    @ApiParam({ name: 'uuid', description: 'Product creation job UUID' })
+    @ApiResponse({ status: 200, type: ProductCreationJobEntity })
+    find_one(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('uuid') job_uuid: string,
+    ) {
+        return this.product_creation_service.find_one(user_uuid, job_uuid);
+    }
+
+    @Post('jobs/:uuid/ingredient-label')
+    @UseInterceptors(image_upload_interceptor)
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            required: ['image'],
+            properties: {
+                image: { type: 'string', format: 'binary' },
+            },
+        },
+    })
+    @ApiOperation({ summary: 'Upload ingredient label image' })
+    @ApiParam({ name: 'uuid', description: 'Product creation job UUID' })
+    @ApiResponse({ status: 200, type: ProductCreationJobEntity })
+    upload_ingredient_label(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('uuid') job_uuid: string,
+        @UploadedFile() file: Express.Multer.File,
+    ) {
+        return this.product_creation_service.upload_ingredient_label(
+            user_uuid,
+            job_uuid,
+            file,
+        );
+    }
+
+    @Post('jobs/:uuid/front-label')
+    @UseInterceptors(image_upload_interceptor)
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            required: ['image'],
+            properties: {
+                image: { type: 'string', format: 'binary' },
+            },
+        },
+    })
+    @ApiOperation({ summary: 'Upload front label image' })
+    @ApiParam({ name: 'uuid', description: 'Product creation job UUID' })
+    @ApiResponse({ status: 200, type: ProductCreationJobEntity })
+    upload_front_label(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('uuid') job_uuid: string,
+        @UploadedFile() file: Express.Multer.File,
+    ) {
+        return this.product_creation_service.upload_front_label(
+            user_uuid,
+            job_uuid,
+            file,
+        );
+    }
+
+    @Post('jobs/:uuid/analyze')
+    @ApiOperation({
+        summary: 'Run OCR on uploaded label images',
+        description:
+            'Extracts product name, brand, ingredients, and claims from uploaded images. AI product creation is handled in a follow-up step.',
+    })
+    @ApiParam({ name: 'uuid', description: 'Product creation job UUID' })
+    @ApiResponse({ status: 200, type: ProductCreationJobEntity })
+    analyze(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('uuid') job_uuid: string,
+    ) {
+        return this.product_creation_service.analyze(user_uuid, job_uuid);
+    }
+}

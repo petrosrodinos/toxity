@@ -127,6 +127,10 @@ export class IngredientsService {
         return this.to_entity(ingredient);
     }
 
+    to_public_entity(ingredient: IngredientRecord): IngredientEntity {
+        return this.to_entity(ingredient);
+    }
+
     private to_list_item(
         ingredient: IngredientRecord,
     ): IngredientListItemEntity {

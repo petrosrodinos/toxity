@@ -16,6 +16,16 @@ export const ApiRoutes = {
         prefix: "/ingredients",
         by_uuid: (ingredient_uuid: string) => `/ingredients/${ingredient_uuid}`,
     },
+    products: {
+        prefix: "/products",
+        by_barcode: (barcode: string) =>
+            `/products/barcode/${encodeURIComponent(barcode)}`,
+        by_uuid: (product_uuid: string) => `/products/${product_uuid}`,
+    },
+    scans: {
+        prefix: "/scans",
+        recent: "/scans/recent",
+    },
     google_maps: {
         timezone: "/google-maps/timezone",
     },

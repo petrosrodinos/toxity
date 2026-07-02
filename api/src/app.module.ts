@@ -11,6 +11,9 @@ import { UsersModule } from './modules/users/users.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { BrandsModule } from './modules/brands/brands.module';
 import { IngredientsModule } from './modules/ingredients/ingredients.module';
+import { ProductsModule } from './modules/products/products.module';
+import { ScansModule } from './modules/scans/scans.module';
+import { ProductCreationModule } from './modules/product-creation/product-creation.module';
 import { ConfigModule } from './shared/config/env/env.module';
 
 @Module({
@@ -27,6 +30,9 @@ import { ConfigModule } from './shared/config/env/env.module';
     CategoriesModule,
     BrandsModule,
     IngredientsModule,
+    ProductsModule,
+    ScansModule,
+    ProductCreationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

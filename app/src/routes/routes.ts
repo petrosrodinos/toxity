@@ -23,4 +23,10 @@ export const Routes = {
     ingredients: {
         detail: (ingredient_uuid: string) => `/ingredients/${ingredient_uuid}`,
     },
+    products: {
+        detail: (product_uuid: string) => `/products/${product_uuid}`,
+        create: "/products/create",
+        create_with_barcode: (barcode: string) =>
+            `/products/create?barcode=${encodeURIComponent(barcode)}`,
+    },
 };

@@ -51,10 +51,16 @@ export class BrandsService {
             throw new NotFoundException('Brand not found');
         }
 
-        // Product model arrives in Feature 05 — count stays 0 until then.
+        const product_count = await this.prisma.product.count({
+            where: {
+                brand_uuid: brand_uuid,
+                verification_status: 'APPROVED',
+            },
+        });
+
         return {
             ...this.to_brand_entity(brand),
-            product_count: 0,
+            product_count,
         };
     }
 

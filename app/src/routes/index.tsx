@@ -14,6 +14,8 @@ import SearchPage from "@/pages/search";
 import HistoryPage from "@/pages/history";
 import ProfilePage from "@/pages/profile";
 import IngredientDetailPage from "@/pages/ingredients/detail";
+import ProductDetailPage from "@/pages/products/detail";
+import ProductCreatePage from "@/pages/products/create";
 
 function RootRedirect() {
     const { isLoggedIn } = useAuthStore();
@@ -55,6 +57,14 @@ export default function AppRoutes() {
                 <Route
                     path={Routes.ingredients.detail(":ingredient_uuid")}
                     element={<IngredientDetailPage />}
+                />
+                <Route
+                    path={Routes.products.detail(":product_uuid")}
+                    element={<ProductDetailPage />}
+                />
+                <Route
+                    path={Routes.products.create}
+                    element={<ProductCreatePage />}
                 />
             </Route>
 

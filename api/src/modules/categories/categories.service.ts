@@ -44,17 +44,55 @@ export class CategoriesService {
             throw new NotFoundException('Category not found');
         }
 
-        // Product model arrives in Feature 05 — return empty paginated list until then.
-        const total = 0;
+        const where = {
+            verification_status: 'APPROVED' as const,
+            subcategory: {
+                category_uuid,
+            },
+        };
+
+        const [items, count] = await Promise.all([
+            this.prisma.product.findMany({
+                where,
+                skip: (query.page - 1) * query.limit,
+                take: query.limit,
+                orderBy: { created_at: 'desc' },
+                include: {
+                    brand: true,
+                    images: {
+                        orderBy: { sort_order: 'asc' },
+                        take: 1,
+                    },
+                },
+            }),
+            this.prisma.product.count({ where }),
+        ]);
+
+        const total_pages = Math.ceil(count / query.limit);
 
         return {
-            data: [],
+            data: items.map((product) => ({
+                uuid: product.uuid,
+                name: product.name,
+                barcode: product.barcode,
+                overall_score: product.overall_score.toString(),
+                color_indicator: product.color_indicator,
+                is_featured: product.is_featured,
+                scan_count: product.scan_count,
+                package_size: product.package_size,
+                brand: {
+                    uuid: product.brand.uuid,
+                    name: product.brand.name,
+                    logo_url: product.brand.logo_url,
+                },
+                hero_image_url: product.images[0]?.url ?? null,
+            })),
             pagination: {
-                total,
+                total: count,
                 page: query.page,
                 limit: query.limit,
-                total_pages: 0,
-                has_next: false,
+                total_pages,
+                has_next: query.page < total_pages,
                 has_prev: query.page > 1,
             },
         };

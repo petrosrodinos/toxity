@@ -17,14 +17,14 @@ Implement Scan tab: camera barcode scanning → lookup → navigate to product d
 
 ## Subtasks
 
-- [ ] Install barcode library (`@zxing/browser` or equivalent)
-- [ ] `features/scan/` — `useBarcodeLookup` mutation, scan service
-- [ ] `features/products/` — `useGetProductByBarcode`, `useRecordScan`
-- [ ] `pages/scan/index.tsx` — camera viewfinder, permission handling, manual barcode entry fallback
-- [ ] On success: `navigate(Routes.products.detail(uuid))`
-- [ ] On 404: navigate to creation flow route with barcode query param
-- [ ] Error states: camera denied, invalid barcode, network error
-- [ ] Loading overlay during lookup
+- [x] Install barcode library (`@zxing/browser` or equivalent)
+- [x] `features/scan/` — `useBarcodeLookup` mutation, scan service
+- [x] `features/products/` — `useGetProductByBarcode`, `useRecordScan`
+- [x] `pages/scan/index.tsx` — camera viewfinder, permission handling, manual barcode entry fallback
+- [x] On success: `navigate(Routes.products.detail(uuid))`
+- [x] On 404: navigate to creation flow route with barcode query param
+- [x] Error states: camera denied, invalid barcode, network error
+- [x] Loading overlay during lookup
 
 ## UI components
 
@@ -37,7 +37,7 @@ Implement Scan tab: camera barcode scanning → lookup → navigate to product d
 
 ## Acceptance Criteria
 
-- [ ] Scan seeded product barcode → product detail page opens
-- [ ] Scan unknown barcode → user sees creation flow entry (or placeholder with barcode preserved)
-- [ ] Scan appears in history after successful lookup
-- [ ] Camera permission denial shows helpful message + manual entry
+- [x] Scan seeded product barcode → product detail page opens
+- [x] Scan unknown barcode → user sees creation flow entry (or placeholder with barcode preserved)
+- [x] Scan appears in history after successful lookup
+- [x] Camera permission denial shows helpful message + manual entry
