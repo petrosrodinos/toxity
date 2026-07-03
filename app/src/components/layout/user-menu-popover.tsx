@@ -1,4 +1,4 @@
-import { User, Settings, LogOut, ChevronsUpDown, ShieldCheck } from 'lucide-react';
+import { User, LogOut, ChevronsUpDown, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/auth';
 import { Popover } from '@/components/ui/popover';
@@ -30,7 +30,6 @@ export default function UserMenuPopover({ collapsed = false, placement = 'top' }
 
   const menuItems = [
     { label: 'Profile', icon: User, onClick: () => navigate(Routes.profile.root) },
-    { label: 'Preferences', icon: Settings, onClick: () => {} },
     ...(isAdmin
       ? [{ label: 'Admin', icon: ShieldCheck, onClick: () => navigate(Routes.admin.root) }]
       : []),

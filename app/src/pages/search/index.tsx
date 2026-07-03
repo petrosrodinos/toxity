@@ -1,13 +1,14 @@
 import { Search as SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Select, type SelectOption } from "@/components/ui/select";
 import ProductCard, { ProductCardSkeleton } from "@/components/product-card";
 import IngredientRow from "@/components/ingredient-row";
 import BrandRow from "@/components/brand-row";
 import { useSearch } from "@/features/search/hooks/use-search";
 import { useSearchFilters, type SearchTab } from "./hooks/use-search-filters";
 
-const SORT_OPTIONS: { value: string; label: string }[] = [
+const SORT_OPTIONS: SelectOption[] = [
     { value: "newest", label: "Newest" },
     { value: "highest_rated", label: "Highest rated" },
     { value: "lowest_rated", label: "Lowest rated" },
@@ -71,19 +72,14 @@ export default function SearchPage() {
                     ))}
                 </div>
 
-                <select
+                <Select
+                    aria-label="Sort results"
                     value={sort}
-                    onChange={(event) =>
-                        set_sort(event.target.value as typeof sort)
-                    }
-                    className="h-10 rounded-md border border-field-border bg-field px-3 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
-                >
-                    {SORT_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
+                    options={SORT_OPTIONS}
+                    onChange={(value) => set_sort(value as typeof sort)}
+                    className="w-44"
+                    contentClassName="w-44"
+                />
             </div>
 
             {!has_query ? (

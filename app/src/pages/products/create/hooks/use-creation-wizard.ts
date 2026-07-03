@@ -25,6 +25,7 @@ export type CreationWizardStep =
 export type ProcessingPhase = "ocr" | "starting" | "analyzing";
 
 export const useCreationWizard = (barcode: string | null) => {
+    const normalized_barcode = barcode?.trim() || null;
     const navigate = useNavigate();
     const query_client = useQueryClient();
 
@@ -50,20 +51,22 @@ export const useCreationWizard = (barcode: string | null) => {
             set_job_uuid(null);
 
             try {
-                if (barcode) {
+                if (normalized_barcode) {
                     const existing_product =
-                        await get_product_by_barcode(barcode);
-
-                    if (is_cancelled()) return;
+                        await get_product_by_barcode(normalized_barcode);
 
                     if (existing_product) {
-                        navigate(Routes.products.detail(existing_product.uuid));
+                        navigate(Routes.products.detail(existing_product.uuid), {
+                            replace: true,
+                        });
                         return;
                     }
+
+                    if (is_cancelled()) return;
                 }
 
                 const job = await create_product_creation_job({
-                    barcode: barcode ?? undefined,
+                    barcode: normalized_barcode ?? undefined,
                 });
 
                 if (is_cancelled()) return;
@@ -72,6 +75,23 @@ export const useCreationWizard = (barcode: string | null) => {
                 set_step("ingredient_label");
             } catch (error) {
                 if (is_cancelled()) return;
+
+                if (normalized_barcode) {
+                    try {
+                        const existing_product =
+                            await get_product_by_barcode(normalized_barcode);
+
+                        if (existing_product) {
+                            navigate(
+                                Routes.products.detail(existing_product.uuid),
+                                { replace: true },
+                            );
+                            return;
+                        }
+                    } catch {
+                        // fall through to the error state below
+                    }
+                }
 
                 const message =
                     error instanceof Error
@@ -87,7 +107,7 @@ export const useCreationWizard = (barcode: string | null) => {
                 });
             }
         },
-        [barcode, navigate],
+        [normalized_barcode, navigate],
     );
 
     useEffect(() => {

@@ -4,76 +4,20 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SafetyBadge } from "@/components/ui/safety-badge";
-import { cn } from "@/lib/utils";
 import { Routes } from "@/routes/routes";
+import { RowActionsMenu } from "./row-actions-menu";
+import { EditProductModal } from "./edit-product-modal";
 import {
     useDeleteProduct,
     useGetAllProducts,
-    useUpdateProduct,
 } from "@/features/admin/hooks/use-admin";
 import type { AdminProductListItem } from "@/features/admin/interfaces/admin.interfaces";
-import {
-    VerificationStatuses,
-    type VerificationStatus,
-} from "@/features/products/interfaces/products.interfaces";
 
 const PAGE_LIMIT = 20;
 
-const VERIFICATION_OPTIONS: VerificationStatus[] = [
-    VerificationStatuses.PENDING,
-    VerificationStatuses.APPROVED,
-    VerificationStatuses.REJECTED,
-];
-
-const select_classes = cn(
-    "h-10 w-full rounded-md border border-field-border bg-field px-3 py-2 text-sm text-foreground",
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:border-accent",
-);
-
-type EditState = {
-    name: string;
-    barcode: string;
-    package_size: string;
-    is_featured: boolean;
-    verification_status: VerificationStatus;
-};
-
-const to_edit_state = (product: AdminProductListItem): EditState => ({
-    name: product.name,
-    barcode: product.barcode ?? "",
-    package_size: product.package_size ?? "",
-    is_featured: product.is_featured,
-    verification_status: product.verification_status,
-});
-
 const ProductRow: FC<{ product: AdminProductListItem }> = ({ product }) => {
     const [is_editing, set_is_editing] = useState(false);
-    const [is_confirming_delete, set_is_confirming_delete] = useState(false);
-    const [form, set_form] = useState<EditState>(() => to_edit_state(product));
-
-    const update_product = useUpdateProduct();
     const delete_product = useDeleteProduct();
-
-    const start_edit = () => {
-        set_form(to_edit_state(product));
-        set_is_editing(true);
-    };
-
-    const save = () => {
-        update_product.mutate(
-            {
-                product_uuid: product.uuid,
-                dto: {
-                    name: form.name.trim(),
-                    barcode: form.barcode,
-                    package_size: form.package_size,
-                    is_featured: form.is_featured,
-                    verification_status: form.verification_status,
-                },
-            },
-            { onSuccess: () => set_is_editing(false) },
-        );
-    };
 
     return (
         <>
@@ -123,173 +67,21 @@ const ProductRow: FC<{ product: AdminProductListItem }> = ({ product }) => {
                 </td>
 
                 <td className="px-3 py-3">
-                    <div className="flex flex-wrap justify-end gap-2">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() =>
-                                is_editing ? set_is_editing(false) : start_edit()
-                            }
-                        >
-                            {is_editing ? "Close" : "Edit"}
-                        </Button>
-                        {is_confirming_delete ? (
-                            <>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    className="border-danger/30 text-danger hover:bg-danger/10"
-                                    loading={delete_product.isPending}
-                                    onClick={() => delete_product.mutate(product.uuid)}
-                                >
-                                    Confirm
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    onClick={() => set_is_confirming_delete(false)}
-                                >
-                                    Cancel
-                                </Button>
-                            </>
-                        ) : (
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                className="text-danger hover:bg-danger/10"
-                                onClick={() => set_is_confirming_delete(true)}
-                            >
-                                Remove
-                            </Button>
-                        )}
+                    <div className="flex justify-end">
+                        <RowActionsMenu
+                            onEdit={() => set_is_editing(true)}
+                            onDelete={() => delete_product.mutate(product.uuid)}
+                            is_deleting={delete_product.isPending}
+                        />
                     </div>
                 </td>
             </tr>
 
-            {is_editing && (
-                <tr className="border-t border-border bg-surface-secondary/40">
-                    <td colSpan={5} className="px-3 py-4">
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            <div className="flex flex-col gap-1">
-                                <label
-                                    htmlFor={`name-${product.uuid}`}
-                                    className="text-xs font-medium text-foreground"
-                                >
-                                    Name
-                                </label>
-                                <Input
-                                    id={`name-${product.uuid}`}
-                                    value={form.name}
-                                    onChange={(event) =>
-                                        set_form((prev) => ({
-                                            ...prev,
-                                            name: event.target.value,
-                                        }))
-                                    }
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-                                <label
-                                    htmlFor={`barcode-${product.uuid}`}
-                                    className="text-xs font-medium text-foreground"
-                                >
-                                    Barcode
-                                </label>
-                                <Input
-                                    id={`barcode-${product.uuid}`}
-                                    value={form.barcode}
-                                    onChange={(event) =>
-                                        set_form((prev) => ({
-                                            ...prev,
-                                            barcode: event.target.value,
-                                        }))
-                                    }
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-                                <label
-                                    htmlFor={`package-${product.uuid}`}
-                                    className="text-xs font-medium text-foreground"
-                                >
-                                    Package size
-                                </label>
-                                <Input
-                                    id={`package-${product.uuid}`}
-                                    value={form.package_size}
-                                    onChange={(event) =>
-                                        set_form((prev) => ({
-                                            ...prev,
-                                            package_size: event.target.value,
-                                        }))
-                                    }
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-                                <label
-                                    htmlFor={`status-${product.uuid}`}
-                                    className="text-xs font-medium text-foreground"
-                                >
-                                    Verification status
-                                </label>
-                                <select
-                                    id={`status-${product.uuid}`}
-                                    className={select_classes}
-                                    value={form.verification_status}
-                                    onChange={(event) =>
-                                        set_form((prev) => ({
-                                            ...prev,
-                                            verification_status: event.target
-                                                .value as VerificationStatus,
-                                        }))
-                                    }
-                                >
-                                    {VERIFICATION_OPTIONS.map((status) => (
-                                        <option key={status} value={status}>
-                                            {status}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <label className="flex items-center gap-2 text-sm text-foreground">
-                                <input
-                                    type="checkbox"
-                                    className="h-4 w-4 rounded border-field-border"
-                                    checked={form.is_featured}
-                                    onChange={(event) =>
-                                        set_form((prev) => ({
-                                            ...prev,
-                                            is_featured: event.target.checked,
-                                        }))
-                                    }
-                                />
-                                Featured product
-                            </label>
-                        </div>
-
-                        <div className="mt-4 flex gap-2">
-                            <Button
-                                type="button"
-                                loading={update_product.isPending}
-                                disabled={form.name.trim().length === 0}
-                                onClick={save}
-                            >
-                                Save changes
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                onClick={() => set_is_editing(false)}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </td>
-                </tr>
-            )}
+            <EditProductModal
+                product={product}
+                isOpen={is_editing}
+                onClose={() => set_is_editing(false)}
+            />
         </>
     );
 };

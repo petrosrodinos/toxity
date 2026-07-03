@@ -26,9 +26,15 @@ const get_error_message = (error: unknown, fallback: string) => {
 export const get_product_by_barcode = async (
     barcode: string,
 ): Promise<ProductDetail | null> => {
+    const normalized_barcode = barcode.trim();
+
+    if (!normalized_barcode) {
+        return null;
+    }
+
     try {
         const response = await axiosInstance.get(
-            ApiRoutes.products.by_barcode(barcode),
+            ApiRoutes.products.by_barcode(normalized_barcode),
         );
         // The API returns 200 with an empty/null body when no product matches.
         return response.data || null;

@@ -8,13 +8,14 @@ import {
     useDeleteCategory,
     useDeleteSubcategory,
     useGetCategories,
-    useUpdateCategory,
-    useUpdateSubcategory,
 } from "@/features/categories/hooks/use-categories";
 import type {
     Category,
     Subcategory,
 } from "@/features/categories/interfaces/categories.interfaces";
+import { RowActionsMenu } from "./row-actions-menu";
+import { EditCategoryModal } from "./edit-category-modal";
+import { EditSubcategoryModal } from "./edit-subcategory-modal";
 
 const to_sort_order = (value: string): number => {
     const parsed = parseInt(value, 10);
@@ -23,28 +24,7 @@ const to_sort_order = (value: string): number => {
 
 const SubcategoryRow: FC<{ subcategory: Subcategory }> = ({ subcategory }) => {
     const [is_editing, set_is_editing] = useState(false);
-    const [is_confirming_delete, set_is_confirming_delete] = useState(false);
-    const [name, set_name] = useState(subcategory.name);
-    const [sort_order, set_sort_order] = useState(String(subcategory.sort_order));
-
-    const update_subcategory = useUpdateSubcategory();
     const delete_subcategory = useDeleteSubcategory();
-
-    const start_edit = () => {
-        set_name(subcategory.name);
-        set_sort_order(String(subcategory.sort_order));
-        set_is_editing(true);
-    };
-
-    const save = () => {
-        update_subcategory.mutate(
-            {
-                subcategory_uuid: subcategory.uuid,
-                dto: { name: name.trim(), sort_order: to_sort_order(sort_order) },
-            },
-            { onSuccess: () => set_is_editing(false) },
-        );
-    };
 
     return (
         <>
@@ -57,135 +37,36 @@ const SubcategoryRow: FC<{ subcategory: Subcategory }> = ({ subcategory }) => {
                     {subcategory.sort_order}
                 </td>
                 <td className="px-3 py-2">
-                    <div className="flex flex-wrap justify-end gap-2">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() =>
-                                is_editing ? set_is_editing(false) : start_edit()
+                    <div className="flex justify-end">
+                        <RowActionsMenu
+                            onEdit={() => set_is_editing(true)}
+                            onDelete={() =>
+                                delete_subcategory.mutate(subcategory.uuid)
                             }
-                        >
-                            {is_editing ? "Close" : "Edit"}
-                        </Button>
-                        {is_confirming_delete ? (
-                            <>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    className="border-danger/30 text-danger hover:bg-danger/10"
-                                    loading={delete_subcategory.isPending}
-                                    onClick={() =>
-                                        delete_subcategory.mutate(subcategory.uuid)
-                                    }
-                                >
-                                    Confirm
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    onClick={() => set_is_confirming_delete(false)}
-                                >
-                                    Cancel
-                                </Button>
-                            </>
-                        ) : (
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                className="text-danger hover:bg-danger/10"
-                                onClick={() => set_is_confirming_delete(true)}
-                            >
-                                Remove
-                            </Button>
-                        )}
+                            is_deleting={delete_subcategory.isPending}
+                        />
                     </div>
                 </td>
             </tr>
 
-            {is_editing && (
-                <tr className="bg-surface-secondary/40">
-                    <td colSpan={4} className="px-3 py-3 pl-8">
-                        <div className="flex flex-wrap items-end gap-3">
-                            <div className="flex flex-1 flex-col gap-1">
-                                <label className="text-xs font-medium text-foreground">
-                                    Name
-                                </label>
-                                <Input
-                                    value={name}
-                                    onChange={(event) => set_name(event.target.value)}
-                                />
-                            </div>
-                            <div className="flex w-24 flex-col gap-1">
-                                <label className="text-xs font-medium text-foreground">
-                                    Order
-                                </label>
-                                <Input
-                                    type="number"
-                                    value={sort_order}
-                                    onChange={(event) =>
-                                        set_sort_order(event.target.value)
-                                    }
-                                />
-                            </div>
-                            <Button
-                                type="button"
-                                loading={update_subcategory.isPending}
-                                disabled={name.trim().length === 0}
-                                onClick={save}
-                            >
-                                Save
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                onClick={() => set_is_editing(false)}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </td>
-                </tr>
-            )}
+            <EditSubcategoryModal
+                subcategory={subcategory}
+                isOpen={is_editing}
+                onClose={() => set_is_editing(false)}
+            />
         </>
     );
 };
 
 const CategoryRow: FC<{ category: Category }> = ({ category }) => {
     const [is_editing, set_is_editing] = useState(false);
-    const [is_confirming_delete, set_is_confirming_delete] = useState(false);
     const [is_adding_sub, set_is_adding_sub] = useState(false);
-
-    const [name, set_name] = useState(category.name);
-    const [icon_url, set_icon_url] = useState(category.icon_url ?? "");
-    const [sort_order, set_sort_order] = useState(String(category.sort_order));
 
     const [sub_name, set_sub_name] = useState("");
     const [sub_sort_order, set_sub_sort_order] = useState("0");
 
-    const update_category = useUpdateCategory();
     const delete_category = useDeleteCategory();
     const create_subcategory = useCreateSubcategory();
-
-    const start_edit = () => {
-        set_name(category.name);
-        set_icon_url(category.icon_url ?? "");
-        set_sort_order(String(category.sort_order));
-        set_is_editing(true);
-    };
-
-    const save = () => {
-        update_category.mutate(
-            {
-                category_uuid: category.uuid,
-                dto: {
-                    name: name.trim(),
-                    icon_url: icon_url.trim(),
-                    sort_order: to_sort_order(sort_order),
-                },
-            },
-            { onSuccess: () => set_is_editing(false) },
-        );
-    };
 
     const create_sub = () => {
         create_subcategory.mutate(
@@ -218,106 +99,21 @@ const CategoryRow: FC<{ category: Category }> = ({ category }) => {
                 <td className="px-3 py-3 text-xs text-muted">{category.slug}</td>
                 <td className="px-3 py-3 text-xs text-muted">{category.sort_order}</td>
                 <td className="px-3 py-3">
-                    <div className="flex flex-wrap justify-end gap-2">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() =>
-                                is_editing ? set_is_editing(false) : start_edit()
-                            }
-                        >
-                            {is_editing ? "Close" : "Edit"}
-                        </Button>
-                        {is_confirming_delete ? (
-                            <>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    className="border-danger/30 text-danger hover:bg-danger/10"
-                                    loading={delete_category.isPending}
-                                    onClick={() =>
-                                        delete_category.mutate(category.uuid)
-                                    }
-                                >
-                                    Confirm
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    onClick={() => set_is_confirming_delete(false)}
-                                >
-                                    Cancel
-                                </Button>
-                            </>
-                        ) : (
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                className="text-danger hover:bg-danger/10"
-                                onClick={() => set_is_confirming_delete(true)}
-                            >
-                                Remove
-                            </Button>
-                        )}
+                    <div className="flex justify-end">
+                        <RowActionsMenu
+                            onEdit={() => set_is_editing(true)}
+                            onDelete={() => delete_category.mutate(category.uuid)}
+                            is_deleting={delete_category.isPending}
+                        />
                     </div>
                 </td>
             </tr>
 
-            {is_editing && (
-                <tr className="bg-surface-secondary/40">
-                    <td colSpan={4} className="px-3 py-3">
-                        <div className="flex flex-wrap items-end gap-3">
-                            <div className="flex flex-1 flex-col gap-1">
-                                <label className="text-xs font-medium text-foreground">
-                                    Name
-                                </label>
-                                <Input
-                                    value={name}
-                                    onChange={(event) => set_name(event.target.value)}
-                                />
-                            </div>
-                            <div className="flex flex-1 flex-col gap-1">
-                                <label className="text-xs font-medium text-foreground">
-                                    Icon URL
-                                </label>
-                                <Input
-                                    value={icon_url}
-                                    onChange={(event) =>
-                                        set_icon_url(event.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="flex w-24 flex-col gap-1">
-                                <label className="text-xs font-medium text-foreground">
-                                    Order
-                                </label>
-                                <Input
-                                    type="number"
-                                    value={sort_order}
-                                    onChange={(event) =>
-                                        set_sort_order(event.target.value)
-                                    }
-                                />
-                            </div>
-                            <Button
-                                type="button"
-                                loading={update_category.isPending}
-                                disabled={name.trim().length === 0}
-                                onClick={save}
-                            >
-                                Save
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                onClick={() => set_is_editing(false)}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </td>
-                </tr>
-            )}
+            <EditCategoryModal
+                category={category}
+                isOpen={is_editing}
+                onClose={() => set_is_editing(false)}
+            />
 
             {category.subcategories.map((subcategory) => (
                 <SubcategoryRow key={subcategory.uuid} subcategory={subcategory} />

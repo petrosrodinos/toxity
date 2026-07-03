@@ -41,7 +41,7 @@ export const ProductAnalysisIngredientSchema = z.object({
     is_vegan: z.boolean().nullable(),
     is_cruelty_free: z.boolean().nullable(),
     is_biodegradable: z.boolean().nullable(),
-    overall_score: z.number().min(0).max(20),
+    overall_score: z.number().min(0).max(20).nullable(),
     safety_score: z.number().min(0).max(20).nullable(),
     risk_score: z.number().min(0).max(20).nullable(),
     confidence_score: z.number().min(0).max(20).nullable(),
@@ -75,11 +75,17 @@ export const ProductAnalysisSchema = z.object({
         .describe(
             'UUID of the existing top-level category to attach a new subcategory to, when matched_subcategory_uuid is null',
         ),
+    new_category_name: z
+        .string()
+        .nullable()
+        .describe(
+            'Name for a brand-new top-level category when none of the existing categories fit; leave matched_category_uuid null and pair this with new_subcategory_name',
+        ),
     new_subcategory_name: z
         .string()
         .nullable()
         .describe(
-            'Name for a new subcategory when no existing subcategory fits; must be paired with matched_category_uuid',
+            'Name for a new subcategory when no existing subcategory fits; pair with matched_category_uuid (existing category) or new_category_name (brand-new category)',
         ),
     description: z.string().nullable(),
     ai_summary: z.string().nullable(),
@@ -167,10 +173,11 @@ ${ingredient_lines || 'none available'}
 - For product_name: produce a clean, concise, human-readable product name inferred from the overall label (e.g. "Pure Fish Oil 700mg Omega-3"). Do NOT copy raw OCR noise such as dosage instructions, dates, batch codes, or sentence fragments. Ignore the OCR guess if it is clearly not a product name. If you truly cannot determine a name, build a short descriptive one from the product type (e.g. "Omega-3 Fish Oil Supplement").
 - For brand_name: identify the real brand/manufacturer from the label text (look for company names, "by ...", addresses, or websites). Do NOT use dosage instructions, dates, or ingredient text as the brand. If the brand cannot be determined, use "Unknown" rather than copying unrelated OCR text.
 - For the brand: if it matches an existing brand (case-insensitive, allowing minor spelling variation), set matched_brand_uuid to that brand's uuid. Otherwise set matched_brand_uuid to null and provide brand_name.
-- For the category: you MUST always resolve a category. Prefer matched_subcategory_uuid from the existing list. If no subcategory fits, pick the closest matched_category_uuid and provide new_subcategory_name to create a subcategory under it. Never leave all of matched_subcategory_uuid, matched_category_uuid, and new_subcategory_name null — always make your best-guess placement even when the OCR text is incomplete or hard to read.
+- For the category: you MUST always resolve a category. Resolve it in this priority order: (1) reuse an existing subcategory via matched_subcategory_uuid; (2) if no subcategory fits but an existing category does, set matched_category_uuid and provide new_subcategory_name to create a subcategory under it; (3) if NONE of the existing categories fit the product, set matched_category_uuid to null, provide new_category_name for a brand-new top-level category, and provide new_subcategory_name for its first subcategory. Use clear, general, reusable names (e.g. category "Supplements", subcategory "Fish Oil") — not product-specific or one-off names. Never leave all of matched_subcategory_uuid, matched_category_uuid, new_category_name, and new_subcategory_name null — always make your best-guess placement even when the OCR text is incomplete or hard to read.
 - For each ingredient in the OCR list: if it matches an existing ingredient (by name or synonym, allowing spelling/case variation and INCI naming), set matched_ingredient_uuid to that ingredient's uuid and still fill in its analysis fields. Otherwise set matched_ingredient_uuid to null and provide full analysis.
-- Preserve the ingredient order from the OCR list in your response.
+- EXCLUDE non-ingredient OCR lines from the ingredients array entirely — do not include usage instructions, dosage directions, storage text, batch codes, dates, marketing slogans, or other label boilerplate (e.g. Greek "Οδηγίες χρήσεως", "Take 1-3 capsules", "Store in a cool place"). Only list actual product ingredients (oils, vitamins, preservatives, etc.).
+- Preserve the ingredient order from the OCR list in your response (after excluding non-ingredient lines).
 - overall_score and ingredient overall_score use a 0-20 scale (20 = safest, 0 = most concerning).
 - color_indicator must reflect the score: VERY_SAFE (>=17), SAFE (>=13), MODERATE (>=9), CAUTION (>=5), HIGH_RISK (<5), or UNKNOWN if there is not enough information.
-- Return null for any field you cannot determine confidently, except required fields and the category placement (which must always be resolved as described above).`;
+- Return null for any field you cannot determine confidently, except product_name, brand_name, product overall_score, product color_indicator, and the category placement (which must always be resolved as described above). For each real ingredient, always provide overall_score and color_indicator; if you truly cannot score an ingredient, omit that line from the ingredients array instead of including it with null scores.`;
 }

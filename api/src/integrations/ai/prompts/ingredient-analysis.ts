@@ -10,6 +10,8 @@ export const INGREDIENT_REANALYSIS_SYSTEM_PROMPT =
 
 export const IngredientReanalysisSchema = ProductAnalysisIngredientSchema.omit({
     matched_ingredient_uuid: true,
+}).extend({
+    overall_score: z.number().min(0).max(20),
 });
 
 export type IngredientReanalysisResult = z.infer<

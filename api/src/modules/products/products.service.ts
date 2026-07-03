@@ -59,33 +59,17 @@ export class ProductsService {
         // throwing 404 so the client treats it as a normal "not found" result
         // rather than an error that triggers retries.
         //
-        // Discovery stays APPROVED-only for the public catalog, but users who
-        // created a product via the AI pipeline (PENDING review) or previously
-        // scanned it must be able to look it up again by barcode.
-        const user_created_product_uuids =
-            await this.prisma.productCreationJob.findMany({
-                where: {
-                    user_uuid,
-                    product_uuid: { not: null },
-                },
-                select: { product_uuid: true },
-            });
+        // Barcodes are globally unique — any product with a matching barcode
+        // should be returned so scan/create flows never start a duplicate entry.
+        // Discovery surfaces (find_all, home, search) stay APPROVED-only.
+        const normalized_barcode = barcode.trim();
 
-        const user_created_uuids = user_created_product_uuids
-            .map((job) => job.product_uuid)
-            .filter((product_uuid): product_uuid is string => !!product_uuid);
+        if (!normalized_barcode) {
+            return null;
+        }
 
         const product = await this.prisma.product.findFirst({
-            where: {
-                barcode,
-                OR: [
-                    { verification_status: 'APPROVED' },
-                    { scans: { some: { user_uuid } } },
-                    ...(user_created_uuids.length > 0
-                        ? [{ uuid: { in: user_created_uuids } }]
-                        : []),
-                ],
-            },
+            where: { barcode: normalized_barcode },
             include: product_detail_include,
         });
 

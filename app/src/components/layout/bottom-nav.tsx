@@ -1,8 +1,17 @@
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { app_nav_items } from "@/components/layout/app-nav-items";
+import { admin_nav_item, app_nav_items } from "@/components/layout/app-nav-items";
+import { useAuthStore } from "@/stores/auth";
+import { RoleTypes } from "@/features/user/interfaces/user.interface";
 
 export default function BottomNav() {
+    const role = useAuthStore((state) => state.role);
+    const is_admin =
+        role === RoleTypes.ADMIN || role === RoleTypes.SUPER_ADMIN;
+    const nav_items = is_admin
+        ? [...app_nav_items, admin_nav_item]
+        : app_nav_items;
+
     return (
         <nav
             className={cn(
@@ -13,7 +22,7 @@ export default function BottomNav() {
             aria-label="Main navigation"
         >
             <ul className="flex h-16 items-stretch justify-around px-1">
-                {app_nav_items.map(({ label, icon: Icon, href, end, emphasized }) => (
+                {nav_items.map(({ label, icon: Icon, href, end, emphasized }) => (
                     <li key={href} className="flex flex-1 min-w-0">
                         <NavLink
                             to={href}

@@ -1,4 +1,4 @@
-import { ScanLine, Search, History, type LucideIcon } from "lucide-react";
+import { ScanLine, Search, History, ShieldCheck, type LucideIcon } from "lucide-react";
 import { Routes } from "@/routes/routes";
 
 export interface AppNavItem {
@@ -15,7 +15,15 @@ export const app_nav_items: AppNavItem[] = [
     { label: "Search", icon: Search, href: Routes.search.root, end: true },
 ];
 
+export const admin_nav_item: AppNavItem = {
+    label: "Admin",
+    icon: ShieldCheck,
+    href: Routes.admin.root,
+    end: false,
+};
+
 export const app_page_titles: Record<string, string> = {
     ...Object.fromEntries(app_nav_items.map((item) => [item.href, item.label])),
+    [admin_nav_item.href]: admin_nav_item.label,
     [Routes.profile.root]: "Profile",
 };

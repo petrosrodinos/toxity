@@ -2,10 +2,19 @@ import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { BrandMark } from "@/components/brand/brand-mark";
 import UserMenuPopover from "@/components/layout/user-menu-popover";
-import { app_nav_items } from "@/components/layout/app-nav-items";
+import { admin_nav_item, app_nav_items } from "@/components/layout/app-nav-items";
 import { Routes } from "@/routes/routes";
+import { useAuthStore } from "@/stores/auth";
+import { RoleTypes } from "@/features/user/interfaces/user.interface";
 
 export default function DesktopNav() {
+    const role = useAuthStore((state) => state.role);
+    const is_admin =
+        role === RoleTypes.ADMIN || role === RoleTypes.SUPER_ADMIN;
+    const nav_items = is_admin
+        ? [...app_nav_items, admin_nav_item]
+        : app_nav_items;
+
     return (
         <aside
             className={cn(
@@ -32,7 +41,7 @@ export default function DesktopNav() {
 
             <nav className="flex-1 py-2.5 px-2 overflow-y-auto" aria-label="Main navigation">
                 <ul className="space-y-0.5">
-                    {app_nav_items.map(({ label, icon: Icon, href, end, emphasized }) => (
+                    {nav_items.map(({ label, icon: Icon, href, end, emphasized }) => (
                         <li key={href}>
                             <NavLink
                                 to={href}

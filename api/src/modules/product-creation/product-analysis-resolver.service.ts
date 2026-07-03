@@ -86,7 +86,19 @@ export class ProductAnalysisResolverService {
             );
         }
 
-        return parsed.data;
+        const ingredients = parsed.data.ingredients.filter(
+            (ingredient) =>
+                ingredient.overall_score !== null ||
+                ingredient.matched_ingredient_uuid !== null,
+        );
+
+        if (ingredients.length === 0) {
+            throw new Error(
+                'AI response contained no scorable ingredients after filtering OCR noise',
+            );
+        }
+
+        return { ...parsed.data, ingredients };
     }
 
     async resolveBrand(
@@ -135,32 +147,40 @@ export class ProductAnalysisResolverService {
             }
         }
 
-        const category = analysis.matched_category_uuid
-            ? await tx.category.findUnique({
-                  where: { uuid: analysis.matched_category_uuid },
-              })
-            : null;
+        const category_uuid = await this.resolveCategory(tx, analysis);
 
-        if (category && analysis.new_subcategory_name) {
-            return this.findOrCreateSubcategory(
-                tx,
-                category.uuid,
-                analysis.new_subcategory_name,
-            );
+        // Use the AI-proposed subcategory name when available, otherwise attach
+        // the product to an "Other" subcategory under the resolved category so
+        // the job still succeeds and lands in the review queue.
+        const subcategory_name =
+            analysis.new_subcategory_name?.trim() || FALLBACK_SUBCATEGORY_NAME;
+
+        return this.findOrCreateSubcategory(tx, category_uuid, subcategory_name);
+    }
+
+    private async resolveCategory(
+        tx: TransactionClient,
+        analysis: ProductAnalysisResult,
+    ): Promise<string> {
+        if (analysis.matched_category_uuid) {
+            const existing = await tx.category.findUnique({
+                where: { uuid: analysis.matched_category_uuid },
+            });
+
+            if (existing) {
+                return existing.uuid;
+            }
         }
 
-        // Fallback: the AI could not confidently resolve a category (e.g. OCR
-        // was garbled or the product is unusual). Rather than failing the whole
-        // job, attach the product to an "Other" subcategory so it still lands
-        // in the review queue and the admin can recategorize it later.
-        const fallback_category_uuid =
-            category?.uuid ?? (await this.findOrCreateOtherCategory(tx));
+        // The AI decided none of the existing categories fit — create the new
+        // top-level category it proposed and persist it to our taxonomy.
+        if (analysis.new_category_name) {
+            return this.findOrCreateCategory(tx, analysis.new_category_name);
+        }
 
-        return this.findOrCreateSubcategory(
-            tx,
-            fallback_category_uuid,
-            FALLBACK_SUBCATEGORY_NAME,
-        );
+        // Last resort: the AI resolved nothing usable (e.g. garbled OCR). Fall
+        // back to a shared "Other" category so the job never hard-fails.
+        return this.findOrCreateCategory(tx, FALLBACK_CATEGORY_NAME);
     }
 
     private async findOrCreateSubcategory(
@@ -192,27 +212,23 @@ export class ProductAnalysisResolverService {
         return subcategory.uuid;
     }
 
-    private async findOrCreateOtherCategory(
+    private async findOrCreateCategory(
         tx: TransactionClient,
+        raw_name: string,
     ): Promise<string> {
-        const existing = await tx.category.findFirst({
-            where: { name: FALLBACK_CATEGORY_NAME },
-        });
+        const name = raw_name.trim();
+        const existing = await tx.category.findUnique({ where: { name } });
 
         if (existing) {
             return existing.uuid;
         }
 
-        const slug = await this.uniqueSlug(
-            FALLBACK_CATEGORY_NAME,
-            async (candidate) =>
-                Boolean(
-                    await tx.category.findUnique({ where: { slug: candidate } }),
-                ),
+        const slug = await this.uniqueSlug(name, async (candidate) =>
+            Boolean(await tx.category.findUnique({ where: { slug: candidate } })),
         );
 
         const category = await tx.category.create({
-            data: { name: FALLBACK_CATEGORY_NAME, slug },
+            data: { name, slug },
         });
 
         return category.uuid;

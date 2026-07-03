@@ -1,5 +1,6 @@
 import {
     BadRequestException,
+    ConflictException,
     Injectable,
     NotFoundException,
     UnprocessableEntityException,
@@ -42,20 +43,35 @@ export class ProductCreationService {
         user_uuid: string,
         dto: CreateProductCreationJobDto,
     ): Promise<ProductCreationJobEntity> {
+        const barcode = dto.barcode?.trim() || null;
+
+        if (barcode) {
+            const existing_product = await this.prisma.product.findFirst({
+                where: { barcode },
+                select: { uuid: true },
+            });
+
+            if (existing_product) {
+                throw new ConflictException(
+                    'A product with this barcode already exists',
+                );
+            }
+        }
+
         const job = await this.prisma.productCreationJob.create({
             data: {
                 user_uuid,
-                barcode: dto.barcode ?? null,
+                barcode,
                 status: ProductCreationJobStatus.PENDING,
             },
         });
 
-        if (dto.barcode) {
+        if (barcode) {
             setImmediate(async () => {
                 try {
                     await this.cleanup_previous_jobs_for_barcode(
                         user_uuid,
-                        dto.barcode as string,
+                        barcode,
                         job.uuid,
                     );
                 } catch {

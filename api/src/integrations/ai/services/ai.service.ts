@@ -1,5 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { embed, generateObject, generateText, streamText } from 'ai';
+import {
+    embed,
+    generateObject,
+    generateText,
+    NoObjectGeneratedError,
+    streamText,
+} from 'ai';
 import {
     AIGenerateObjectResponse,
     AIGenerateOptions,
@@ -85,17 +91,52 @@ export class AiService {
             } catch (error) {
                 lastError = error;
 
+                const detail = this.describeGenerateObjectError(error);
+
                 if (attempt < maxRetries) {
-                    this.logger.warn(`Schema validation error on attempt ${attempt}, retrying... Error: ${error.message}`);
+                    this.logger.warn(
+                        `Schema validation error on attempt ${attempt}, retrying... ${detail}`,
+                    );
                     continue;
                 }
 
-                this.logger.error(`Error generating text on attempt ${attempt}: ${error.message}`);
+                this.logger.error(
+                    `Error generating text on attempt ${attempt}: ${detail}`,
+                );
                 throw new Error(`Failed to generate text: ${error.message}`);
             }
         }
 
         throw lastError || new Error('Failed to generate text after all retry attempts');
+    }
+
+    /**
+     * `generateObject` wraps the real reason (Zod validation vs. truncated /
+     * unparseable JSON) inside NoObjectGeneratedError. Surface `cause`,
+     * `finishReason`, and a snippet of the raw model text so failures are
+     * actually diagnosable instead of the generic "did not match schema".
+     */
+    private describeGenerateObjectError(error: unknown): string {
+        if (!NoObjectGeneratedError.isInstance(error)) {
+            return error instanceof Error ? error.message : String(error);
+        }
+
+        const cause =
+            error.cause instanceof Error
+                ? error.cause.message
+                : error.cause
+                  ? JSON.stringify(error.cause)
+                  : 'unknown';
+
+        const textSnippet = error.text
+            ? ` | text(first 500): ${error.text.slice(0, 500)}`
+            : '';
+
+        return (
+            `${error.message} | finishReason: ${error.finishReason ?? 'n/a'} ` +
+            `| completionTokens: ${error.usage?.completionTokens ?? 'n/a'} ` +
+            `| cause: ${cause}${textSnippet}`
+        );
     }
 
     async streamText(options: AIStreamTextOptions): Promise<void> {
