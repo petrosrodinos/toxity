@@ -1,9 +1,13 @@
 import { useState, type FC } from "react";
 import { Button } from "@/components/ui/button";
 import { PendingProductsTable } from "./components/pending-products-table";
+import { AllProductsTable } from "./components/all-products-table";
+import { CategoriesTable } from "./components/categories-table";
 import { MergeTool } from "./components/merge-tool";
 
 const ADMIN_TABS = [
+    { value: "products", label: "Products" },
+    { value: "categories", label: "Categories" },
     { value: "pending", label: "Pending Products" },
     { value: "merge", label: "Merge Duplicates" },
 ] as const;
@@ -11,10 +15,10 @@ const ADMIN_TABS = [
 type AdminTab = (typeof ADMIN_TABS)[number]["value"];
 
 const AdminPage: FC = () => {
-    const [tab, set_tab] = useState<AdminTab>("pending");
+    const [tab, set_tab] = useState<AdminTab>("products");
 
     return (
-        <div className="mx-auto max-w-2xl space-y-6 pb-8">
+        <div className="mx-auto max-w-4xl space-y-6 pb-8">
             <div>
                 <h1
                     className="text-2xl font-semibold text-foreground"
@@ -23,7 +27,8 @@ const AdminPage: FC = () => {
                     Admin
                 </h1>
                 <p className="mt-1 text-sm text-muted">
-                    Review pending products and clean up duplicate records.
+                    Manage products and their ingredients, review pending
+                    submissions, and clean up duplicate records.
                 </p>
             </div>
 
@@ -40,7 +45,10 @@ const AdminPage: FC = () => {
                 ))}
             </div>
 
-            {tab === "pending" ? <PendingProductsTable /> : <MergeTool />}
+            {tab === "products" && <AllProductsTable />}
+            {tab === "categories" && <CategoriesTable />}
+            {tab === "pending" && <PendingProductsTable />}
+            {tab === "merge" && <MergeTool />}
         </div>
     );
 };

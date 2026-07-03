@@ -51,7 +51,11 @@ export class ProductsController {
     @Get('barcode/:barcode')
     @ApiOperation({ summary: 'Lookup product by barcode' })
     @ApiParam({ name: 'barcode', description: 'Product barcode' })
-    @ApiResponse({ status: 200, type: ProductDetailEntity })
+    @ApiResponse({
+        status: 200,
+        type: ProductDetailEntity,
+        description: 'Matching product, or null when no product matches.',
+    })
     find_by_barcode(
         @CurrentUser('uuid') user_uuid: string,
         @Param('barcode') barcode: string,

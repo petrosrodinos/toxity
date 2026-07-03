@@ -2,9 +2,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Sun, Moon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ActionButtonWithPending } from "@/components/ui/action-button-with-pending";
 import { useGetMe, useUpdateProfile } from "@/features/user/hooks/use-user";
+import { useThemeContext } from "@/components/providers/theme-provider";
+import { cn } from "@/lib/utils";
 
 const profileSchema = z.object({
     name: z
@@ -18,6 +21,7 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 export function ProfileSettingsForm() {
     const { data: profile, isLoading, isError } = useGetMe();
     const { mutate, isPending } = useUpdateProfile();
+    const { theme, toggleTheme } = useThemeContext();
 
     const {
         register,
@@ -67,6 +71,25 @@ export function ProfileSettingsForm() {
                     autoComplete="name"
                 />
                 {errors.name && <p className="text-sm text-danger">{errors.name.message}</p>}
+            </div>
+
+            <div className="flex flex-col gap-1">
+                <span className="text-sm font-medium text-foreground">Appearance</span>
+                <div className="flex items-center justify-between rounded-xl border border-border bg-surface-secondary/40 px-3 py-2.5">
+                    <span className="text-sm text-muted">Theme</span>
+                    <button
+                        type="button"
+                        onClick={toggleTheme}
+                        aria-label="Toggle theme"
+                        className={cn(
+                            "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium",
+                            "text-foreground hover:bg-surface-secondary transition-colors duration-200",
+                        )}
+                    >
+                        {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                        {theme === "dark" ? "Dark" : "Light"}
+                    </button>
+                </div>
             </div>
 
             <ActionButtonWithPending type="submit" isDisabled={isPending} isPending={isPending} className="w-fit">

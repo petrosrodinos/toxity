@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { Routes } from "@/routes/routes";
+import { toast } from "@/hooks/use-toast";
+import { get_product_by_barcode } from "@/features/products/services/products.services";
+import { create_product_creation_job } from "@/features/product-creation/services/product-creation.services";
 import {
     useAnalyzeProductCreationJob,
-    useCreateProductCreationJob,
     useProductCreationJob,
     useStartProductAnalysis,
     useUploadFrontLabel,
@@ -32,9 +34,6 @@ export const useCreationWizard = (barcode: string | null) => {
     const [job_uuid, set_job_uuid] = useState<string | null>(null);
     const [error_message, set_error_message] = useState<string | null>(null);
 
-    const has_started_ref = useRef(false);
-
-    const create_job_mutation = useCreateProductCreationJob();
     const upload_ingredient_label_mutation = useUploadIngredientLabel();
     const upload_front_label_mutation = useUploadFrontLabel();
     const analyze_mutation = useAnalyzeProductCreationJob();
@@ -44,33 +43,99 @@ export const useCreationWizard = (barcode: string | null) => {
         poll: step === "processing" && processing_phase === "analyzing",
     });
 
-    const start_new_job = useCallback(() => {
-        set_step("initializing");
-        set_error_message(null);
-        set_job_uuid(null);
+    const init_job = useCallback(
+        async (is_cancelled: () => boolean) => {
+            set_step("initializing");
+            set_error_message(null);
+            set_job_uuid(null);
 
-        create_job_mutation.mutate(
-            { barcode: barcode ?? undefined },
-            {
-                onSuccess: (job) => {
-                    set_job_uuid(job.uuid);
-                    set_step("ingredient_label");
+            try {
+                if (barcode) {
+                    const existing_product =
+                        await get_product_by_barcode(barcode);
+
+                    if (is_cancelled()) return;
+
+                    if (existing_product) {
+                        navigate(Routes.products.detail(existing_product.uuid));
+                        return;
+                    }
+                }
+
+                const job = await create_product_creation_job({
+                    barcode: barcode ?? undefined,
+                });
+
+                if (is_cancelled()) return;
+
+                set_job_uuid(job.uuid);
+                set_step("ingredient_label");
+            } catch (error) {
+                if (is_cancelled()) return;
+
+                const message =
+                    error instanceof Error
+                        ? error.message
+                        : "Failed to start product creation.";
+
+                set_error_message(message);
+                set_step("failed");
+                toast({
+                    title: "Could not start product creation",
+                    description: message,
+                    variant: "error",
+                });
+            }
+        },
+        [barcode, navigate],
+    );
+
+    useEffect(() => {
+        let cancelled = false;
+        void init_job(() => cancelled);
+        return () => {
+            cancelled = true;
+        };
+    }, [init_job]);
+
+    const start_new_job = useCallback(() => {
+        void init_job(() => false);
+    }, [init_job]);
+
+    const run_analysis = useCallback(
+        (target_job_uuid: string) => {
+            set_error_message(null);
+            set_step("processing");
+            set_processing_phase("ocr");
+
+            analyze_mutation.mutate(target_job_uuid, {
+                onSuccess: () => {
+                    set_processing_phase("starting");
+
+                    start_analysis_mutation.mutate(target_job_uuid, {
+                        onSuccess: () => set_processing_phase("analyzing"),
+                        onError: (error: Error) => {
+                            set_error_message(error.message);
+                            set_step("failed");
+                        },
+                    });
                 },
                 onError: (error: Error) => {
                     set_error_message(error.message);
                     set_step("failed");
                 },
-            },
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [barcode]);
+            });
+        },
+        [analyze_mutation, start_analysis_mutation],
+    );
 
-    useEffect(() => {
-        if (has_started_ref.current) return;
-        has_started_ref.current = true;
-        start_new_job();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const retry_analysis = useCallback(() => {
+        if (!job_uuid) {
+            start_new_job();
+            return;
+        }
+        run_analysis(job_uuid);
+    }, [job_uuid, run_analysis, start_new_job]);
 
     const handle_ingredient_label = useCallback(
         async (file: File) => {
@@ -93,37 +158,11 @@ export const useCreationWizard = (barcode: string | null) => {
             upload_front_label_mutation.mutate(
                 { job_uuid, file: compressed },
                 {
-                    onSuccess: () => {
-                        set_step("processing");
-                        set_processing_phase("ocr");
-
-                        analyze_mutation.mutate(job_uuid, {
-                            onSuccess: () => {
-                                set_processing_phase("starting");
-
-                                start_analysis_mutation.mutate(job_uuid, {
-                                    onSuccess: () => set_processing_phase("analyzing"),
-                                    onError: (error: Error) => {
-                                        set_error_message(error.message);
-                                        set_step("failed");
-                                    },
-                                });
-                            },
-                            onError: (error: Error) => {
-                                set_error_message(error.message);
-                                set_step("failed");
-                            },
-                        });
-                    },
+                    onSuccess: () => run_analysis(job_uuid),
                 },
             );
         },
-        [
-            job_uuid,
-            upload_front_label_mutation,
-            analyze_mutation,
-            start_analysis_mutation,
-        ],
+        [job_uuid, upload_front_label_mutation, run_analysis],
     );
 
     useEffect(() => {
@@ -157,5 +196,6 @@ export const useCreationWizard = (barcode: string | null) => {
         handle_ingredient_label,
         handle_front_label,
         start_over: start_new_job,
+        retry_analysis,
     };
 };

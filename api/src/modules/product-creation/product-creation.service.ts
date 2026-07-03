@@ -50,7 +50,72 @@ export class ProductCreationService {
             },
         });
 
+        if (dto.barcode) {
+            setImmediate(async () => {
+                try {
+                    await this.cleanup_previous_jobs_for_barcode(
+                        user_uuid,
+                        dto.barcode as string,
+                        job.uuid,
+                    );
+                } catch {
+                    // intentionally swallowed — cleanup must not affect creation
+                }
+            });
+        }
+
         return this.to_entity(job);
+    }
+
+    private async cleanup_previous_jobs_for_barcode(
+        user_uuid: string,
+        barcode: string,
+        current_job_uuid: string,
+    ): Promise<void> {
+        const previous_jobs = await this.prisma.productCreationJob.findMany({
+            where: {
+                user_uuid,
+                barcode,
+                uuid: { not: current_job_uuid },
+                OR: [
+                    { ingredient_label_image_url: { not: null } },
+                    { front_label_image_url: { not: null } },
+                ],
+            },
+        });
+
+        for (const previous_job of previous_jobs) {
+            await this.delete_job_label_images(previous_job);
+
+            await this.prisma.productCreationJob.update({
+                where: { uuid: previous_job.uuid },
+                data: {
+                    ingredient_label_image_url: null,
+                    front_label_image_url: null,
+                },
+            });
+        }
+    }
+
+    private async delete_job_label_images(job: {
+        ingredient_label_image_url: string | null;
+        front_label_image_url: string | null;
+    }): Promise<void> {
+        const urls = [
+            job.ingredient_label_image_url,
+            job.front_label_image_url,
+        ].filter((url): url is string => !!url);
+
+        await Promise.all(
+            urls.map(async (url) => {
+                try {
+                    const path = this.extract_gcs_path_from_url(url);
+                    await this.gcs_service.deleteImage({ filename: path });
+                } catch {
+                    // ignore missing/failed deletes for individual files
+                }
+            }),
+        );
     }
 
     async upload_ingredient_label(
@@ -101,7 +166,8 @@ export class ProductCreationService {
 
         if (
             job.status !== ProductCreationJobStatus.PENDING &&
-            job.status !== ProductCreationJobStatus.OCR
+            job.status !== ProductCreationJobStatus.OCR &&
+            job.status !== ProductCreationJobStatus.FAILED
         ) {
             throw new BadRequestException(
                 'Job cannot be analyzed in its current state',

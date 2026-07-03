@@ -146,8 +146,9 @@ export function buildProductAnalysisPrompt(
     return `Analyze this product label data and return a complete structured product analysis.
 
 ## OCR-extracted label data
-Product name (guess): ${data.ocr_result.name ?? 'unknown'}
-Brand (guess): ${data.ocr_result.brand ?? 'unknown'}
+NOTE: OCR is noisy and often misaligned. The "guess" fields below are unreliable and may contain dosage instructions, dates, or unrelated text instead of the real name/brand. Treat them as weak hints only and infer the true values from the whole label (claims, ingredients, and any brand text such as manufacturer names or websites).
+Product name (unreliable OCR guess): ${data.ocr_result.name ?? 'unknown'}
+Brand (unreliable OCR guess): ${data.ocr_result.brand ?? 'unknown'}
 Barcode: ${data.barcode ?? 'none'}
 Marketing claims found on label: ${data.ocr_result.claims.join(', ') || 'none'}
 Ingredient list (raw OCR order):
@@ -163,11 +164,13 @@ ${brand_lines || 'none available'}
 ${ingredient_lines || 'none available'}
 
 ## Instructions
+- For product_name: produce a clean, concise, human-readable product name inferred from the overall label (e.g. "Pure Fish Oil 700mg Omega-3"). Do NOT copy raw OCR noise such as dosage instructions, dates, batch codes, or sentence fragments. Ignore the OCR guess if it is clearly not a product name. If you truly cannot determine a name, build a short descriptive one from the product type (e.g. "Omega-3 Fish Oil Supplement").
+- For brand_name: identify the real brand/manufacturer from the label text (look for company names, "by ...", addresses, or websites). Do NOT use dosage instructions, dates, or ingredient text as the brand. If the brand cannot be determined, use "Unknown" rather than copying unrelated OCR text.
 - For the brand: if it matches an existing brand (case-insensitive, allowing minor spelling variation), set matched_brand_uuid to that brand's uuid. Otherwise set matched_brand_uuid to null and provide brand_name.
-- For the category: prefer matched_subcategory_uuid from the existing list. Only if truly nothing fits, pick the closest matched_category_uuid and provide new_subcategory_name to create a subcategory under it.
+- For the category: you MUST always resolve a category. Prefer matched_subcategory_uuid from the existing list. If no subcategory fits, pick the closest matched_category_uuid and provide new_subcategory_name to create a subcategory under it. Never leave all of matched_subcategory_uuid, matched_category_uuid, and new_subcategory_name null — always make your best-guess placement even when the OCR text is incomplete or hard to read.
 - For each ingredient in the OCR list: if it matches an existing ingredient (by name or synonym, allowing spelling/case variation and INCI naming), set matched_ingredient_uuid to that ingredient's uuid and still fill in its analysis fields. Otherwise set matched_ingredient_uuid to null and provide full analysis.
 - Preserve the ingredient order from the OCR list in your response.
 - overall_score and ingredient overall_score use a 0-20 scale (20 = safest, 0 = most concerning).
 - color_indicator must reflect the score: VERY_SAFE (>=17), SAFE (>=13), MODERATE (>=9), CAUTION (>=5), HIGH_RISK (<5), or UNKNOWN if there is not enough information.
-- Return null for any field you cannot determine confidently, except required fields.`;
+- Return null for any field you cannot determine confidently, except required fields and the category placement (which must always be resolved as described above).`;
 }

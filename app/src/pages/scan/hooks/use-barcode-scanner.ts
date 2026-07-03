@@ -13,18 +13,34 @@ export const useBarcodeScanner = (on_detect: (barcode: string) => void) => {
     const video_ref = useRef<HTMLVideoElement>(null);
     const reader_ref = useRef<BrowserMultiFormatReader | null>(null);
     const controls_ref = useRef<{ stop: () => void } | null>(null);
+    const on_detect_ref = useRef(on_detect);
+    const is_processing_ref = useRef(false);
+    const is_running_ref = useRef(false);
     const [status, set_status] = useState<ScannerStatus>("idle");
     const [error_message, set_error_message] = useState<string | null>(null);
-    const is_processing_ref = useRef(false);
+
+    on_detect_ref.current = on_detect;
 
     const stop_scanner = useCallback(() => {
         controls_ref.current?.stop();
         controls_ref.current = null;
         reader_ref.current = null;
+        is_running_ref.current = false;
+
+        const video = video_ref.current;
+        if (video) {
+            const stream = video.srcObject;
+            if (stream instanceof MediaStream) {
+                for (const track of stream.getTracks()) {
+                    track.stop();
+                }
+            }
+            video.srcObject = null;
+        }
     }, []);
 
     const start_scanner = useCallback(async () => {
-        if (!video_ref.current || is_processing_ref.current) {
+        if (!video_ref.current || is_processing_ref.current || is_running_ref.current) {
             return;
         }
 
@@ -34,7 +50,6 @@ export const useBarcodeScanner = (on_detect: (barcode: string) => void) => {
             return;
         }
 
-        stop_scanner();
         set_status("starting");
         set_error_message(null);
 
@@ -52,13 +67,16 @@ export const useBarcodeScanner = (on_detect: (barcode: string) => void) => {
 
                     is_processing_ref.current = true;
                     stop_scanner();
-                    on_detect(result.getText());
+                    on_detect_ref.current(result.getText());
                 },
             );
 
             controls_ref.current = controls;
+            is_running_ref.current = true;
             set_status("scanning");
         } catch (error) {
+            is_running_ref.current = false;
+
             const message =
                 error instanceof Error ? error.message : "Could not start camera.";
 
@@ -76,17 +94,19 @@ export const useBarcodeScanner = (on_detect: (barcode: string) => void) => {
             set_status("error");
             set_error_message(message);
         }
-    }, [on_detect, stop_scanner]);
+    }, [stop_scanner]);
 
     const reset_processing = useCallback(() => {
         is_processing_ref.current = false;
     }, []);
 
     useEffect(() => {
+        void start_scanner();
+
         return () => {
             stop_scanner();
         };
-    }, [stop_scanner]);
+    }, [start_scanner, stop_scanner]);
 
     return {
         video_ref,

@@ -8,19 +8,8 @@ import type {
     ProductQuery,
 } from "../interfaces/products.interfaces";
 
-export class ProductNotFoundError extends Error {
-    constructor(barcode: string) {
-        super(`No product found for barcode ${barcode}`);
-        this.name = "ProductNotFoundError";
-    }
-}
-
 const get_error_message = (error: unknown, fallback: string) => {
     if (axios.isAxiosError(error)) {
-        if (error.response?.status === 404) {
-            return null;
-        }
-
         const message = error.response?.data?.message;
         if (typeof message === "string") {
             return message;
@@ -36,19 +25,16 @@ const get_error_message = (error: unknown, fallback: string) => {
 
 export const get_product_by_barcode = async (
     barcode: string,
-): Promise<ProductDetail> => {
+): Promise<ProductDetail | null> => {
     try {
         const response = await axiosInstance.get(
             ApiRoutes.products.by_barcode(barcode),
         );
-        return response.data;
+        // The API returns 200 with an empty/null body when no product matches.
+        return response.data || null;
     } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.status === 404) {
-            throw new ProductNotFoundError(barcode);
-        }
-
         throw new Error(
-            get_error_message(error, "Failed to look up product. Please try again.")!,
+            get_error_message(error, "Failed to look up product. Please try again."),
         );
     }
 };
@@ -61,7 +47,7 @@ export const get_product = async (product_uuid: string): Promise<ProductDetail> 
         return response.data;
     } catch (error: unknown) {
         throw new Error(
-            get_error_message(error, "Failed to load product. Please try again.")!,
+            get_error_message(error, "Failed to load product. Please try again."),
         );
     }
 };
@@ -76,7 +62,7 @@ export const get_products = async (
         return response.data;
     } catch (error: unknown) {
         throw new Error(
-            get_error_message(error, "Failed to load products. Please try again.")!,
+            get_error_message(error, "Failed to load products. Please try again."),
         );
     }
 };

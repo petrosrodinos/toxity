@@ -63,9 +63,13 @@ const upload_label_image = async (
     form_data.append("image", file);
 
     try {
-        // Do not set Content-Type manually: the browser must generate the
-        // multipart boundary itself when sending a FormData body.
-        const response = await axiosInstance.post(url, form_data);
+        // Override the instance default Content-Type (application/json). Without
+        // this, axios serializes the FormData to JSON ({"image":{}}) and the
+        // file never reaches the server. Setting "multipart/form-data" lets
+        // axios/browser regenerate the header with the correct boundary.
+        const response = await axiosInstance.post(url, form_data, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
         return response.data;
     } catch (error: unknown) {
         throw new Error(get_error_message(error, "Failed to upload photo."));

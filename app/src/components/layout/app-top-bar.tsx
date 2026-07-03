@@ -1,47 +1,40 @@
-import { useLocation } from "react-router-dom";
-import { Sun, Moon } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { app_page_titles } from "@/components/layout/app-nav-items";
-import { useThemeContext } from "@/components/providers/theme-provider";
+import { BrandMark } from "@/components/brand/brand-mark";
+import { Routes } from "@/routes/routes";
 
 export default function AppTopBar() {
-    const location = useLocation();
-    const { theme, toggleTheme } = useThemeContext();
-    const current_title = app_page_titles[location.pathname] ?? "Toxity";
-
     return (
         <header
             className={cn(
                 "lg:hidden shrink-0",
-                "mx-3 mt-3 rounded-xl",
-                "h-12 flex items-center justify-between px-3",
-                "bg-surface border border-border",
+                "h-16 flex items-center justify-between px-4",
+                "border-b border-border bg-surface/95 backdrop-blur-md",
             )}
-            style={{
-                boxShadow: `
-          0 0 0 1px color-mix(in oklch, var(--accent) 8%, transparent),
-          0 8px 20px -8px color-mix(in oklch, black 14%, transparent),
-          0 2px 6px -2px color-mix(in oklch, black 6%, transparent)
-        `,
-            }}
         >
-            <div className="min-w-0">
-                <p
-                    className="font-semibold text-foreground text-sm tracking-tight leading-none"
-                    style={{ fontFamily: "var(--heading)" }}
-                >
-                    {current_title}
-                </p>
-                <p className="text-[11px] text-muted truncate leading-snug mt-0.5">Ingredient intelligence</p>
-            </div>
-
-            <button
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-                className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-secondary transition-colors duration-200"
+            <NavLink
+                to={Routes.home.root}
+                className="min-w-0 shrink-0 rounded-xl transition-opacity hover:opacity-90"
             >
-                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
+                <BrandMark size="sm" />
+            </NavLink>
+
+            <NavLink
+                to={Routes.profile.root}
+                end
+                aria-label="Profile"
+                className={({ isActive }) =>
+                    cn(
+                        "shrink-0 p-1.5 rounded-lg transition-colors duration-200",
+                        isActive
+                            ? "text-accent bg-accent/14"
+                            : "text-muted hover:text-foreground hover:bg-surface-secondary",
+                    )
+                }
+            >
+                <User className="h-4 w-4" />
+            </NavLink>
         </header>
     );
 }

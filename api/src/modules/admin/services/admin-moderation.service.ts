@@ -1,5 +1,6 @@
 import {
     BadRequestException,
+    ConflictException,
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
@@ -10,6 +11,9 @@ import { ProductQueryType } from '@/modules/products/dto/product-query.schema';
 import { MergeEntitiesDto } from '../dto/merge-entities.dto';
 import { VerifyProductDto } from '../dto/verify-product.dto';
 import { FeatureProductDto } from '../dto/feature-product.dto';
+import { UpdateProductDto } from '../dto/update-product.dto';
+import { AdminProductQueryType } from '../dto/admin-product-query.schema';
+import { AdminProductListItemEntity } from '../entities/admin-product.entity';
 
 const product_list_include = {
     brand: true,
@@ -18,6 +22,20 @@ const product_list_include = {
         take: 1,
     },
 } satisfies Prisma.ProductInclude;
+
+const admin_product_include = {
+    brand: true,
+    product_ingredients: {
+        orderBy: { position: 'asc' as const },
+        include: {
+            ingredient: true,
+        },
+    },
+} satisfies Prisma.ProductInclude;
+
+type AdminProductRecord = Prisma.ProductGetPayload<{
+    include: typeof admin_product_include;
+}>;
 
 @Injectable()
 export class AdminModerationService {
@@ -55,6 +73,101 @@ export class AdminModerationService {
                 has_prev: query.page > 1,
             },
         };
+    }
+
+    async getAllProducts(query: AdminProductQueryType) {
+        const search = query.search?.trim();
+
+        const where: Prisma.ProductWhereInput = search
+            ? {
+                  OR: [
+                      { name: { contains: search, mode: 'insensitive' } },
+                      { barcode: { contains: search, mode: 'insensitive' } },
+                      {
+                          brand: {
+                              name: { contains: search, mode: 'insensitive' },
+                          },
+                      },
+                  ],
+              }
+            : {};
+
+        const [items, count] = await Promise.all([
+            this.prisma.product.findMany({
+                where,
+                skip: (query.page - 1) * query.limit,
+                take: query.limit,
+                orderBy: { created_at: 'desc' },
+                include: admin_product_include,
+            }),
+            this.prisma.product.count({ where }),
+        ]);
+
+        const total_pages = Math.ceil(count / query.limit);
+
+        return {
+            data: items.map((product) => this.to_admin_list_item(product)),
+            pagination: {
+                total: count,
+                page: query.page,
+                limit: query.limit,
+                total_pages,
+                has_next: query.page < total_pages,
+                has_prev: query.page > 1,
+            },
+        };
+    }
+
+    async updateProduct(
+        product_uuid: string,
+        dto: UpdateProductDto,
+    ): Promise<AdminProductListItemEntity> {
+        await this.getProductOrThrow(product_uuid);
+
+        try {
+            const product = await this.prisma.product.update({
+                where: { uuid: product_uuid },
+                data: {
+                    ...(dto.name !== undefined && { name: dto.name }),
+                    ...(dto.barcode !== undefined && {
+                        barcode: dto.barcode.trim() === '' ? null : dto.barcode.trim(),
+                    }),
+                    ...(dto.package_size !== undefined && {
+                        package_size:
+                            dto.package_size.trim() === ''
+                                ? null
+                                : dto.package_size.trim(),
+                    }),
+                    ...(dto.is_featured !== undefined && {
+                        is_featured: dto.is_featured,
+                    }),
+                    ...(dto.verification_status !== undefined && {
+                        verification_status: dto.verification_status,
+                    }),
+                },
+                include: admin_product_include,
+            });
+
+            return this.to_admin_list_item(product);
+        } catch (error) {
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError &&
+                error.code === 'P2002'
+            ) {
+                throw new ConflictException(
+                    'Another product already uses that name or barcode.',
+                );
+            }
+
+            throw error;
+        }
+    }
+
+    async removeProduct(product_uuid: string): Promise<void> {
+        await this.getProductOrThrow(product_uuid);
+
+        // product_ingredients and product_images cascade-delete with the product.
+        await this.prisma.product.delete({ where: { uuid: product_uuid } });
     }
 
     async verifyProduct(product_uuid: string, dto: VerifyProductDto) {
@@ -276,6 +389,33 @@ export class AdminModerationService {
         });
 
         return { brand_uuid: dto.keep_uuid };
+    }
+
+    private to_admin_list_item(
+        product: AdminProductRecord,
+    ): AdminProductListItemEntity {
+        return {
+            uuid: product.uuid,
+            name: product.name,
+            barcode: product.barcode,
+            package_size: product.package_size,
+            overall_score: product.overall_score.toString(),
+            color_indicator: product.color_indicator,
+            verification_status: product.verification_status,
+            is_featured: product.is_featured,
+            scan_count: product.scan_count,
+            brand: {
+                uuid: product.brand.uuid,
+                name: product.brand.name,
+                logo_url: product.brand.logo_url,
+            },
+            ingredients: product.product_ingredients.map((item) => ({
+                uuid: item.ingredient.uuid,
+                name: item.ingredient.name,
+                color_indicator: item.ingredient.color_indicator,
+                position: item.position,
+            })),
+        };
     }
 
     private assertDifferent(dto: MergeEntitiesDto): void {

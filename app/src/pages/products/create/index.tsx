@@ -21,6 +21,7 @@ const ProductCreatePage: FC = () => {
         handle_ingredient_label,
         handle_front_label,
         start_over,
+        retry_analysis,
     } = useCreationWizard(barcode);
 
     return (
@@ -33,7 +34,12 @@ const ProductCreatePage: FC = () => {
                 >
                     <ArrowLeft className="h-4 w-4" />
                 </Link>
-                {barcode ? (
+                {barcode && step === "initializing" ? (
+                    <p className="text-sm text-muted">
+                        Looking up barcode{" "}
+                        <span className="font-mono">{barcode}</span>…
+                    </p>
+                ) : barcode ? (
                     <p className="text-sm text-muted">
                         Barcode <span className="font-mono">{barcode}</span> was not
                         recognized. Let's add it.
@@ -91,7 +97,8 @@ const ProductCreatePage: FC = () => {
                     error_message={
                         error_message ?? "Something went wrong. Please try again."
                     }
-                    on_retry={start_over}
+                    on_retry={retry_analysis}
+                    on_start_over={start_over}
                 />
             ) : null}
         </div>

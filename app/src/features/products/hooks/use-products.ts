@@ -4,7 +4,6 @@ import {
     get_product,
     get_product_by_barcode,
     get_products,
-    ProductNotFoundError,
 } from "../services/products.services";
 import type { ProductQuery } from "../interfaces/products.interfaces";
 
@@ -27,10 +26,6 @@ export const useLookupProductByBarcode = () => {
     return useMutation({
         mutationFn: get_product_by_barcode,
         onError: (error: Error) => {
-            if (error instanceof ProductNotFoundError) {
-                return;
-            }
-
             toast({
                 title: "Lookup failed",
                 description: error.message,

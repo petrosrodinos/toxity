@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import {
+    delete_product,
+    get_all_products,
     get_ingredient_versions,
     get_pending_products,
     get_product_versions,
@@ -10,11 +12,14 @@ import {
     reanalyze_ingredient,
     reanalyze_product,
     toggle_feature_product,
+    update_product,
     verify_product,
 } from "../services/admin.services";
 import type {
+    AdminProductQuery,
     FeatureProductDto,
     MergeEntitiesDto,
+    UpdateProductDto,
     VerifyProductDto,
 } from "../interfaces/admin.interfaces";
 
@@ -22,6 +27,59 @@ export const useGetPendingProducts = (query?: { page?: number; limit?: number })
     return useQuery({
         queryKey: ["admin-pending-products", query],
         queryFn: () => get_pending_products(query),
+    });
+};
+
+export const useGetAllProducts = (query?: AdminProductQuery) => {
+    return useQuery({
+        queryKey: ["admin-products", query],
+        queryFn: () => get_all_products(query),
+    });
+};
+
+export const useUpdateProduct = () => {
+    const query_client = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            product_uuid,
+            dto,
+        }: {
+            product_uuid: string;
+            dto: UpdateProductDto;
+        }) => update_product(product_uuid, dto),
+        onSuccess: () => {
+            query_client.invalidateQueries({ queryKey: ["admin-products"] });
+            query_client.invalidateQueries({ queryKey: ["product"] });
+            toast({ title: "Product updated", duration: 2000 });
+        },
+        onError: (error: Error) => {
+            toast({
+                title: "Could not update product",
+                description: error.message,
+                variant: "error",
+            });
+        },
+    });
+};
+
+export const useDeleteProduct = () => {
+    const query_client = useQueryClient();
+
+    return useMutation({
+        mutationFn: (product_uuid: string) => delete_product(product_uuid),
+        onSuccess: () => {
+            query_client.invalidateQueries({ queryKey: ["admin-products"] });
+            query_client.invalidateQueries({ queryKey: ["admin-pending-products"] });
+            toast({ title: "Product removed", duration: 2000 });
+        },
+        onError: (error: Error) => {
+            toast({
+                title: "Could not remove product",
+                description: error.message,
+                variant: "error",
+            });
+        },
     });
 };
 

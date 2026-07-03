@@ -1,4 +1,4 @@
-import { type FC, useCallback, useEffect, useRef, useState } from "react";
+import { type FC, useCallback, useRef, useState } from "react";
 import { Camera, ScanLine } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -13,39 +13,31 @@ const ScanPage: FC = () => {
     const navigate = useNavigate();
     const [manual_barcode, set_manual_barcode] = useState("");
     const lookup_mutation = useBarcodeLookup();
-    const stop_scanner_ref = useRef<(() => void) | null>(null);
+    const lookup_mutation_ref = useRef(lookup_mutation);
+    const start_scanner_ref = useRef<(() => Promise<void>) | null>(null);
     const reset_processing_ref = useRef<(() => void) | null>(null);
 
-    const submit_barcode = useCallback(
-        (barcode: string) => {
-            stop_scanner_ref.current?.();
-            lookup_mutation.mutate(barcode, {
-                onSettled: () => {
-                    reset_processing_ref.current?.();
-                },
-            });
-        },
-        [lookup_mutation],
-    );
+    lookup_mutation_ref.current = lookup_mutation;
+
+    const submit_barcode = useCallback((barcode: string) => {
+        lookup_mutation_ref.current.mutate(barcode, {
+            onSettled: () => {
+                reset_processing_ref.current?.();
+                void start_scanner_ref.current?.();
+            },
+        });
+    }, []);
 
     const {
         video_ref,
         status,
         error_message,
         start_scanner,
-        stop_scanner,
         reset_processing,
     } = useBarcodeScanner(submit_barcode);
 
-    stop_scanner_ref.current = stop_scanner;
+    start_scanner_ref.current = start_scanner;
     reset_processing_ref.current = reset_processing;
-
-    useEffect(() => {
-        void start_scanner();
-        return () => {
-            stop_scanner();
-        };
-    }, [start_scanner, stop_scanner]);
 
     const handle_manual_submit = (event: React.FormEvent) => {
         event.preventDefault();

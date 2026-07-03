@@ -3,9 +3,12 @@ import { ApiRoutes } from "@/config/api/routes";
 import type { PaginatedResponse } from "@/features/ingredients/interfaces/ingredients.interfaces";
 import type { ProductListItem } from "@/features/products/interfaces/products.interfaces";
 import type {
+    AdminProductListItem,
+    AdminProductQuery,
     AnalysisVersion,
     FeatureProductDto,
     MergeEntitiesDto,
+    UpdateProductDto,
     VerifyProductDto,
 } from "../interfaces/admin.interfaces";
 
@@ -28,6 +31,42 @@ export const get_pending_products = async (query?: {
         return response.data;
     } catch (error) {
         throw new Error(get_error_message(error, "Failed to load pending products."));
+    }
+};
+
+export const get_all_products = async (
+    query?: AdminProductQuery,
+): Promise<PaginatedResponse<AdminProductListItem>> => {
+    try {
+        const response = await axiosInstance.get(ApiRoutes.admin.products.prefix, {
+            params: query,
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(get_error_message(error, "Failed to load products."));
+    }
+};
+
+export const update_product = async (
+    product_uuid: string,
+    dto: UpdateProductDto,
+): Promise<AdminProductListItem> => {
+    try {
+        const response = await axiosInstance.patch(
+            ApiRoutes.admin.products.by_uuid(product_uuid),
+            dto,
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error(get_error_message(error, "Failed to update product."));
+    }
+};
+
+export const delete_product = async (product_uuid: string): Promise<void> => {
+    try {
+        await axiosInstance.delete(ApiRoutes.admin.products.by_uuid(product_uuid));
+    } catch (error) {
+        throw new Error(get_error_message(error, "Failed to delete product."));
     }
 };
 

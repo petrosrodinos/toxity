@@ -22,6 +22,10 @@ export const ApiRoutes = {
             `/products/barcode/${encodeURIComponent(barcode)}`,
         by_uuid: (product_uuid: string) => `/products/${product_uuid}`,
     },
+    categories: {
+        prefix: "/categories",
+        products: (category_uuid: string) => `/categories/${category_uuid}/products`,
+    },
     scans: {
         prefix: "/scans",
         recent: "/scans/recent",
@@ -58,12 +62,14 @@ export const ApiRoutes = {
     },
     admin: {
         products: {
+            prefix: "/admin/products",
             pending: "/admin/products/pending",
             merge: "/admin/products/merge",
             verify: (product_uuid: string) => `/admin/products/${product_uuid}/verify`,
             feature: (product_uuid: string) => `/admin/products/${product_uuid}/feature`,
             reanalyze: (product_uuid: string) => `/admin/products/${product_uuid}/reanalyze`,
             versions: (product_uuid: string) => `/admin/products/${product_uuid}/versions`,
+            by_uuid: (product_uuid: string) => `/admin/products/${product_uuid}`,
         },
         ingredients: {
             merge: "/admin/ingredients/merge",
@@ -74,6 +80,15 @@ export const ApiRoutes = {
         },
         brands: {
             merge: "/admin/brands/merge",
+        },
+        categories: {
+            prefix: "/admin/categories",
+            by_uuid: (category_uuid: string) => `/admin/categories/${category_uuid}`,
+        },
+        subcategories: {
+            prefix: "/admin/subcategories",
+            by_uuid: (subcategory_uuid: string) =>
+                `/admin/subcategories/${subcategory_uuid}`,
         },
     },
 }
