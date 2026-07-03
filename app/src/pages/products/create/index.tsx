@@ -1,11 +1,12 @@
 import type { FC } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Routes } from "@/routes/routes";
 import { useCreationWizard } from "./hooks/use-creation-wizard";
 import LabelCaptureStep from "./components/label-capture-step";
 import AnalysisProgressStep from "./components/analysis-progress-step";
 import CreationErrorState from "./components/creation-error-state";
+import ProductCreateInitializingSkeleton from "./components/product-create-initializing-skeleton";
 
 const ProductCreatePage: FC = () => {
     const [search_params] = useSearchParams();
@@ -49,12 +50,7 @@ const ProductCreatePage: FC = () => {
                 )}
             </div>
 
-            {step === "initializing" ? (
-                <div className="flex flex-col items-center gap-3 py-16 text-muted">
-                    <Loader2 className="h-8 w-8 animate-spin text-accent" />
-                    <p className="text-sm">Preparing product creation…</p>
-                </div>
-            ) : null}
+            {step === "initializing" ? <ProductCreateInitializingSkeleton /> : null}
 
             {step === "ingredient_label" ? (
                 <LabelCaptureStep

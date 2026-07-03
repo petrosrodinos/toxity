@@ -47,7 +47,7 @@ export const ProductHero: FC<ProductHeroProps> = ({ product }) => {
                 ) : null}
             </div>
 
-            <Card variant="tag" className="p-4">
+            <Card className="p-4">
                 <ProductScoreBadge
                     indicator={color_indicator}
                     overall_score={product.overall_score}

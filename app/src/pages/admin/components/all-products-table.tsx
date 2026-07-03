@@ -7,6 +7,7 @@ import { SafetyBadge } from "@/components/ui/safety-badge";
 import { Routes } from "@/routes/routes";
 import { RowActionsMenu } from "./row-actions-menu";
 import { EditProductModal } from "./edit-product-modal";
+import { AllProductsTableSkeleton } from "./all-products-table-skeleton";
 import {
     useDeleteProduct,
     useGetAllProducts,
@@ -120,9 +121,7 @@ export const AllProductsTable: FC = () => {
             />
 
             {isLoading ? (
-                <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted">
-                    Loading products…
-                </p>
+                <AllProductsTableSkeleton />
             ) : isError ? (
                 <p className="rounded-lg border border-dashed border-danger/40 p-6 text-center text-sm text-danger">
                     Could not load products. Please try again.

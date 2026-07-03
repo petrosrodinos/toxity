@@ -41,7 +41,7 @@ export class ProductAnalysisResolverService {
         ocr_result: OcrResult,
         barcode: string | null,
     ): Promise<ProductAnalysisResult> {
-        const [categories, brands, ingredients] = await Promise.all([
+        const [categories, brands, reference_ingredients] = await Promise.all([
             this.prisma.category.findMany({
                 orderBy: { sort_order: 'asc' },
                 include: { subcategories: { orderBy: { sort_order: 'asc' } } },
@@ -69,7 +69,7 @@ export class ProductAnalysisResolverService {
                 uuid: brand.uuid,
                 name: brand.name,
             })),
-            ingredients,
+            ingredients: reference_ingredients,
         });
 
         const { response } = await this.aiService.generateTextWithSchema({

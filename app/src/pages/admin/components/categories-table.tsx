@@ -16,6 +16,7 @@ import type {
 import { RowActionsMenu } from "./row-actions-menu";
 import { EditCategoryModal } from "./edit-category-modal";
 import { EditSubcategoryModal } from "./edit-subcategory-modal";
+import { CategoriesTableSkeleton } from "./categories-table-skeleton";
 
 const to_sort_order = (value: string): number => {
     const parsed = parseInt(value, 10);
@@ -265,9 +266,7 @@ export const CategoriesTable: FC = () => {
             )}
 
             {isLoading ? (
-                <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted">
-                    Loading categories…
-                </p>
+                <CategoriesTableSkeleton />
             ) : isError ? (
                 <p className="rounded-lg border border-dashed border-danger/40 p-6 text-center text-sm text-danger">
                     Could not load categories. Please try again.

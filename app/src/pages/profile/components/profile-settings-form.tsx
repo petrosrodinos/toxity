@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { ActionButtonWithPending } from "@/components/ui/action-button-with-pending";
 import { useGetMe, useUpdateProfile } from "@/features/user/hooks/use-user";
 import { useThemeContext } from "@/components/providers/theme-provider";
+import { ProfileSettingsFormSkeleton } from "./profile-settings-form-skeleton";
 import { cn } from "@/lib/utils";
 
 const profileSchema = z.object({
@@ -44,7 +45,7 @@ export function ProfileSettingsForm() {
     }
 
     if (isLoading) {
-        return <p className="text-sm text-muted">Loading profile…</p>;
+        return <ProfileSettingsFormSkeleton />;
     }
 
     if (isError) {
