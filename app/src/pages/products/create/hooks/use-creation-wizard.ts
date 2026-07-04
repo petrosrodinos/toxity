@@ -3,29 +3,36 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { Routes } from "@/routes/routes";
 import { toast } from "@/hooks/use-toast";
+import { normalize_barcode } from "@/lib/barcode";
 import { get_product_by_barcode } from "@/features/products/services/products.services";
 import { create_product_creation_job } from "@/features/product-creation/services/product-creation.services";
 import {
     useAnalyzeProductCreationJob,
+    useIdentifyProductFromFrontLabel,
     useProductCreationJob,
     useStartProductAnalysis,
     useUploadFrontLabel,
     useUploadIngredientLabel,
 } from "@/features/product-creation/hooks/use-product-creation";
 import { ProductCreationJobStatuses } from "@/features/product-creation/interfaces/product-creation.interfaces";
+import { create_scan } from "@/features/scans/services/scans.services";
+import { ScanMethods } from "@/features/scans/interfaces/scans.interfaces";
 import { compress_image_file } from "../utils/compress-image.utils";
 
 export type CreationWizardStep =
     | "initializing"
-    | "ingredient_label"
     | "front_label"
+    | "identifying"
+    | "ingredient_label"
     | "processing"
     | "failed";
 
 export type ProcessingPhase = "ocr" | "starting" | "analyzing";
 
 export const useCreationWizard = (barcode: string | null) => {
-    const normalized_barcode = barcode?.trim() || null;
+    const normalized_barcode = barcode?.trim()
+        ? normalize_barcode(barcode.trim()) || null
+        : null;
     const navigate = useNavigate();
     const query_client = useQueryClient();
 
@@ -35,14 +42,31 @@ export const useCreationWizard = (barcode: string | null) => {
     const [job_uuid, set_job_uuid] = useState<string | null>(null);
     const [error_message, set_error_message] = useState<string | null>(null);
 
-    const upload_ingredient_label_mutation = useUploadIngredientLabel();
     const upload_front_label_mutation = useUploadFrontLabel();
+    const identify_front_label_mutation = useIdentifyProductFromFrontLabel();
+    const upload_ingredient_label_mutation = useUploadIngredientLabel();
     const analyze_mutation = useAnalyzeProductCreationJob();
     const start_analysis_mutation = useStartProductAnalysis();
 
     const job_query = useProductCreationJob(job_uuid, {
         poll: step === "processing" && processing_phase === "analyzing",
     });
+
+    const navigate_to_existing_product = useCallback(
+        async (product_uuid: string) => {
+            try {
+                await create_scan({
+                    product_uuid,
+                    scan_method: ScanMethods.OCR,
+                });
+            } catch {
+            }
+
+            query_client.invalidateQueries({ queryKey: ["scans"] });
+            navigate(Routes.products.detail(product_uuid), { replace: true });
+        },
+        [navigate, query_client],
+    );
 
     const init_job = useCallback(
         async (is_cancelled: () => boolean) => {
@@ -56,9 +80,7 @@ export const useCreationWizard = (barcode: string | null) => {
                         await get_product_by_barcode(normalized_barcode);
 
                     if (existing_product) {
-                        navigate(Routes.products.detail(existing_product.uuid), {
-                            replace: true,
-                        });
+                        await navigate_to_existing_product(existing_product.uuid);
                         return;
                     }
 
@@ -72,7 +94,7 @@ export const useCreationWizard = (barcode: string | null) => {
                 if (is_cancelled()) return;
 
                 set_job_uuid(job.uuid);
-                set_step("ingredient_label");
+                set_step("front_label");
             } catch (error) {
                 if (is_cancelled()) return;
 
@@ -82,14 +104,12 @@ export const useCreationWizard = (barcode: string | null) => {
                             await get_product_by_barcode(normalized_barcode);
 
                         if (existing_product) {
-                            navigate(
-                                Routes.products.detail(existing_product.uuid),
-                                { replace: true },
+                            await navigate_to_existing_product(
+                                existing_product.uuid,
                             );
                             return;
                         }
                     } catch {
-                        // fall through to the error state below
                     }
                 }
 
@@ -107,7 +127,7 @@ export const useCreationWizard = (barcode: string | null) => {
                 });
             }
         },
-        [normalized_barcode, navigate],
+        [normalized_barcode, navigate_to_existing_product],
     );
 
     useEffect(() => {
@@ -157,19 +177,6 @@ export const useCreationWizard = (barcode: string | null) => {
         run_analysis(job_uuid);
     }, [job_uuid, run_analysis, start_new_job]);
 
-    const handle_ingredient_label = useCallback(
-        async (file: File) => {
-            if (!job_uuid) return;
-            const compressed = await compress_image_file(file);
-
-            upload_ingredient_label_mutation.mutate(
-                { job_uuid, file: compressed },
-                { onSuccess: () => set_step("front_label") },
-            );
-        },
-        [job_uuid, upload_ingredient_label_mutation],
-    );
-
     const handle_front_label = useCallback(
         async (file: File) => {
             if (!job_uuid) return;
@@ -178,11 +185,48 @@ export const useCreationWizard = (barcode: string | null) => {
             upload_front_label_mutation.mutate(
                 { job_uuid, file: compressed },
                 {
-                    onSuccess: () => run_analysis(job_uuid),
+                    onSuccess: () => {
+                        set_step("identifying");
+
+                        identify_front_label_mutation.mutate(job_uuid, {
+                            onSuccess: async (result) => {
+                                if (result.matched_product_uuid) {
+                                    await navigate_to_existing_product(
+                                        result.matched_product_uuid,
+                                    );
+                                    return;
+                                }
+
+                                set_step("ingredient_label");
+                            },
+                            onError: (error: Error) => {
+                                set_error_message(error.message);
+                                set_step("failed");
+                            },
+                        });
+                    },
                 },
             );
         },
-        [job_uuid, upload_front_label_mutation, run_analysis],
+        [
+            job_uuid,
+            upload_front_label_mutation,
+            identify_front_label_mutation,
+            navigate_to_existing_product,
+        ],
+    );
+
+    const handle_ingredient_label = useCallback(
+        async (file: File) => {
+            if (!job_uuid) return;
+            const compressed = await compress_image_file(file);
+
+            upload_ingredient_label_mutation.mutate(
+                { job_uuid, file: compressed },
+                { onSuccess: () => run_analysis(job_uuid) },
+            );
+        },
+        [job_uuid, upload_ingredient_label_mutation, run_analysis],
     );
 
     useEffect(() => {
@@ -211,10 +255,11 @@ export const useCreationWizard = (barcode: string | null) => {
         processing_phase,
         error_message,
         ingredient_count: job_query.data?.ocr_result?.ingredients.length ?? null,
-        is_uploading_ingredient_label: upload_ingredient_label_mutation.isPending,
         is_uploading_front_label: upload_front_label_mutation.isPending,
-        handle_ingredient_label,
+        is_identifying_front_label: identify_front_label_mutation.isPending,
+        is_uploading_ingredient_label: upload_ingredient_label_mutation.isPending,
         handle_front_label,
+        handle_ingredient_label,
         start_over: start_new_job,
         retry_analysis,
     };

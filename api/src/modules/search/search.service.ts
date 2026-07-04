@@ -4,6 +4,7 @@ import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { ProductsService } from '@/modules/products/products.service';
 import { IngredientsService } from '@/modules/ingredients/ingredients.service';
 import { BrandsService } from '@/modules/brands/brands.service';
+import { get_barcode_lookup_variants } from '@/shared/utils/barcode.utils';
 import { SearchQueryType } from './dto/search-query.schema';
 import {
     SearchProductsEntity,
@@ -64,8 +65,17 @@ export class SearchService {
     private async searchByBarcode(
         barcode: string,
     ): Promise<SearchProductsEntity | null> {
+        const variants = get_barcode_lookup_variants(barcode);
+
+        if (variants.length === 0) {
+            return null;
+        }
+
         const product = await this.prisma.product.findFirst({
-            where: { barcode, verification_status: 'APPROVED' },
+            where: {
+                barcode: { in: variants },
+                verification_status: 'APPROVED',
+            },
             include: product_list_include,
         });
 

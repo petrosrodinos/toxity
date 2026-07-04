@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "@/routes/routes";
 import { toast } from "@/hooks/use-toast";
+import { normalize_barcode } from "@/lib/barcode";
 import { get_product_by_barcode } from "@/features/products/services/products.services";
 import { create_scan } from "@/features/scans/services/scans.services";
 import { ScanMethods } from "@/features/scans/interfaces/scans.interfaces";
@@ -12,7 +13,7 @@ export const useBarcodeLookup = () => {
 
     return useMutation({
         mutationFn: async (barcode: string) => {
-            const trimmed_barcode = barcode.trim();
+            const trimmed_barcode = normalize_barcode(barcode.trim());
             if (!trimmed_barcode) {
                 throw new Error("Enter a valid barcode.");
             }

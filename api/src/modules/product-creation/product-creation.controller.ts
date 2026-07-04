@@ -26,6 +26,7 @@ import { JwtGuard } from '@/shared/guards/jwt.guard';
 import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { CreateProductCreationJobDto } from './dto/create-product-creation-job.dto';
 import { ProductCreationJobEntity } from './entities/product-creation-job.entity';
+import { ProductCreationIdentifyEntity } from './entities/product-creation-identify.entity';
 
 const image_upload_interceptor = FileInterceptor('image', {
     storage: memoryStorage(),
@@ -114,6 +115,24 @@ export class ProductCreationController {
             user_uuid,
             job_uuid,
             file,
+        );
+    }
+
+    @Post('jobs/:uuid/identify')
+    @ApiOperation({
+        summary: 'Identify product from front label',
+        description:
+            'Runs OCR on the uploaded front label and checks whether a matching product already exists.',
+    })
+    @ApiParam({ name: 'uuid', description: 'Product creation job UUID' })
+    @ApiResponse({ status: 200, type: ProductCreationIdentifyEntity })
+    identify_from_front_label(
+        @CurrentUser('uuid') user_uuid: string,
+        @Param('uuid') job_uuid: string,
+    ) {
+        return this.product_creation_service.identify_from_front_label(
+            user_uuid,
+            job_uuid,
         );
     }
 

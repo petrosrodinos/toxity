@@ -1,7 +1,8 @@
 import type { FC } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Routes } from "@/routes/routes";
+import { Card } from "@/components/ui/card";
 import { useCreationWizard } from "./hooks/use-creation-wizard";
 import LabelCaptureStep from "./components/label-capture-step";
 import AnalysisProgressStep from "./components/analysis-progress-step";
@@ -17,10 +18,10 @@ const ProductCreatePage: FC = () => {
         processing_phase,
         error_message,
         ingredient_count,
-        is_uploading_ingredient_label,
         is_uploading_front_label,
-        handle_ingredient_label,
+        is_uploading_ingredient_label,
         handle_front_label,
+        handle_ingredient_label,
         start_over,
         retry_analysis,
     } = useCreationWizard(barcode);
@@ -40,7 +41,7 @@ const ProductCreatePage: FC = () => {
                         Looking up barcode{" "}
                         <span className="font-mono">{barcode}</span>…
                     </p>
-                ) : barcode ? (
+                ) : barcode && step !== "processing" && step !== "failed" ? (
                     <p className="text-sm text-muted">
                         Barcode <span className="font-mono">{barcode}</span> was not
                         recognized. Let's add it.
@@ -52,11 +53,40 @@ const ProductCreatePage: FC = () => {
 
             {step === "initializing" ? <ProductCreateInitializingSkeleton /> : null}
 
-            {step === "ingredient_label" ? (
+            {step === "front_label" ? (
                 <LabelCaptureStep
                     step_label="Step 1 of 3"
+                    title="Photograph the product label"
+                    description="Capture the front of the package showing the product name and brand. We'll check if this product is already in our database."
+                    tips={[
+                        "Center the product name and brand logo",
+                        "Include the package size if visible",
+                        "Make sure all text is in focus and well lit",
+                    ]}
+                    is_uploading={is_uploading_front_label}
+                    on_capture={handle_front_label}
+                />
+            ) : null}
+
+            {step === "identifying" ? (
+                <Card className="flex flex-col items-center gap-4 p-8 text-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-accent" />
+                    <div>
+                        <p className="text-sm font-medium text-foreground">
+                            Checking if we already know this product…
+                        </p>
+                        <p className="mt-1 text-sm text-muted">
+                            Reading the label photo you just captured.
+                        </p>
+                    </div>
+                </Card>
+            ) : null}
+
+            {step === "ingredient_label" ? (
+                <LabelCaptureStep
+                    step_label="Step 2 of 3"
                     title="Photograph the ingredient list"
-                    description="Find the full ingredient list on the packaging (usually on the back or bottom)."
+                    description="This product isn't in our database yet. Capture the full ingredient list on the packaging."
                     tips={[
                         "Make sure all text is in focus and well lit",
                         "Flatten the label if it's curved on a bottle",
@@ -64,20 +94,6 @@ const ProductCreatePage: FC = () => {
                     ]}
                     is_uploading={is_uploading_ingredient_label}
                     on_capture={handle_ingredient_label}
-                />
-            ) : null}
-
-            {step === "front_label" ? (
-                <LabelCaptureStep
-                    step_label="Step 2 of 3"
-                    title="Photograph the front label"
-                    description="Capture the front of the package showing the product name and brand."
-                    tips={[
-                        "Center the product name and brand logo",
-                        "Include the package size if visible",
-                    ]}
-                    is_uploading={is_uploading_front_label}
-                    on_capture={handle_front_label}
                 />
             ) : null}
 

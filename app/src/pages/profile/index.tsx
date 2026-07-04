@@ -3,6 +3,7 @@ import { LogOut } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ProfileSettingsForm } from "./components/profile-settings-form";
+import { InstallAppCard } from "./components/install-app-card";
 import { FavoritesTabs } from "./components/favorites-tabs";
 import { useAuthStore } from "@/stores/auth";
 
@@ -19,6 +20,8 @@ const ProfilePage: FC = () => {
             <Card className="p-6">
                 <ProfileSettingsForm />
             </Card>
+
+            <InstallAppCard />
 
             <Card className="p-6">
                 <p className="text-sm font-medium text-foreground">Favorites</p>

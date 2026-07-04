@@ -3,6 +3,7 @@ import axiosInstance from "@/config/api/axios";
 import { ApiRoutes } from "@/config/api/routes";
 import type {
     CreateProductCreationJobDto,
+    ProductCreationIdentifyResult,
     ProductCreationJob,
 } from "../interfaces/product-creation.interfaces";
 
@@ -114,6 +115,24 @@ export const start_product_analysis = async (
     } catch (error: unknown) {
         throw new Error(
             get_error_message(error, "Failed to start AI analysis."),
+        );
+    }
+};
+
+export const identify_product_from_front_label = async (
+    job_uuid: string,
+): Promise<ProductCreationIdentifyResult> => {
+    try {
+        const response = await axiosInstance.post(
+            ApiRoutes.product_creation.identify(job_uuid),
+        );
+        return response.data;
+    } catch (error: unknown) {
+        throw new Error(
+            get_error_message(
+                error,
+                "Could not read the label photo. Please retake a clearer picture.",
+            ),
         );
     }
 };

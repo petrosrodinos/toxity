@@ -152,13 +152,13 @@ export class ProductAnalysisRunner {
             })),
         });
 
-        const images: { url: string; type: 'FRONT_LABEL' | 'INGREDIENT_LABEL' }[] =
+        const images: { url: string; type: 'HERO' | 'INGREDIENT_LABEL' }[] =
             [];
 
         if (input.front_label_image_url) {
             images.push({
                 url: input.front_label_image_url,
-                type: 'FRONT_LABEL',
+                type: 'HERO',
             });
         }
 

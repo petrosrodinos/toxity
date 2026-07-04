@@ -1,6 +1,7 @@
 import axios from "axios";
 import axiosInstance from "@/config/api/axios";
 import { ApiRoutes } from "@/config/api/routes";
+import { get_barcode_lookup_candidates } from "@/lib/barcode";
 import type {
     PaginatedResponse,
     ProductDetail,
@@ -26,23 +27,32 @@ const get_error_message = (error: unknown, fallback: string) => {
 export const get_product_by_barcode = async (
     barcode: string,
 ): Promise<ProductDetail | null> => {
-    const normalized_barcode = barcode.trim();
+    const candidates = get_barcode_lookup_candidates(barcode);
 
-    if (!normalized_barcode) {
+    if (candidates.length === 0) {
         return null;
     }
 
-    try {
-        const response = await axiosInstance.get(
-            ApiRoutes.products.by_barcode(normalized_barcode),
-        );
-        // The API returns 200 with an empty/null body when no product matches.
-        return response.data || null;
-    } catch (error: unknown) {
-        throw new Error(
-            get_error_message(error, "Failed to look up product. Please try again."),
-        );
+    for (const candidate of candidates) {
+        try {
+            const response = await axiosInstance.get(
+                ApiRoutes.products.by_barcode(candidate),
+            );
+
+            if (response.data) {
+                return response.data;
+            }
+        } catch (error: unknown) {
+            throw new Error(
+                get_error_message(
+                    error,
+                    "Failed to look up product. Please try again.",
+                ),
+            );
+        }
     }
+
+    return null;
 };
 
 export const get_product = async (product_uuid: string): Promise<ProductDetail> => {

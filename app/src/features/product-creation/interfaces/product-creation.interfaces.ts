@@ -29,6 +29,15 @@ export type ProductCreationJob = {
     updated_at: string;
 };
 
+export type ProductCreationIdentifyResult = {
+    matched_product_uuid: string | null;
+    ocr_result: {
+        name: string | null;
+        brand: string | null;
+        claims: string[];
+    };
+};
+
 export type CreateProductCreationJobDto = {
     barcode?: string;
 };

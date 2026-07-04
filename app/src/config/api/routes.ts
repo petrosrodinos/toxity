@@ -56,6 +56,8 @@ export const ApiRoutes = {
             `/product-creation/jobs/${job_uuid}/analyze`,
         start_analysis: (job_uuid: string) =>
             `/product-creation/jobs/${job_uuid}/start-analysis`,
+        identify: (job_uuid: string) =>
+            `/product-creation/jobs/${job_uuid}/identify`,
     },
     google_maps: {
         timezone: "/google-maps/timezone",

@@ -4,6 +4,7 @@ import {
     analyze_product_creation_job,
     create_product_creation_job,
     get_product_creation_job,
+    identify_product_from_front_label,
     start_product_analysis,
     upload_front_label,
     upload_ingredient_label,
@@ -74,6 +75,20 @@ export const useStartProductAnalysis = () => {
         onError: (error: Error) => {
             toast({
                 title: "Could not start AI analysis",
+                description: error.message,
+                variant: "error",
+            });
+        },
+    });
+};
+
+export const useIdentifyProductFromFrontLabel = () => {
+    return useMutation({
+        mutationFn: (job_uuid: string) =>
+            identify_product_from_front_label(job_uuid),
+        onError: (error: Error) => {
+            toast({
+                title: "Could not read label",
                 description: error.message,
                 variant: "error",
             });

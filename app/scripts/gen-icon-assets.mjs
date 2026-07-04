@@ -67,5 +67,6 @@ await writeSplash(2732, DARK, "splash-dark.png");
 await writeLogo(128, path.join(srcAssetsDir, "logo.png"));
 await writeLogo(192, path.join(publicDir, "apple-touch-icon.png"));
 await writeLogo(192, path.join(publicDir, "favicon-192.png"));
+await writeLogo(512, path.join(publicDir, "pwa-512.png"));
 await writeLogo(32, path.join(publicDir, "favicon-32.png"));
 await writeLogo(32, path.join(publicDir, "favicon.png"));

@@ -12,7 +12,6 @@ const scan_product_include = {
     brand: true,
     images: {
         orderBy: { sort_order: 'asc' as const },
-        take: 1,
     },
 } as const;
 
@@ -27,7 +26,6 @@ export class ScansService {
         const product = await this.prisma.product.findFirst({
             where: {
                 uuid: dto.product_uuid,
-                verification_status: 'APPROVED',
             },
         });
 
@@ -137,7 +135,9 @@ export class ScansService {
             uuid: scan.uuid,
             scanned_at: scan.scanned_at,
             scan_method: scan.scan_method,
-            product: this.products_service.to_list_item(scan.product),
+            product: this.products_service.to_list_item(
+                scan.product as Parameters<ProductsService['to_list_item']>[0],
+            ),
         };
     }
 }
