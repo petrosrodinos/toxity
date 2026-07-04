@@ -24,6 +24,7 @@ export type ProductCreationJob = {
     front_label_image_url: string | null;
     ocr_result: OcrResult | null;
     product_uuid: string | null;
+    matched_product_uuid?: string | null;
     error_message: string | null;
     created_at: string;
     updated_at: string;

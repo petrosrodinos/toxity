@@ -1,5 +1,20 @@
 const INGREDIENT_HEADER_PATTERN =
-    /^(ingredients?|composition|inci|contains)\s*[:\-]?\s*/i;
+    /^(ingredients?|composition|inci|contains|συστατικ[άα]|συνθεση)\s*[:\-]?\s*/i;
+
+const NON_INGREDIENT_LINE_PATTERN =
+    /^(may contain|allergen|warning|caution|οδηγίες|οδηγιες|χρήσεως|χρησεως|usage|directions|store in|keep out|best before|expiry|batch|lot\b)/i;
+
+const NON_INGREDIENT_CONTENT_PATTERN =
+    /\b(take \d|capsules?|tablets?|ημερησίως|ημερησιως|προτεινόμενη|προτεινομενη|do not exceed|per day|daily dose|λήψη|ληψη|σύμφωνα με|συμφωνα με|ιχθυελαίου|ιχθυελαιου)\b/i;
+
+const DATE_OR_BATCH_LINE_PATTERN =
+    /^\d{1,2}[\/\-\.]\d{2,4}$|^\d{2}[\/\-\.]\d{2}[\/\-\.]\d{2,4}$|^[A-Z]{0,3}\s*\d{3,}$/i;
+
+export {
+    NON_INGREDIENT_LINE_PATTERN,
+    NON_INGREDIENT_CONTENT_PATTERN,
+    DATE_OR_BATCH_LINE_PATTERN,
+};
 
 const CLAIM_KEYWORDS = [
     'vegan',
@@ -73,15 +88,26 @@ function clean_ingredient_token(token: string): string | null {
         .replace(/\s+/g, ' ')
         .trim();
 
-    // Strip trailing period from OCR artifacts
     cleaned = cleaned.replace(/\.$/, '').trim();
 
-    if (!cleaned || cleaned.length < 2) {
+    if (!cleaned || cleaned.length < 2 || cleaned.length > 120) {
         return null;
     }
 
-    // Skip obvious non-ingredient lines
-    if (/^(may contain|allergen|warning|caution)/i.test(cleaned)) {
+    if (NON_INGREDIENT_LINE_PATTERN.test(cleaned)) {
+        return null;
+    }
+
+    if (NON_INGREDIENT_CONTENT_PATTERN.test(cleaned)) {
+        return null;
+    }
+
+    if (DATE_OR_BATCH_LINE_PATTERN.test(cleaned)) {
+        return null;
+    }
+
+    const word_count = cleaned.split(/\s+/).length;
+    if (word_count > 8) {
         return null;
     }
 
@@ -140,18 +166,37 @@ export function parse_front_label_text(raw_text: string): {
         return { name: null, brand: null };
     }
 
-    const brand = lines[0] ?? null;
+    const usable_lines = lines.filter(
+        (line) =>
+            !DATE_OR_BATCH_LINE_PATTERN.test(line) &&
+            !NON_INGREDIENT_LINE_PATTERN.test(line) &&
+            !NON_INGREDIENT_CONTENT_PATTERN.test(line),
+    );
 
-    const name_line = lines.find(
-        (line, index) =>
-            index > 0 &&
+    if (usable_lines.length === 0) {
+        return { name: null, brand: null };
+    }
+
+    const brand =
+        usable_lines.find(
+            (line) =>
+                line.length >= 2 &&
+                line.length <= 40 &&
+                !/^\d/.test(line) &&
+                !/fish oil|omega|vitamin|cream|lotion|serum/i.test(line),
+        ) ?? usable_lines[0] ?? null;
+
+    const name_line = usable_lines.find(
+        (line) =>
+            line !== brand &&
             line.length > 3 &&
+            line.length <= 80 &&
             !/^(net|wt|volume|ml|oz|g|kg|fl)/i.test(line) &&
             !/^\d/.test(line),
     );
 
     return {
         brand,
-        name: name_line ?? (lines.length > 1 ? lines[1] : null),
+        name: name_line ?? null,
     };
 }

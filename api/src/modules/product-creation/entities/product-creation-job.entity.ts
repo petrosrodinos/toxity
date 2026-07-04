@@ -41,6 +41,13 @@ export class ProductCreationJobEntity {
     @ApiPropertyOptional({ nullable: true })
     error_message: string | null;
 
+    @ApiPropertyOptional({
+        nullable: true,
+        description:
+            'Set when front-label upload runs product identification against the catalog.',
+    })
+    matched_product_uuid?: string | null;
+
     @ApiProperty()
     created_at: Date;
 

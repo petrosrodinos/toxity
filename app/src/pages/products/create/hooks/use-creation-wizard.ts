@@ -177,6 +177,37 @@ export const useCreationWizard = (barcode: string | null) => {
         run_analysis(job_uuid);
     }, [job_uuid, run_analysis, start_new_job]);
 
+    const resolve_front_label_match = useCallback(
+        async (
+            matched_product_uuid: string | null | undefined,
+            job_barcode: string | null,
+        ) => {
+            if (matched_product_uuid) {
+                await navigate_to_existing_product(matched_product_uuid);
+                return;
+            }
+
+            const barcode_to_try = normalized_barcode ?? job_barcode;
+            if (barcode_to_try) {
+                try {
+                    const existing_product =
+                        await get_product_by_barcode(barcode_to_try);
+
+                    if (existing_product) {
+                        await navigate_to_existing_product(
+                            existing_product.uuid,
+                        );
+                        return;
+                    }
+                } catch {
+                }
+            }
+
+            set_step("ingredient_label");
+        },
+        [normalized_barcode, navigate_to_existing_product],
+    );
+
     const handle_front_label = useCallback(
         async (file: File) => {
             if (!job_uuid) return;
@@ -185,23 +216,37 @@ export const useCreationWizard = (barcode: string | null) => {
             upload_front_label_mutation.mutate(
                 { job_uuid, file: compressed },
                 {
-                    onSuccess: () => {
+                    onSuccess: async (job) => {
+                        if (
+                            job.matched_product_uuid !== undefined &&
+                            job.matched_product_uuid !== null
+                        ) {
+                            await resolve_front_label_match(
+                                job.matched_product_uuid,
+                                job.barcode,
+                            );
+                            return;
+                        }
+
+                        if (job.matched_product_uuid === null) {
+                            await resolve_front_label_match(null, job.barcode);
+                            return;
+                        }
+
                         set_step("identifying");
 
                         identify_front_label_mutation.mutate(job_uuid, {
                             onSuccess: async (result) => {
-                                if (result.matched_product_uuid) {
-                                    await navigate_to_existing_product(
-                                        result.matched_product_uuid,
-                                    );
-                                    return;
-                                }
-
-                                set_step("ingredient_label");
+                                await resolve_front_label_match(
+                                    result?.matched_product_uuid ?? null,
+                                    job.barcode,
+                                );
                             },
-                            onError: (error: Error) => {
-                                set_error_message(error.message);
-                                set_step("failed");
+                            onError: async () => {
+                                await resolve_front_label_match(
+                                    null,
+                                    job.barcode,
+                                );
                             },
                         });
                     },
@@ -212,7 +257,7 @@ export const useCreationWizard = (barcode: string | null) => {
             job_uuid,
             upload_front_label_mutation,
             identify_front_label_mutation,
-            navigate_to_existing_product,
+            resolve_front_label_match,
         ],
     );
 

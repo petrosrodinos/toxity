@@ -121,13 +121,17 @@ export const start_product_analysis = async (
 
 export const identify_product_from_front_label = async (
     job_uuid: string,
-): Promise<ProductCreationIdentifyResult> => {
+): Promise<ProductCreationIdentifyResult | null> => {
     try {
         const response = await axiosInstance.post(
             ApiRoutes.product_creation.identify(job_uuid),
         );
         return response.data;
     } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            return null;
+        }
+
         throw new Error(
             get_error_message(
                 error,

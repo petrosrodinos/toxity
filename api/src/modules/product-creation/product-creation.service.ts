@@ -23,6 +23,8 @@ import {
     extract_claims_from_text,
     parse_front_label_text,
     parse_ingredients_from_text,
+    DATE_OR_BATCH_LINE_PATTERN,
+    NON_INGREDIENT_LINE_PATTERN,
 } from './utils/parse-label-text.utils';
 import { ProductCreationJobStatus, Prisma } from 'generated/prisma';
 
@@ -183,7 +185,16 @@ export class ProductCreationService {
             data: { front_label_image_url: url },
         });
 
-        return this.to_entity(updated);
+        let matched_product_uuid: string | null = null;
+
+        try {
+            const identification =
+                await this.run_front_label_identification(updated);
+            matched_product_uuid = identification.matched_product_uuid;
+        } catch {
+        }
+
+        return this.to_entity(updated, { matched_product_uuid });
     }
 
     async identify_from_front_label(
@@ -199,10 +210,33 @@ export class ProductCreationService {
             );
         }
 
-        if (!this.vision_config.is_configured()) {
-            throw new UnprocessableEntityException(
-                'OCR service is not configured. Please contact support.',
+        return this.run_front_label_identification(job);
+    }
+
+    private async run_front_label_identification(job: {
+        uuid: string;
+        barcode: string | null;
+        front_label_image_url: string | null;
+    }): Promise<ProductCreationIdentifyEntity> {
+        if (!job.front_label_image_url) {
+            throw new BadRequestException(
+                'Front label image must be uploaded before identification',
             );
+        }
+
+        if (!this.vision_config.is_configured()) {
+            return {
+                matched_product_uuid: job.barcode
+                    ? await this.products_service.find_existing_by_identity({
+                          barcode: job.barcode,
+                      })
+                    : null,
+                ocr_result: {
+                    name: null,
+                    brand: null,
+                    claims: [],
+                },
+            };
         }
 
         try {
@@ -217,8 +251,7 @@ export class ProductCreationService {
             const front_parsed = parse_front_label_text(front_ocr.raw_text);
             const claims = extract_claims_from_text(front_ocr.raw_text);
             const detected_barcode =
-                extract_barcode_from_text(front_ocr.raw_text) ??
-                job.barcode;
+                extract_barcode_from_text(front_ocr.raw_text) ?? job.barcode;
 
             const lookup_barcode = detected_barcode
                 ? normalize_barcode_digits(detected_barcode) || null
@@ -239,7 +272,7 @@ export class ProductCreationService {
             };
 
             await this.prisma.productCreationJob.update({
-                where: { uuid: job_uuid },
+                where: { uuid: job.uuid },
                 data: {
                     barcode: lookup_barcode ?? job.barcode,
                     ocr_result: ocr_result as unknown as Prisma.InputJsonValue,
@@ -325,14 +358,24 @@ export class ProductCreationService {
             }
 
             const front_parsed = parse_front_label_text(front_ocr.raw_text);
+            const prior_ocr =
+                (job.ocr_result as unknown as OcrResult | null) ?? null;
             const claims = [
                 ...extract_claims_from_text(ingredient_ocr.raw_text),
                 ...extract_claims_from_text(front_ocr.raw_text),
             ];
 
             const ocr_result: OcrResult = {
-                name: front_parsed.name,
-                brand: front_parsed.brand,
+                name:
+                    this.pick_better_label_value(
+                        front_parsed.name,
+                        prior_ocr?.name ?? null,
+                    ) ?? front_parsed.name,
+                brand:
+                    this.pick_better_label_value(
+                        front_parsed.brand,
+                        prior_ocr?.brand ?? null,
+                    ) ?? front_parsed.brand,
                 ingredients,
                 claims: [...new Set(claims)],
             };
@@ -485,18 +528,46 @@ export class ProductCreationService {
         }
     }
 
-    private to_entity(job: {
-        uuid: string;
-        status: ProductCreationJobStatus;
-        barcode: string | null;
-        ingredient_label_image_url: string | null;
-        front_label_image_url: string | null;
-        ocr_result: unknown;
-        product_uuid: string | null;
-        error_message: string | null;
-        created_at: Date;
-        updated_at: Date;
-    }): ProductCreationJobEntity {
+    private pick_better_label_value(
+        parsed_value: string | null,
+        prior_value: string | null,
+    ): string | null {
+        if (!parsed_value?.trim()) {
+            return prior_value;
+        }
+
+        if (
+            DATE_OR_BATCH_LINE_PATTERN.test(parsed_value.trim()) ||
+            NON_INGREDIENT_LINE_PATTERN.test(parsed_value.trim())
+        ) {
+            return prior_value;
+        }
+
+        if (
+            prior_value?.trim() &&
+            prior_value.trim().length > parsed_value.trim().length
+        ) {
+            return prior_value;
+        }
+
+        return parsed_value;
+    }
+
+    private to_entity(
+        job: {
+            uuid: string;
+            status: ProductCreationJobStatus;
+            barcode: string | null;
+            ingredient_label_image_url: string | null;
+            front_label_image_url: string | null;
+            ocr_result: unknown;
+            product_uuid: string | null;
+            error_message: string | null;
+            created_at: Date;
+            updated_at: Date;
+        },
+        extras?: { matched_product_uuid?: string | null },
+    ): ProductCreationJobEntity {
         return {
             uuid: job.uuid,
             status: job.status,
@@ -506,6 +577,7 @@ export class ProductCreationService {
             ocr_result: (job.ocr_result as OcrResult | null) ?? null,
             product_uuid: job.product_uuid,
             error_message: job.error_message,
+            matched_product_uuid: extras?.matched_product_uuid ?? null,
             created_at: job.created_at,
             updated_at: job.updated_at,
         };
