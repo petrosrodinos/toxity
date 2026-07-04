@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
+import { is_android_native, request_camera_permission } from "@/lib/camera";
 
 type ScannerStatus =
     | "idle"
@@ -54,6 +55,18 @@ export const useBarcodeScanner = (on_detect: (barcode: string) => void) => {
         set_error_message(null);
 
         try {
+            if (is_android_native()) {
+                const granted = await request_camera_permission();
+                if (!granted) {
+                    is_running_ref.current = false;
+                    set_status("permission_denied");
+                    set_error_message(
+                        "Camera access was denied. Enter the barcode manually below.",
+                    );
+                    return;
+                }
+            }
+
             const reader = new BrowserMultiFormatReader();
             reader_ref.current = reader;
 

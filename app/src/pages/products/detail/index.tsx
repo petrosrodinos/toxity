@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import { ArrowLeft } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -51,16 +50,7 @@ const ProductDetailPage: FC = () => {
 
     return (
         <div className="mx-auto max-w-2xl space-y-6 pb-8">
-            <div className="flex items-center gap-3">
-                <Link
-                    to={Routes.scan.root}
-                    aria-label="Back to scan"
-                    className="inline-flex h-10 shrink-0 items-center justify-center rounded-xl px-2 text-foreground transition-colors hover:bg-surface-secondary"
-                >
-                    <ArrowLeft className="h-4 w-4" />
-                </Link>
-                <ProductDetailToolbar product_uuid={product.uuid} />
-            </div>
+            <ProductDetailToolbar product_uuid={product.uuid} />
 
             <ProductHero product={product} />
             <ProductSummary product={product} />

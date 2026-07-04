@@ -45,6 +45,12 @@ const ScanPage: FC = () => {
     };
 
     const is_lookup_pending = lookup_mutation.isPending;
+    const is_camera_active = status === "scanning";
+    const is_camera_starting = status === "idle" || status === "starting";
+    const is_camera_unavailable =
+        status === "permission_denied" ||
+        status === "unsupported" ||
+        status === "error";
 
     return (
         <div className="mx-auto flex max-w-lg flex-col gap-6 pb-8">
@@ -61,31 +67,50 @@ const ScanPage: FC = () => {
             </div>
 
             <Card className="relative overflow-hidden p-0">
-                <div className="relative aspect-[4/3] bg-surface-secondary">
+                <div
+                    className={cn(
+                        "relative aspect-[4/3]",
+                        is_camera_active ? "bg-black" : "bg-background",
+                    )}
+                >
                     <video
                         ref={video_ref}
                         className={cn(
                             "h-full w-full object-cover",
-                            (status === "permission_denied" ||
-                                status === "unsupported" ||
-                                status === "error") &&
-                                "hidden",
+                            !is_camera_active &&
+                                "pointer-events-none absolute inset-0 opacity-0",
                         )}
                         muted
                         playsInline
                     />
-                    {(status === "permission_denied" ||
-                        status === "unsupported" ||
-                        status === "error") && (
-                        <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
+                    {is_camera_starting ? (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+                            <div className="relative flex aspect-[4/3] w-[min(100%,14rem)] items-center justify-center rounded-2xl border-2 border-dashed border-accent/50 bg-surface-secondary/40">
+                                <ScanLine
+                                    className={cn(
+                                        "h-10 w-10 text-accent",
+                                        status === "starting" && "animate-pulse",
+                                    )}
+                                />
+                                <div className="pointer-events-none absolute inset-4 rounded-xl border border-accent/30" />
+                            </div>
+                            <p className="text-sm text-muted">
+                                {status === "starting"
+                                    ? "Opening camera…"
+                                    : "Preparing scanner…"}
+                            </p>
+                        </div>
+                    ) : null}
+                    {is_camera_unavailable ? (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-background px-6 text-center">
                             <Camera className="h-10 w-10 text-muted" />
                             <p className="text-sm text-muted">
                                 {error_message ||
                                     "Camera unavailable. Use manual entry below."}
                             </p>
                         </div>
-                    )}
-                    {status === "scanning" ? (
+                    ) : null}
+                    {is_camera_active ? (
                         <div className="pointer-events-none absolute inset-6 rounded-2xl border-2 border-accent/70" />
                     ) : null}
                     {is_lookup_pending ? (

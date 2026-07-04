@@ -9,9 +9,16 @@ import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { GcsService } from '@/integrations/storage/gcs/services/gcs.service';
 import { OcrService } from '@/integrations/ocr/services/ocr.service';
 import { VisionConfig } from '@/integrations/ocr/config/vision.config';
+import { ProductsService } from '@/modules/products/products.service';
 import { CreateProductCreationJobDto } from './dto/create-product-creation-job.dto';
 import { ProductCreationJobEntity } from './entities/product-creation-job.entity';
+import { ProductCreationIdentifyEntity } from './entities/product-creation-identify.entity';
 import { OcrResult } from '@/integrations/ocr/interfaces/ocr.interfaces';
+import { extract_gcs_path_from_url } from '@/integrations/storage/gcs/utils/gcs-url.utils';
+import {
+    normalize_barcode_digits,
+    extract_barcode_from_text,
+} from '@/shared/utils/barcode.utils';
 import {
     extract_claims_from_text,
     parse_front_label_text,
@@ -37,6 +44,7 @@ export class ProductCreationService {
         private readonly gcs_service: GcsService,
         private readonly ocr_service: OcrService,
         private readonly vision_config: VisionConfig,
+        private readonly products_service: ProductsService,
     ) {}
 
     async create_job(
@@ -44,12 +52,15 @@ export class ProductCreationService {
         dto: CreateProductCreationJobDto,
     ): Promise<ProductCreationJobEntity> {
         const barcode = dto.barcode?.trim() || null;
+        const normalized_barcode = barcode
+            ? normalize_barcode_digits(barcode) || null
+            : null;
 
-        if (barcode) {
-            const existing_product = await this.prisma.product.findFirst({
-                where: { barcode },
-                select: { uuid: true },
-            });
+        if (normalized_barcode) {
+            const existing_product =
+                await this.products_service.find_existing_by_identity({
+                    barcode: normalized_barcode,
+                });
 
             if (existing_product) {
                 throw new ConflictException(
@@ -61,21 +72,20 @@ export class ProductCreationService {
         const job = await this.prisma.productCreationJob.create({
             data: {
                 user_uuid,
-                barcode,
+                barcode: normalized_barcode,
                 status: ProductCreationJobStatus.PENDING,
             },
         });
 
-        if (barcode) {
+        if (normalized_barcode) {
             setImmediate(async () => {
                 try {
                     await this.cleanup_previous_jobs_for_barcode(
                         user_uuid,
-                        barcode,
+                        normalized_barcode,
                         job.uuid,
                     );
                 } catch {
-                    // intentionally swallowed — cleanup must not affect creation
                 }
             });
         }
@@ -125,10 +135,12 @@ export class ProductCreationService {
         await Promise.all(
             urls.map(async (url) => {
                 try {
-                    const path = this.extract_gcs_path_from_url(url);
+                    const path = extract_gcs_path_from_url(url);
+                    if (!path) {
+                        return;
+                    }
                     await this.gcs_service.deleteImage({ filename: path });
                 } catch {
-                    // ignore missing/failed deletes for individual files
                 }
             }),
         );
@@ -172,6 +184,85 @@ export class ProductCreationService {
         });
 
         return this.to_entity(updated);
+    }
+
+    async identify_from_front_label(
+        user_uuid: string,
+        job_uuid: string,
+    ): Promise<ProductCreationIdentifyEntity> {
+        const job = await this.find_owned_job(user_uuid, job_uuid);
+        this.assert_job_pending(job);
+
+        if (!job.front_label_image_url) {
+            throw new BadRequestException(
+                'Front label image must be uploaded before identification',
+            );
+        }
+
+        if (!this.vision_config.is_configured()) {
+            throw new UnprocessableEntityException(
+                'OCR service is not configured. Please contact support.',
+            );
+        }
+
+        try {
+            const front_buffer = await this.download_image_from_url(
+                job.front_label_image_url,
+            );
+
+            const front_ocr = await this.ocr_service.extract_text({
+                image_buffer: front_buffer,
+            });
+
+            const front_parsed = parse_front_label_text(front_ocr.raw_text);
+            const claims = extract_claims_from_text(front_ocr.raw_text);
+            const detected_barcode =
+                extract_barcode_from_text(front_ocr.raw_text) ??
+                job.barcode;
+
+            const lookup_barcode = detected_barcode
+                ? normalize_barcode_digits(detected_barcode) || null
+                : job.barcode;
+
+            const matched_product_uuid =
+                await this.products_service.find_existing_by_identity({
+                    barcode: lookup_barcode,
+                    name: front_parsed.name,
+                    brand: front_parsed.brand,
+                });
+
+            const ocr_result: OcrResult = {
+                name: front_parsed.name,
+                brand: front_parsed.brand,
+                ingredients: [],
+                claims,
+            };
+
+            await this.prisma.productCreationJob.update({
+                where: { uuid: job_uuid },
+                data: {
+                    barcode: lookup_barcode ?? job.barcode,
+                    ocr_result: ocr_result as unknown as Prisma.InputJsonValue,
+                },
+            });
+
+            return {
+                matched_product_uuid,
+                ocr_result: {
+                    name: front_parsed.name,
+                    brand: front_parsed.brand,
+                    claims,
+                },
+            };
+        } catch (error) {
+            if (error instanceof UnprocessableEntityException) {
+                throw error;
+            }
+
+            throw new UnprocessableEntityException(
+                'Could not read text from the label photo. Please retake a clearer picture.',
+            );
+        }
     }
 
     async analyze(
@@ -376,7 +467,11 @@ export class ProductCreationService {
     }
 
     private async download_image_from_url(url: string): Promise<Buffer> {
-        const path = this.extract_gcs_path_from_url(url);
+        const path = extract_gcs_path_from_url(url);
+
+        if (!path) {
+            throw new UnprocessableEntityException('Invalid stored image URL');
+        }
 
         try {
             const download = await this.gcs_service.downloadImage({
@@ -388,24 +483,6 @@ export class ProductCreationService {
                 'Failed to load uploaded label image for OCR processing',
             );
         }
-    }
-
-    private extract_gcs_path_from_url(url: string): string {
-        const marker = '.googleapis.com/';
-        const index = url.indexOf(marker);
-
-        if (index === -1) {
-            throw new UnprocessableEntityException('Invalid stored image URL');
-        }
-
-        const path_with_bucket = url.slice(index + marker.length);
-        const slash_index = path_with_bucket.indexOf('/');
-
-        if (slash_index === -1) {
-            throw new UnprocessableEntityException('Invalid stored image URL');
-        }
-
-        return path_with_bucket.slice(slash_index + 1);
     }
 
     private to_entity(job: {

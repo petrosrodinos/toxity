@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from 'generated/prisma';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
+import { GcsService } from '@/integrations/storage/gcs/services/gcs.service';
 import { ProductsService } from '@/modules/products/products.service';
 import { ProductQueryType } from '@/modules/products/dto/product-query.schema';
 import { MergeEntitiesDto } from '../dto/merge-entities.dto';
@@ -42,6 +43,7 @@ export class AdminModerationService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly productsService: ProductsService,
+        private readonly gcs_service: GcsService,
     ) {}
 
     async getPendingProducts(query: Pick<ProductQueryType, 'page' | 'limit'>) {
@@ -166,8 +168,10 @@ export class AdminModerationService {
     async removeProduct(product_uuid: string): Promise<void> {
         await this.getProductOrThrow(product_uuid);
 
-        // product_ingredients and product_images cascade-delete with the product.
+        const image_urls = await this.get_product_image_urls(product_uuid);
+
         await this.prisma.product.delete({ where: { uuid: product_uuid } });
+        await this.gcs_service.deleteImagesByUrls(image_urls);
     }
 
     async verifyProduct(product_uuid: string, dto: VerifyProductDto) {
@@ -199,6 +203,8 @@ export class AdminModerationService {
         if (!keep || !merge) {
             throw new NotFoundException('Product not found');
         }
+
+        const merge_image_urls = await this.get_product_image_urls(dto.merge_uuid);
 
         await this.prisma.$transaction(async (tx) => {
             const merge_scans = await tx.userProductScan.findMany({
@@ -263,6 +269,8 @@ export class AdminModerationService {
                 data: { scan_count },
             });
         });
+
+        await this.gcs_service.deleteImagesByUrls(merge_image_urls);
 
         return { product_uuid: dto.keep_uuid };
     }
@@ -424,6 +432,15 @@ export class AdminModerationService {
                 'keep_uuid and merge_uuid must be different',
             );
         }
+    }
+
+    private async get_product_image_urls(product_uuid: string): Promise<string[]> {
+        const images = await this.prisma.productImage.findMany({
+            where: { product_uuid },
+            select: { url: true },
+        });
+
+        return images.map((image) => image.url);
     }
 
     private async getProductOrThrow(product_uuid: string) {

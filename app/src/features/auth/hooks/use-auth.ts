@@ -24,7 +24,7 @@ export function useSignin() {
                 description: "You have successfully logged in",
                 duration: 2000,
             });
-            navigate(Routes.home.root);
+            navigate(Routes.history.root);
         },
         onError: (error: any) => {
             toast({
@@ -54,7 +54,7 @@ export function useSignup() {
                 description: "You have successfully registered in",
                 duration: 2000,
             });
-            navigate(Routes.home.root);
+            navigate(Routes.history.root);
         },
         onError: (error) => {
             toast({

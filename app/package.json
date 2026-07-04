@@ -8,13 +8,15 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "cap:assets": "node scripts/gen-icon-assets.mjs && capacitor-assets generate --android --iconBackgroundColor \"#ffffff\" --iconBackgroundColorDark \"#ffffff\" --splashBackgroundColor \"#ffffff\" --splashBackgroundColorDark \"#0b0b0f\"",
+    "cap:assets": "node scripts/gen-icon-assets.mjs && capacitor-assets generate --android --iconBackgroundColor \"#ec9f2c\" --iconBackgroundColorDark \"#ec9f2c\" --splashBackgroundColor \"#ffffff\" --splashBackgroundColorDark \"#0b0b0f\"",
     "cap:sync": "npm run build && cap sync android",
     "cap:open": "cap open android",
     "cap:run": "npm run build && cap run android"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/camera": "^8.2.0",
     "@capacitor/core": "^8.4.1",
     "@googlemaps/js-api-loader": "^2.0.2",
     "@hookform/resolvers": "^5.2.2",

@@ -2,6 +2,11 @@ import { type FC, useRef, useState } from "react";
 import { Camera, ImagePlus, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+    capture_photo_file,
+    is_android_native,
+    request_camera_permission,
+} from "@/lib/camera";
 
 type LabelCaptureStepProps = {
     step_label: string;
@@ -22,13 +27,44 @@ const LabelCaptureStep: FC<LabelCaptureStepProps> = ({
 }) => {
     const input_ref = useRef<HTMLInputElement>(null);
     const [preview_url, set_preview_url] = useState<string | null>(null);
+    const [permission_error, set_permission_error] = useState<string | null>(null);
+
+    const handle_file_selected = (file: File) => {
+        set_permission_error(null);
+        set_preview_url(URL.createObjectURL(file));
+        on_capture(file);
+    };
+
+    const handle_capture_click = async () => {
+        if (is_android_native()) {
+            set_permission_error(null);
+
+            const granted = await request_camera_permission();
+            if (!granted) {
+                set_permission_error(
+                    "Camera access was denied. Enable it in app settings to take photos.",
+                );
+                return;
+            }
+
+            try {
+                const file = await capture_photo_file();
+                handle_file_selected(file);
+            } catch {
+                return;
+            }
+
+            return;
+        }
+
+        input_ref.current?.click();
+    };
 
     const handle_file_change = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
-        set_preview_url(URL.createObjectURL(file));
-        on_capture(file);
+        handle_file_selected(file);
         event.target.value = "";
     };
 
@@ -84,21 +120,27 @@ const LabelCaptureStep: FC<LabelCaptureStepProps> = ({
                 ))}
             </ul>
 
-            <input
-                ref={input_ref}
-                type="file"
-                accept="image/*"
-                capture="environment"
-                className="hidden"
-                onChange={handle_file_change}
-            />
+            {!is_android_native() ? (
+                <input
+                    ref={input_ref}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    onChange={handle_file_change}
+                />
+            ) : null}
+
+            {permission_error ? (
+                <p className="text-sm text-danger">{permission_error}</p>
+            ) : null}
 
             <Button
                 type="button"
                 variant="scan"
                 className="w-full"
                 loading={is_uploading}
-                onClick={() => input_ref.current?.click()}
+                onClick={() => void handle_capture_click()}
             >
                 <ImagePlus className="h-4 w-4" />
                 {preview_url ? "Retake Photo" : "Take Photo"}

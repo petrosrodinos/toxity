@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { GcsAdapter } from '../gcs.adapter';
+import { extract_gcs_path_from_url } from '../utils/gcs-url.utils';
 import {
     UploadImageRequest,
     UploadImageResponse,
@@ -35,6 +36,25 @@ export class GcsService {
             this.logger.error('Delete image error:', error);
             throw new Error(`Failed to delete image: ${error.message}`);
         }
+    }
+
+    public async deleteImageByUrl(url: string): Promise<void> {
+        const path = extract_gcs_path_from_url(url);
+
+        if (!path) {
+            this.logger.warn(`Skipping GCS delete for non-GCS URL: ${url}`);
+            return;
+        }
+
+        try {
+            await this.gcsAdapter.deleteImage({ filename: path });
+        } catch (error) {
+            this.logger.error(`Failed to delete GCS image at ${path}:`, error);
+        }
+    }
+
+    public async deleteImagesByUrls(urls: string[]): Promise<void> {
+        await Promise.all(urls.map((url) => this.deleteImageByUrl(url)));
     }
 
     public async listImages(request?: ListImagesRequest): Promise<ListImagesResponse> {

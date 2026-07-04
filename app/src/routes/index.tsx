@@ -21,7 +21,7 @@ import AdminPage from "@/pages/admin";
 
 function RootRedirect() {
     const { isLoggedIn } = useAuthStore();
-    return <Navigate to={isLoggedIn ? Routes.home.root : Routes.auth.sign_in} replace />;
+    return <Navigate to={isLoggedIn ? Routes.history.root : Routes.auth.sign_in} replace />;
 }
 
 export default function AppRoutes() {

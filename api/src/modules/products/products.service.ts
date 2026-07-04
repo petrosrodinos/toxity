@@ -1,8 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from 'generated/prisma';
+import { Prisma, ProductImageType } from 'generated/prisma';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { IngredientsService } from '@/modules/ingredients/ingredients.service';
 import { FavoritesService } from '@/modules/favorites/favorites.service';
+import {
+    get_barcode_lookup_variants,
+} from '@/shared/utils/barcode.utils';
 import { ProductQueryType } from './dto/product-query.schema';
 import {
     ProductDetailEntity,
@@ -42,6 +45,12 @@ type ProductListRecord = Prisma.ProductGetPayload<{
     };
 }>;
 
+type ProductImageRecord = {
+    url: string;
+    type: ProductImageType;
+    sort_order: number;
+};
+
 @Injectable()
 export class ProductsService {
     constructor(
@@ -62,16 +71,7 @@ export class ProductsService {
         // Barcodes are globally unique — any product with a matching barcode
         // should be returned so scan/create flows never start a duplicate entry.
         // Discovery surfaces (find_all, home, search) stay APPROVED-only.
-        const normalized_barcode = barcode.trim();
-
-        if (!normalized_barcode) {
-            return null;
-        }
-
-        const product = await this.prisma.product.findFirst({
-            where: { barcode: normalized_barcode },
-            include: product_detail_include,
-        });
+        const product = await this.find_product_record_by_barcode(barcode);
 
         if (!product) {
             return null;
@@ -84,6 +84,52 @@ export class ProductsService {
         );
 
         return this.to_detail_entity(product, is_favorited);
+    }
+
+    async find_existing_by_identity(input: {
+        barcode?: string | null;
+        name?: string | null;
+        brand?: string | null;
+    }): Promise<string | null> {
+        if (input.barcode) {
+            const by_barcode = await this.find_product_record_by_barcode(
+                input.barcode,
+            );
+
+            if (by_barcode) {
+                return by_barcode.uuid;
+            }
+        }
+
+        const name = input.name?.trim();
+        const brand = input.brand?.trim();
+
+        if (!name || !brand) {
+            return null;
+        }
+
+        const exact_match = await this.prisma.product.findFirst({
+            where: {
+                name: { equals: name, mode: 'insensitive' },
+                brand: { name: { equals: brand, mode: 'insensitive' } },
+            },
+            select: { uuid: true },
+        });
+
+        if (exact_match) {
+            return exact_match.uuid;
+        }
+
+        const fuzzy_match = await this.prisma.product.findFirst({
+            where: {
+                name: { contains: name, mode: 'insensitive' },
+                brand: { name: { contains: brand, mode: 'insensitive' } },
+            },
+            orderBy: { scan_count: 'desc' },
+            select: { uuid: true },
+        });
+
+        return fuzzy_match?.uuid ?? null;
     }
 
     async find_one(
@@ -179,8 +225,43 @@ export class ProductsService {
                 name: product.brand.name,
                 logo_url: product.brand.logo_url,
             },
-            hero_image_url: product.images[0]?.url ?? null,
+            hero_image_url: this.resolve_hero_image_url(product.images),
         };
+    }
+
+    resolve_hero_image_url(
+        images: ProductImageRecord[],
+    ): string | null {
+        const ordered = [...images].sort(
+            (left, right) => left.sort_order - right.sort_order,
+        );
+
+        return (
+            ordered.find((image) => image.type === ProductImageType.HERO)
+                ?.url ??
+            ordered.find((image) => image.type === ProductImageType.FRONT_LABEL)
+                ?.url ??
+            ordered.find(
+                (image) => image.type !== ProductImageType.INGREDIENT_LABEL,
+            )?.url ??
+            ordered[0]?.url ??
+            null
+        );
+    }
+
+    private async find_product_record_by_barcode(
+        barcode: string,
+    ): Promise<ProductDetailRecord | null> {
+        const variants = get_barcode_lookup_variants(barcode);
+
+        if (variants.length === 0) {
+            return null;
+        }
+
+        return this.prisma.product.findFirst({
+            where: { barcode: { in: variants } },
+            include: product_detail_include,
+        });
     }
 
     private to_detail_entity(
@@ -194,10 +275,7 @@ export class ProductsService {
 
         return {
             ...list_item,
-            hero_image_url:
-                product.images.find((image) => image.type === 'HERO')?.url ??
-                product.images[0]?.url ??
-                null,
+            hero_image_url: this.resolve_hero_image_url(product.images),
             subcategory: {
                 uuid: product.subcategory.uuid,
                 name: product.subcategory.name,
