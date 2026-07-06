@@ -43,7 +43,7 @@ export class HomeService {
             this.getRecentScannedProducts(user_uuid),
             this.getOrSetCache('home:trending', () =>
                 this.prisma.product.findMany({
-                    where: { verification_status: 'APPROVED' },
+                    where: {},
                     orderBy: { scan_count: 'desc' },
                     take: SECTION_LIMIT,
                     include: product_list_include,
@@ -51,7 +51,7 @@ export class HomeService {
             ),
             this.getOrSetCache('home:highest_rated', () =>
                 this.prisma.product.findMany({
-                    where: { verification_status: 'APPROVED' },
+                    where: {},
                     orderBy: { overall_score: 'desc' },
                     take: SECTION_LIMIT,
                     include: product_list_include,
@@ -59,7 +59,7 @@ export class HomeService {
             ),
             this.getOrSetCache('home:new_products', () =>
                 this.prisma.product.findMany({
-                    where: { verification_status: 'APPROVED' },
+                    where: {},
                     orderBy: { created_at: 'desc' },
                     take: SECTION_LIMIT,
                     include: product_list_include,
@@ -67,7 +67,7 @@ export class HomeService {
             ),
             this.getOrSetCache('home:recommended', () =>
                 this.prisma.product.findMany({
-                    where: { verification_status: 'APPROVED' },
+                    where: {},
                     orderBy: [{ is_featured: 'desc' }, { overall_score: 'desc' }],
                     take: SECTION_LIMIT,
                     include: product_list_include,

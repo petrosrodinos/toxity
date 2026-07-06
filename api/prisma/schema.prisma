@@ -261,7 +261,7 @@ model Product {
   scientific_confidence     Decimal?           @db.Decimal(4, 2)
   marketing_claims          String[]           @default([])
   package_size              String?
-  verification_status       VerificationStatus @default(PENDING)
+  verification_status       VerificationStatus @default(APPROVED)
   is_featured               Boolean            @default(false)
   scan_count                Int                @default(0)
   ai_version                String?

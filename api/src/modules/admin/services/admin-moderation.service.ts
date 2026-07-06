@@ -7,22 +7,11 @@ import {
 import { Prisma } from 'generated/prisma';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { GcsService } from '@/integrations/storage/gcs/services/gcs.service';
-import { ProductsService } from '@/modules/products/products.service';
-import { ProductQueryType } from '@/modules/products/dto/product-query.schema';
 import { MergeEntitiesDto } from '../dto/merge-entities.dto';
-import { VerifyProductDto } from '../dto/verify-product.dto';
 import { FeatureProductDto } from '../dto/feature-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { AdminProductQueryType } from '../dto/admin-product-query.schema';
 import { AdminProductListItemEntity } from '../entities/admin-product.entity';
-
-const product_list_include = {
-    brand: true,
-    images: {
-        orderBy: { sort_order: 'asc' as const },
-        take: 1,
-    },
-} satisfies Prisma.ProductInclude;
 
 const admin_product_include = {
     brand: true,
@@ -42,40 +31,8 @@ type AdminProductRecord = Prisma.ProductGetPayload<{
 export class AdminModerationService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly productsService: ProductsService,
         private readonly gcs_service: GcsService,
     ) {}
-
-    async getPendingProducts(query: Pick<ProductQueryType, 'page' | 'limit'>) {
-        const where: Prisma.ProductWhereInput = {
-            verification_status: 'PENDING',
-        };
-
-        const [items, count] = await Promise.all([
-            this.prisma.product.findMany({
-                where,
-                skip: (query.page - 1) * query.limit,
-                take: query.limit,
-                orderBy: { created_at: 'desc' },
-                include: product_list_include,
-            }),
-            this.prisma.product.count({ where }),
-        ]);
-
-        const total_pages = Math.ceil(count / query.limit);
-
-        return {
-            data: items.map((product) => this.productsService.to_list_item(product)),
-            pagination: {
-                total: count,
-                page: query.page,
-                limit: query.limit,
-                total_pages,
-                has_next: query.page < total_pages,
-                has_prev: query.page > 1,
-            },
-        };
-    }
 
     async getAllProducts(query: AdminProductQueryType) {
         const search = query.search?.trim();
@@ -143,9 +100,6 @@ export class AdminModerationService {
                     ...(dto.is_featured !== undefined && {
                         is_featured: dto.is_featured,
                     }),
-                    ...(dto.verification_status !== undefined && {
-                        verification_status: dto.verification_status,
-                    }),
                 },
                 include: admin_product_include,
             });
@@ -172,15 +126,6 @@ export class AdminModerationService {
 
         await this.prisma.product.delete({ where: { uuid: product_uuid } });
         await this.gcs_service.deleteImagesByUrls(image_urls);
-    }
-
-    async verifyProduct(product_uuid: string, dto: VerifyProductDto) {
-        await this.getProductOrThrow(product_uuid);
-
-        return this.prisma.product.update({
-            where: { uuid: product_uuid },
-            data: { verification_status: dto.status },
-        });
     }
 
     async toggleFeature(product_uuid: string, dto: FeatureProductDto) {
@@ -409,7 +354,6 @@ export class AdminModerationService {
             package_size: product.package_size,
             overall_score: product.overall_score.toString(),
             color_indicator: product.color_indicator,
-            verification_status: product.verification_status,
             is_featured: product.is_featured,
             scan_count: product.scan_count,
             brand: {

@@ -6,6 +6,7 @@ import {
     delete_category,
     delete_subcategory,
     get_categories,
+    get_category_products,
     update_category,
     update_subcategory,
 } from "../services/categories.services";
@@ -22,6 +23,17 @@ export const useGetCategories = () => {
     return useQuery({
         queryKey: CATEGORIES_KEY,
         queryFn: () => get_categories(),
+    });
+};
+
+export const useGetCategoryProducts = (
+    category_uuid?: string,
+    query?: { page?: number; limit?: number },
+) => {
+    return useQuery({
+        queryKey: ["category-products", category_uuid, query],
+        queryFn: () => get_category_products(category_uuid!, query),
+        enabled: !!category_uuid,
     });
 };
 

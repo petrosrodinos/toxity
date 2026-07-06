@@ -1,5 +1,7 @@
 import axiosInstance from "@/config/api/axios";
 import { ApiRoutes } from "@/config/api/routes";
+import type { ProductListItem } from "@/features/products/interfaces/products.interfaces";
+import type { PaginatedResponse } from "@/features/ingredients/interfaces/ingredients.interfaces";
 import type {
     Category,
     CreateCategoryDto,
@@ -23,6 +25,23 @@ export const get_categories = async (): Promise<Category[]> => {
         return response.data;
     } catch (error) {
         throw new Error(get_error_message(error, "Failed to load categories."));
+    }
+};
+
+export const get_category_products = async (
+    category_uuid: string,
+    query?: { page?: number; limit?: number },
+): Promise<PaginatedResponse<ProductListItem>> => {
+    try {
+        const response = await axiosInstance.get(
+            ApiRoutes.categories.products(category_uuid),
+            { params: query },
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error(
+            get_error_message(error, "Failed to load category products."),
+        );
     }
 };
 

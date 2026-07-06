@@ -103,12 +103,6 @@ export class ProductAnalysisRunner {
             analysis.ingredients,
         );
 
-        // MVP choice: new AI-created products start as PENDING so admins can
-        // review them (Feature 11), but the creating user can still open the
-        // product detail page directly via product_uuid immediately — see
-        // ProductsService.find_one, which does not filter by
-        // verification_status. Only discovery surfaces (search, home, lists)
-        // are restricted to APPROVED products.
         const product = await tx.product.create({
             data: {
                 barcode: input.barcode,
@@ -135,7 +129,7 @@ export class ProductAnalysisRunner {
                 scientific_confidence: analysis.scientific_confidence,
                 marketing_claims: input.ocr_result.claims,
                 package_size: analysis.package_size,
-                verification_status: 'PENDING',
+                verification_status: 'APPROVED',
                 scan_count: 1,
                 ai_version: PRODUCT_ANALYSIS_AI_VERSION,
                 faq: analysis.faq

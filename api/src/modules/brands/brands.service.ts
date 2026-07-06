@@ -54,7 +54,6 @@ export class BrandsService {
         const product_count = await this.prisma.product.count({
             where: {
                 brand_uuid: brand_uuid,
-                verification_status: 'APPROVED',
             },
         });
 

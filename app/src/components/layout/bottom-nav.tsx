@@ -30,7 +30,7 @@ export default function BottomNav() {
                             className={({ isActive }) =>
                                 cn(
                                     "flex flex-1 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5",
-                                    "font-mono uppercase text-[9px] tracking-wide font-medium transition-colors duration-200",
+                                    "font-mono uppercase text-[11px] tracking-wide font-medium transition-colors duration-200",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/45",
                                     isActive ? "text-accent" : "text-muted hover:text-foreground",
                                     emphasized && !isActive && "text-foreground/80",

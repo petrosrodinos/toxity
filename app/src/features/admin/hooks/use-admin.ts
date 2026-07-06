@@ -4,7 +4,6 @@ import {
     delete_product,
     get_all_products,
     get_ingredient_versions,
-    get_pending_products,
     get_product_versions,
     merge_brands,
     merge_ingredients,
@@ -13,22 +12,13 @@ import {
     reanalyze_product,
     toggle_feature_product,
     update_product,
-    verify_product,
 } from "../services/admin.services";
 import type {
     AdminProductQuery,
     FeatureProductDto,
     MergeEntitiesDto,
     UpdateProductDto,
-    VerifyProductDto,
 } from "../interfaces/admin.interfaces";
-
-export const useGetPendingProducts = (query?: { page?: number; limit?: number }) => {
-    return useQuery({
-        queryKey: ["admin-pending-products", query],
-        queryFn: () => get_pending_products(query),
-    });
-};
 
 export const useGetAllProducts = (query?: AdminProductQuery) => {
     return useQuery({
@@ -70,37 +60,11 @@ export const useDeleteProduct = () => {
         mutationFn: (product_uuid: string) => delete_product(product_uuid),
         onSuccess: () => {
             query_client.invalidateQueries({ queryKey: ["admin-products"] });
-            query_client.invalidateQueries({ queryKey: ["admin-pending-products"] });
             toast({ title: "Product removed", duration: 2000 });
         },
         onError: (error: Error) => {
             toast({
                 title: "Could not remove product",
-                description: error.message,
-                variant: "error",
-            });
-        },
-    });
-};
-
-export const useVerifyProduct = () => {
-    const query_client = useQueryClient();
-
-    return useMutation({
-        mutationFn: ({
-            product_uuid,
-            dto,
-        }: {
-            product_uuid: string;
-            dto: VerifyProductDto;
-        }) => verify_product(product_uuid, dto),
-        onSuccess: () => {
-            query_client.invalidateQueries({ queryKey: ["admin-pending-products"] });
-            toast({ title: "Product status updated", duration: 2000 });
-        },
-        onError: (error: Error) => {
-            toast({
-                title: "Could not update product",
                 description: error.message,
                 variant: "error",
             });
@@ -120,7 +84,6 @@ export const useToggleFeatureProduct = () => {
             dto: FeatureProductDto;
         }) => toggle_feature_product(product_uuid, dto),
         onSuccess: () => {
-            query_client.invalidateQueries({ queryKey: ["admin-pending-products"] });
             query_client.invalidateQueries({ queryKey: ["product"] });
             toast({ title: "Featured status updated", duration: 2000 });
         },
@@ -143,7 +106,7 @@ const useMergeMutation = (
     return useMutation({
         mutationFn,
         onSuccess: () => {
-            query_client.invalidateQueries({ queryKey: ["admin-pending-products"] });
+            query_client.invalidateQueries({ queryKey: ["admin-products"] });
             toast({ title: `${label} merged`, duration: 2000 });
         },
         onError: (error: Error) => {

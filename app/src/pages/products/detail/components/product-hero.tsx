@@ -40,6 +40,11 @@ export const ProductHero: FC<ProductHeroProps> = ({ product }) => {
                     {product.brand.name}
                     {product.package_size ? ` · ${product.package_size}` : ""}
                 </p>
+                {product.barcode ? (
+                    <p className="font-mono text-xs text-muted">
+                        Barcode {product.barcode}
+                    </p>
+                ) : null}
                 {category_label ? (
                     <p className="text-xs font-mono font-medium uppercase tracking-wide text-muted">
                         {category_label}

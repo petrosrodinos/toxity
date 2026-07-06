@@ -93,6 +93,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (max-width: 1023px) {
+  :root {
+    font-size: 18px;
+  }
+}
+
 [data-theme="dark"] {
   --accent:            oklch(0.76 0.15 var(--accent-hue));
   --accent-foreground: oklch(0.17 0.03 var(--accent-hue));

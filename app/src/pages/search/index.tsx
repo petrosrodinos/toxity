@@ -6,6 +6,7 @@ import ProductCard, { ProductCardSkeleton } from "@/components/product-card";
 import IngredientRow from "@/components/ingredient-row";
 import BrandRow from "@/components/brand-row";
 import { useSearch } from "@/features/search/hooks/use-search";
+import { useGetCategoryProducts } from "@/features/categories/hooks/use-categories";
 import { useSearchFilters, type SearchTab } from "./hooks/use-search-filters";
 
 const SORT_OPTIONS: SelectOption[] = [
@@ -23,16 +24,48 @@ const TABS: { value: SearchTab; label: string }[] = [
 ];
 
 export default function SearchPage() {
-    const { q, set_q, sort, set_sort, tab, set_tab, query } = useSearchFilters();
-    const { data, isLoading, isFetching } = useSearch(query);
+    const { q, set_q, sort, set_sort, tab, set_tab, category_uuid, query } =
+        useSearchFilters();
+    const has_query = query.q.length > 0;
+    const is_browsing_category = !!category_uuid && !has_query;
 
-    const has_query = query.q.trim().length > 0;
-    const is_loading_results = has_query && (isLoading || isFetching);
+    const {
+        data: search_data,
+        isLoading: is_search_loading,
+        isFetching: is_search_fetching,
+        isError: is_search_error,
+        error: search_error,
+    } = useSearch(query);
 
-    const products = data?.products.data ?? [];
-    const ingredients = data?.ingredients.data ?? [];
-    const brands = data?.brands.data ?? [];
-    const total_results = products.length + ingredients.length + brands.length;
+    const {
+        data: category_data,
+        isLoading: is_category_loading,
+        isError: is_category_error,
+        error: category_error,
+    } = useGetCategoryProducts(category_uuid, { limit: 50 });
+
+    const is_loading_results =
+        (has_query && (is_search_loading || is_search_fetching)) ||
+        (is_browsing_category && is_category_loading);
+
+    const products = is_browsing_category
+        ? (category_data?.data ?? [])
+        : (search_data?.products.data ?? []);
+    const ingredients = search_data?.ingredients.data ?? [];
+    const brands = search_data?.brands.data ?? [];
+
+    const show_products = tab === "all" || tab === "products";
+    const show_ingredients = tab === "all" || tab === "ingredients";
+    const show_brands = tab === "all" || tab === "brands";
+
+    const visible_product_count = show_products ? products.length : 0;
+    const visible_ingredient_count = show_ingredients ? ingredients.length : 0;
+    const visible_brand_count = show_brands ? brands.length : 0;
+    const visible_total =
+        visible_product_count + visible_ingredient_count + visible_brand_count;
+
+    const active_error = is_browsing_category ? category_error : search_error;
+    const has_error = is_browsing_category ? is_category_error : is_search_error;
 
     return (
         <div className="mx-auto flex max-w-lg flex-col gap-6 pb-8">
@@ -72,19 +105,25 @@ export default function SearchPage() {
                     ))}
                 </div>
 
-                <Select
-                    aria-label="Sort results"
-                    value={sort}
-                    options={SORT_OPTIONS}
-                    onChange={(value) => set_sort(value as typeof sort)}
-                    className="w-44"
-                    contentClassName="w-44"
-                />
+                {has_query ? (
+                    <Select
+                        aria-label="Sort results"
+                        value={sort}
+                        options={SORT_OPTIONS}
+                        onChange={(value) => set_sort(value as typeof sort)}
+                        className="w-44"
+                        contentClassName="w-44"
+                    />
+                ) : null}
             </div>
 
-            {!has_query ? (
+            {!has_query && !is_browsing_category ? (
                 <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted">
                     Start typing to search the Toxity library.
+                </p>
+            ) : has_error ? (
+                <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-danger">
+                    {active_error?.message ?? "Search failed. Please try again."}
                 </p>
             ) : is_loading_results ? (
                 <div className="space-y-2">
@@ -92,16 +131,19 @@ export default function SearchPage() {
                         <ProductCardSkeleton key={index} />
                     ))}
                 </div>
-            ) : total_results === 0 ? (
+            ) : visible_total === 0 ? (
                 <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted">
-                    No results for "{query.q}". Try a different name, ingredient, or
-                    barcode.
+                    {is_browsing_category
+                        ? "No products in this category yet."
+                        : has_query
+                          ? `No results for "${query.q}". Try a different name, ingredient, or barcode.`
+                          : "No results found."}
                 </p>
             ) : (
                 <div className="space-y-6">
-                    {(tab === "all" || tab === "products") && products.length > 0 ? (
+                    {show_products && products.length > 0 ? (
                         <section className="space-y-2">
-                            {tab === "all" ? (
+                            {tab === "all" || is_browsing_category ? (
                                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
                                     Products
                                 </p>
@@ -112,7 +154,8 @@ export default function SearchPage() {
                         </section>
                     ) : null}
 
-                    {(tab === "all" || tab === "ingredients") &&
+                    {!is_browsing_category &&
+                    show_ingredients &&
                     ingredients.length > 0 ? (
                         <section className="space-y-2">
                             {tab === "all" ? (
@@ -129,7 +172,7 @@ export default function SearchPage() {
                         </section>
                     ) : null}
 
-                    {(tab === "all" || tab === "brands") && brands.length > 0 ? (
+                    {!is_browsing_category && show_brands && brands.length > 0 ? (
                         <section className="space-y-2">
                             {tab === "all" ? (
                                 <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">

@@ -45,7 +45,6 @@ export class CategoriesService {
         }
 
         const where = {
-            verification_status: 'APPROVED' as const,
             subcategory: {
                 category_uuid,
             },

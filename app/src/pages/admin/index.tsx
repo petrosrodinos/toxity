@@ -1,6 +1,5 @@
 import { useState, type FC } from "react";
 import { Button } from "@/components/ui/button";
-import { PendingProductsTable } from "./components/pending-products-table";
 import { AllProductsTable } from "./components/all-products-table";
 import { CategoriesTable } from "./components/categories-table";
 import { MergeTool } from "./components/merge-tool";
@@ -8,7 +7,6 @@ import { MergeTool } from "./components/merge-tool";
 const ADMIN_TABS = [
     { value: "products", label: "Products" },
     { value: "categories", label: "Categories" },
-    { value: "pending", label: "Pending Products" },
     { value: "merge", label: "Merge Duplicates" },
 ] as const;
 
@@ -27,8 +25,8 @@ const AdminPage: FC = () => {
                     Admin
                 </h1>
                 <p className="mt-1 text-sm text-muted">
-                    Manage products and their ingredients, review pending
-                    submissions, and clean up duplicate records.
+                    Manage products and their ingredients, and clean up duplicate
+                    records.
                 </p>
             </div>
 
@@ -47,7 +45,6 @@ const AdminPage: FC = () => {
 
             {tab === "products" && <AllProductsTable />}
             {tab === "categories" && <CategoriesTable />}
-            {tab === "pending" && <PendingProductsTable />}
             {tab === "merge" && <MergeTool />}
         </div>
     );

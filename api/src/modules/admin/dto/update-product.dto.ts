@@ -1,8 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { VerificationStatus } from 'generated/prisma';
 import {
     IsBoolean,
-    IsEnum,
     IsOptional,
     IsString,
     MinLength,
@@ -33,9 +31,4 @@ export class UpdateProductDto {
     @IsOptional()
     @IsBoolean()
     is_featured?: boolean;
-
-    @ApiPropertyOptional({ enum: VerificationStatus })
-    @IsOptional()
-    @IsEnum(VerificationStatus)
-    verification_status?: VerificationStatus;
 }

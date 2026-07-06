@@ -70,7 +70,6 @@ export class ProductsService {
         //
         // Barcodes are globally unique — any product with a matching barcode
         // should be returned so scan/create flows never start a duplicate entry.
-        // Discovery surfaces (find_all, home, search) stay APPROVED-only.
         const product = await this.find_product_record_by_barcode(barcode);
 
         if (!product) {
@@ -136,11 +135,6 @@ export class ProductsService {
         product_uuid: string,
         user_uuid: string,
     ): Promise<ProductDetailEntity> {
-        // Not filtered by verification_status: a user who just created a
-        // product via the AI pipeline (Feature 07) must be able to open it
-        // immediately while it awaits admin approval (Feature 11). Discovery
-        // surfaces (find_all, find_by_barcode, home, search) stay
-        // APPROVED-only so unreviewed products aren't publicly surfaced.
         const product = await this.prisma.product.findFirst({
             where: {
                 uuid: product_uuid,
@@ -163,7 +157,6 @@ export class ProductsService {
 
     async find_all(query: ProductQueryType) {
         const where: Prisma.ProductWhereInput = {
-            verification_status: 'APPROVED',
             ...(query.featured && { is_featured: true }),
             ...(query.brand_uuid && { brand_uuid: query.brand_uuid }),
             ...(query.subcategory_uuid && {

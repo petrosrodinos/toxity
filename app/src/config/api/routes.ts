@@ -65,9 +65,7 @@ export const ApiRoutes = {
     admin: {
         products: {
             prefix: "/admin/products",
-            pending: "/admin/products/pending",
             merge: "/admin/products/merge",
-            verify: (product_uuid: string) => `/admin/products/${product_uuid}/verify`,
             feature: (product_uuid: string) => `/admin/products/${product_uuid}/feature`,
             reanalyze: (product_uuid: string) => `/admin/products/${product_uuid}/reanalyze`,
             versions: (product_uuid: string) => `/admin/products/${product_uuid}/versions`,

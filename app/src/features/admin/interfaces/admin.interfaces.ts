@@ -1,5 +1,4 @@
 import type { ColorIndicator } from "@/components/ui/safety-badge";
-import type { VerificationStatus } from "@/features/products/interfaces/products.interfaces";
 
 export type MergeEntitiesDto = {
     keep_uuid: string;
@@ -20,7 +19,6 @@ export type AdminProductListItem = {
     package_size: string | null;
     overall_score: string;
     color_indicator: ColorIndicator;
-    verification_status: VerificationStatus;
     is_featured: boolean;
     scan_count: number;
     brand: {
@@ -42,19 +40,6 @@ export type UpdateProductDto = {
     barcode?: string;
     package_size?: string;
     is_featured?: boolean;
-    verification_status?: VerificationStatus;
-};
-
-export const ProductVerificationDecisions = {
-    APPROVED: "APPROVED",
-    REJECTED: "REJECTED",
-} as const;
-
-export type ProductVerificationDecision =
-    (typeof ProductVerificationDecisions)[keyof typeof ProductVerificationDecisions];
-
-export type VerifyProductDto = {
-    status: ProductVerificationDecision;
 };
 
 export type FeatureProductDto = {

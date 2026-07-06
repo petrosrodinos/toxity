@@ -2,26 +2,14 @@ import { useEffect, useState, type FC } from "react";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, type SelectOption } from "@/components/ui/select";
 import { useUpdateProduct } from "@/features/admin/hooks/use-admin";
 import type { AdminProductListItem } from "@/features/admin/interfaces/admin.interfaces";
-import {
-    VerificationStatuses,
-    type VerificationStatus,
-} from "@/features/products/interfaces/products.interfaces";
-
-const VERIFICATION_OPTIONS: SelectOption<VerificationStatus>[] = [
-    { value: VerificationStatuses.PENDING, label: "Pending" },
-    { value: VerificationStatuses.APPROVED, label: "Approved" },
-    { value: VerificationStatuses.REJECTED, label: "Rejected" },
-];
 
 type EditState = {
     name: string;
     barcode: string;
     package_size: string;
     is_featured: boolean;
-    verification_status: VerificationStatus;
 };
 
 const to_edit_state = (product: AdminProductListItem): EditState => ({
@@ -29,7 +17,6 @@ const to_edit_state = (product: AdminProductListItem): EditState => ({
     barcode: product.barcode ?? "",
     package_size: product.package_size ?? "",
     is_featured: product.is_featured,
-    verification_status: product.verification_status,
 });
 
 type EditProductModalProps = {
@@ -46,7 +33,6 @@ export const EditProductModal: FC<EditProductModalProps> = ({
     const [form, set_form] = useState<EditState>(() => to_edit_state(product));
     const update_product = useUpdateProduct();
 
-    // Reset the form whenever the modal is (re)opened for a product.
     useEffect(() => {
         if (isOpen) set_form(to_edit_state(product));
     }, [isOpen, product]);
@@ -60,7 +46,6 @@ export const EditProductModal: FC<EditProductModalProps> = ({
                     barcode: form.barcode,
                     package_size: form.package_size,
                     is_featured: form.is_featured,
-                    verification_status: form.verification_status,
                 },
             },
             { onSuccess: onClose },
@@ -125,7 +110,7 @@ export const EditProductModal: FC<EditProductModalProps> = ({
                     />
                 </div>
 
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 sm:col-span-2">
                     <label
                         htmlFor={`package-${product.uuid}`}
                         className="text-xs font-medium text-foreground"
@@ -139,26 +124,6 @@ export const EditProductModal: FC<EditProductModalProps> = ({
                             set_form((prev) => ({
                                 ...prev,
                                 package_size: event.target.value,
-                            }))
-                        }
-                    />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                    <label
-                        htmlFor={`status-${product.uuid}`}
-                        className="text-xs font-medium text-foreground"
-                    >
-                        Verification status
-                    </label>
-                    <Select
-                        id={`status-${product.uuid}`}
-                        value={form.verification_status}
-                        options={VERIFICATION_OPTIONS}
-                        onChange={(verification_status) =>
-                            set_form((prev) => ({
-                                ...prev,
-                                verification_status,
                             }))
                         }
                     />

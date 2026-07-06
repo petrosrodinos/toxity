@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ColorIndicator, VerificationStatus } from 'generated/prisma';
+import { ColorIndicator } from 'generated/prisma';
 import { ProductBrandEntity } from '@/modules/products/entities/product.entity';
 
 export class AdminProductIngredientEntity {
@@ -34,9 +34,6 @@ export class AdminProductListItemEntity {
 
     @ApiProperty({ enum: ColorIndicator })
     color_indicator: ColorIndicator;
-
-    @ApiProperty({ enum: VerificationStatus })
-    verification_status: VerificationStatus;
 
     @ApiProperty()
     is_featured: boolean;

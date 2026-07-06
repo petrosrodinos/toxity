@@ -4,7 +4,11 @@ import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { ProductsService } from '@/modules/products/products.service';
 import { IngredientsService } from '@/modules/ingredients/ingredients.service';
 import { BrandsService } from '@/modules/brands/brands.service';
-import { get_barcode_lookup_variants } from '@/shared/utils/barcode.utils';
+import {
+    get_barcode_lookup_variants,
+    normalize_barcode_digits,
+} from '@/shared/utils/barcode.utils';
+import { normalize_ingredient_name } from '@/shared/utils/ingredient.utils';
 import { SearchQueryType } from './dto/search-query.schema';
 import {
     SearchProductsEntity,
@@ -74,7 +78,6 @@ export class SearchService {
         const product = await this.prisma.product.findFirst({
             where: {
                 barcode: { in: variants },
-                verification_status: 'APPROVED',
             },
             include: product_list_include,
         });
@@ -93,11 +96,47 @@ export class SearchService {
         q: string,
         query: SearchQueryType,
     ): Promise<SearchProductsEntity> {
+        const barcode_variants = get_barcode_lookup_variants(q);
+        const normalized_ingredient = normalize_ingredient_name(q);
+
         const where: Prisma.ProductWhereInput = {
-            verification_status: 'APPROVED',
             OR: [
                 { name: { contains: q, mode: 'insensitive' } },
                 { brand: { name: { contains: q, mode: 'insensitive' } } },
+                ...(barcode_variants.length > 0
+                    ? [{ barcode: { in: barcode_variants } }]
+                    : []),
+                ...(normalize_barcode_digits(q).length > 0 &&
+                barcode_variants.length === 0
+                    ? [
+                          {
+                              barcode: {
+                                  contains: normalize_barcode_digits(q),
+                              },
+                          },
+                      ]
+                    : []),
+                {
+                    product_ingredients: {
+                        some: {
+                            ingredient: {
+                                OR: [
+                                    {
+                                        name: {
+                                            contains: q,
+                                            mode: 'insensitive',
+                                        },
+                                    },
+                                    {
+                                        name_normalized: {
+                                            contains: normalized_ingredient,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                },
             ],
             ...(query.subcategory_uuid && {
                 subcategory_uuid: query.subcategory_uuid,

@@ -17,9 +17,9 @@ export const useSearchFilters = () => {
 
     const query = useMemo(
         () => ({
-            q: debounced_q,
+            q: debounced_q.trim(),
             sort,
-            category_uuid,
+            ...(category_uuid ? { category_uuid } : {}),
         }),
         [debounced_q, sort, category_uuid],
     );

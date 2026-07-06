@@ -44,9 +44,6 @@ const ProductRow: FC<{ product: AdminProductListItem }> = ({ product }) => {
 
                 <td className="px-3 py-3">
                     <SafetyBadge indicator={product.color_indicator} compact />
-                    <p className="mt-1 text-[11px] text-muted">
-                        {product.verification_status}
-                    </p>
                 </td>
 
                 <td className="px-3 py-3">
