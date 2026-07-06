@@ -14,7 +14,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateJwtService } from '@/shared/utils/jwt/jwt.service';
 import { AuthRoles } from '../interfaces/auth.interface';
 import { WaitlistDto } from '../dto/waitlist.dto';
-import { SendgridMailService } from '@/integrations/notifications/sendgrid/services/mail.service';
+import { ResendMailService } from '@/integrations/notifications/resend/services/mail.service';
 import { EmailConfig } from '@/shared/constants/email';
 import {
     generate_lookup_token,
@@ -38,7 +38,7 @@ export class EmailAuthService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly jwt_service: CreateJwtService,
-        private readonly mail_service: SendgridMailService,
+        private readonly mail_service: ResendMailService,
         private readonly config: ConfigService,
     ) {}
 
@@ -181,9 +181,10 @@ export class EmailAuthService {
 
         await this.mail_service.sendEmail({
             to: dto.email,
-            from: EmailConfig.email_addresses.alert,
+            from: this.get_from_address(),
             subject: EmailConfig.templates.waitlist.subject,
-            template_id: EmailConfig.templates.waitlist.template_id,
+            text: 'Thanks for joining the Toxity waitlist. We will be in touch soon.',
+            html: '<p>Thanks for joining the Toxity waitlist. We will be in touch soon.</p>',
         });
 
         return { message: 'You have been successfully added to the waitlist', code: 'WAITLIST_SUCCESS' };
@@ -211,13 +212,14 @@ export class EmailAuthService {
 
         await this.mail_service.sendEmail({
             to: email,
-            from: EmailConfig.email_addresses.alert,
+            from: this.get_from_address(),
             subject: EmailConfig.templates.password_reset.subject,
-            template_id: EmailConfig.templates.password_reset.template_id,
-            dynamic_template_data: {
-                reset_url,
-                action_url: reset_url,
-            },
+            text: `Reset your Toxity password: ${reset_url}\n\nThis link expires in 1 hour. If you did not request this, you can ignore this email.`,
+            html: `<p>We received a request to reset your Toxity password.</p><p><a href="${reset_url}">Reset your password</a></p><p>This link expires in 1 hour. If you did not request this, you can ignore this email.</p>`,
         });
+    }
+
+    private get_from_address(): string {
+        return `Toxity <${EmailConfig.email_addresses.alert}>`;
     }
 }

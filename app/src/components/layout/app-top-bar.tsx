@@ -1,6 +1,7 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { get_app_logo_route } from "@/lib/platform";
 import { BrandMark } from "@/components/brand/brand-mark";
 import { Routes } from "@/routes/routes";
 
@@ -39,7 +40,7 @@ export default function AppTopBar() {
         >
             {is_root ? (
                 <NavLink
-                    to={Routes.home.root}
+                    to={get_app_logo_route()}
                     className="min-w-0 shrink-0 rounded-xl transition-opacity hover:opacity-90"
                 >
                     <BrandMark size="sm" />

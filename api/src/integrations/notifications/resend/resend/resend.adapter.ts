@@ -1,30 +1,27 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { EmailConfig } from '@/shared/config/email';
-import { CreateEmail, EmailFromAddress } from '../../sendgrid/interfaces/mail.interfaces';
+import { EmailConfig } from '@/shared/constants/email';
+import { CreateEmail } from '../../interfaces/mail.interfaces';
 import { ResendConfig } from './resend.config';
 
 @Injectable()
 export class ResendAdapter {
   private readonly logger = new Logger(ResendAdapter.name);
-  private readonly emailFromAddresses: EmailFromAddress;
 
-  constructor(private readonly resendConfig: ResendConfig) {
-    this.emailFromAddresses = EmailConfig.email_addresses;
-  }
+  constructor(private readonly resendConfig: ResendConfig) {}
 
-  public async sendEmail(createEmail: CreateEmail) {
+  public async sendEmail(create_email: CreateEmail) {
     try {
-      const resendClient = this.resendConfig.getResendClient();
-      return await resendClient.emails.send({
-        from: createEmail.from || this.emailFromAddresses.confirmation,
-        to: createEmail.to,
-        subject: createEmail.subject,
-        text: createEmail.text,
-        html: createEmail.html,
-        cc: createEmail.cc,
-        bcc: createEmail.bcc,
-        replyTo: createEmail.replyTo,
-        headers: createEmail.headers,
+      const resend_client = this.resendConfig.getResendClient();
+      return await resend_client.emails.send({
+        from: create_email.from || `Toxity <${EmailConfig.email_addresses.alert}>`,
+        to: create_email.to,
+        subject: create_email.subject,
+        text: create_email.text,
+        html: create_email.html,
+        cc: create_email.cc,
+        bcc: create_email.bcc,
+        replyTo: create_email.replyTo,
+        headers: create_email.headers,
       });
     } catch (error) {
       this.logger.error(error);

@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { CreateEmail } from '../../sendgrid/interfaces/mail.interfaces';
+import { CreateEmail } from '../../interfaces/mail.interfaces';
 import { ResendAdapter } from '../resend/resend.adapter';
 
 @Injectable()

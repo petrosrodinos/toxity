@@ -18,10 +18,22 @@ import IngredientDetailPage from "@/pages/ingredients/detail";
 import ProductDetailPage from "@/pages/products/detail";
 import ProductCreatePage from "@/pages/products/create";
 import AdminPage from "@/pages/admin";
+import LandingPage from "@/pages/landing";
+import { is_native_platform } from "@/lib/platform";
 
 function RootRedirect() {
     const { isLoggedIn } = useAuthStore();
-    return <Navigate to={isLoggedIn ? Routes.history.root : Routes.auth.sign_in} replace />;
+
+    if (!isLoggedIn) {
+        return <Navigate to={Routes.landing.root} replace />;
+    }
+
+    return (
+        <Navigate
+            to={is_native_platform() ? Routes.history.root : Routes.landing.root}
+            replace
+        />
+    );
 }
 
 export default function AppRoutes() {
@@ -87,10 +99,10 @@ export default function AppRoutes() {
             <Route path="/dashboard" element={<Navigate to={Routes.home.root} replace />} />
 
             {/* Default redirect */}
-            <Route path="/" element={<RootRedirect />} />
+            <Route path={Routes.landing.root} element={<LandingPage />} />
 
             {/* Catch all */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<RootRedirect />} />
         </ReactRoutes>
     );
 }

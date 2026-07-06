@@ -1,6 +1,11 @@
 import { Capacitor } from "@capacitor/core";
+import { Routes } from "@/routes/routes";
 
 export const is_native_platform = (): boolean => Capacitor.isNativePlatform();
+
+export function get_app_logo_route(): string {
+    return is_native_platform() ? Routes.history.root : Routes.landing.root;
+}
 
 export const is_ios_browser = (): boolean => {
     if (typeof navigator === "undefined") {

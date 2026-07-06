@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { BrandMark } from "@/components/brand/brand-mark";
 import UserMenuPopover from "@/components/layout/user-menu-popover";
 import { admin_nav_item, app_nav_items } from "@/components/layout/app-nav-items";
-import { Routes } from "@/routes/routes";
+import { get_app_logo_route } from "@/lib/platform";
 import { useAuthStore } from "@/stores/auth";
 import { RoleTypes } from "@/features/user/interfaces/user.interface";
 
@@ -32,7 +32,7 @@ export default function DesktopNav() {
         >
             <div className="h-[54px] flex items-center shrink-0 px-3 border-b border-border">
                 <NavLink
-                    to={Routes.home.root}
+                    to={get_app_logo_route()}
                     className="flex-1 min-w-0 rounded-xl px-1 py-1 hover:bg-surface-secondary transition-colors duration-200"
                 >
                     <BrandMark size="sm" />

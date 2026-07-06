@@ -32,10 +32,4 @@ export class CreateMailDto {
 
     @IsOptional()
     headers?: Record<string, string>;
-
-    @IsOptional()
-    template_id?: string;
-
-    @IsOptional()
-    dynamic_template_data?: Record<string, any>;
 }

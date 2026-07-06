@@ -6,10 +6,6 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "integrations/notifications/sendgrid/templates/**/*",
-        "outDir": "dist/src"
-      },
-      {
         "include": "generated/**/*",
         "outDir": "dist/src"
       }
